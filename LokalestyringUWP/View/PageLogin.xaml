@@ -7,8 +7,66 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
     <Grid>
-
+        <Grid>
+            <Grid.Background>
+                <SolidColorBrush Color="Aquamarine"></SolidColorBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <StackPanel
+                Grid.Row="2"
+                Grid.RowSpan="7"
+                Grid.Column="0"
+                Grid.ColumnSpan="2">
+                <StackPanel Width="Auto">
+                    <TextBlock
+                        FontFamily="dubai"
+                        FontSize="35"
+                        Text="Login"
+                        TextAlignment="Center"/>
+                    <TextBox
+                        Margin="10,50,10,10"
+                        FontFamily="dubai"
+                        FontSize="35"
+                        PlaceholderText="Brugernavn"/>
+                    <PasswordBox
+                        Margin="10,10,10,10"
+                        FontFamily="dubai"
+                        FontSize="35"
+                        PlaceholderText="Password"/>
+                    <Button
+                        Margin="10,20,10,10"
+                        HorizontalAlignment="Center"
+                        Width="240"
+                        Background="DarkCyan"
+                        Content="Log Ind"
+                        FontFamily="dubai"
+                        Foreground="White"/>
+                    <Button
+                        Margin="10,20,10,10"
+                        HorizontalAlignment="Center"
+                        Width="240"
+                        Background="DarkCyan"
+                        Content="Opret Konto"
+                        FontFamily="dubai"
+                        Foreground="White"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>
