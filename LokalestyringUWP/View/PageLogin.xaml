@@ -49,6 +49,7 @@
                         FontFamily="dubai"
                         FontSize="35"
                         PlaceholderText="Password"/>
+                    <!--Knapper-->
                     <Button
                         Margin="10,20,10,10"
                         HorizontalAlignment="Center"
