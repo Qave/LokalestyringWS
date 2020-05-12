@@ -62,7 +62,7 @@
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Border
                 Grid.Row="0"
@@ -73,6 +73,7 @@
                 CornerRadius="5">
                 <Grid Margin="8">
                     <Grid.RowDefinitions>
+                        <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
@@ -134,18 +135,15 @@
                             FontSize="16"
                             Foreground="Gray"
                             Text="Bygning: D" />
-                        <Border
+                        <Button
                             Grid.Column="1"
                             HorizontalAlignment="Right"
+                            Background="white"
                             BorderBrush="Gray"
                             BorderThickness="0.5"
-                            CornerRadius="5">
-
-                            <Button
-                                Background="white"
-                                Content="Book igen imorgen"
-                                FontSize="12" />
-                        </Border>
+                            Content="Book igen imorgen"
+                            CornerRadius="5"
+                            FontSize="15" />
                     </Grid>
                     <Grid Grid.Row="3" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -154,24 +152,96 @@
                         </Grid.ColumnDefinitions>
 
                     </Grid>
-                    <Grid Grid.Row="4" VerticalAlignment="Center">
+                    <Grid Grid.Row="3" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBlock FontSize="15" Foreground="gray">
+                        <TextBlock
+                            Grid.Column="0"
+                            FontSize="15"
+                            Foreground="gray">
                             <Run Text="Tavletid:" />
                             <Run Text="12:00" />
                             <Run Text="-" />
                             <Run Text="14:00" />
                         </TextBlock>
+
                     </Grid>
+                    <Grid Grid.Row="4" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            Background="white"
+                            BorderBrush="Gray"
+                            BorderThickness="0.5"
+                            Content="Aflys Booking"
+                            CornerRadius="5"
+                            FontSize="15" />
+                        <Button
+                            Grid.Column="0"
+                            HorizontalAlignment="left"
+                            Background="white"
+                            BorderBrush="Gray"
+                            BorderThickness="0.5"
+                            Content="Aflys Tavle"
+                            CornerRadius="5"
+                            FontSize="15" />
+
+                    </Grid>
+
                     <Grid Grid.Row="5" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBlock FontSize="18" Text="Etage: 1" />
+                        <TextBlock
+                            Grid.Column="0"
+                            FontSize="15"
+                            Foreground="gray"
+                            Text="Book tavle-tid" />
+                    </Grid>
+                    <Grid Grid.Row="6" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox
+                                Width="80"
+                                Margin="0,0,5,0"
+                                Background="white"
+                                BorderBrush="Gray"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                PlaceholderText="Starttid" />
+                            <ComboBox
+                                Width="100"
+                                Margin="0,0,5,0"
+                                Background="white"
+                                BorderBrush="Gray"
+                                BorderThickness="1"
+                                CornerRadius="5"
+                                PlaceholderText="Varighed">
+                                <ComboBoxItem>00:30</ComboBoxItem>
+                                <ComboBoxItem>01:00</ComboBoxItem>
+                                <ComboBoxItem>01:30</ComboBoxItem>
+                                <ComboBoxItem>02:00</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <Button
+                            Grid.Column="1"
+                            Width="100"
+                            HorizontalAlignment="Right"
+                            Background="white"
+                            BorderBrush="Gray"
+                            BorderThickness="1"
+                            Content="Book"
+                            CornerRadius="5" />
                     </Grid>
                 </Grid>
             </Border>
