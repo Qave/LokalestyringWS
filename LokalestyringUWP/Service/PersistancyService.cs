@@ -68,5 +68,102 @@ namespace LokalestyringUWP.Service
             return null;
         }
         #endregion
+
+        #region User Persistancy
+        public static async void SaveUserAsJsonAsync(User userObj)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(UserCatalogSingleton.serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    var response = client.PostAsJsonAsync("api/User", userObj).Result;
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+        }
+        public static async Task<ObservableCollection<User>> LoadUsersFromJsonAsync()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(UserCatalogSingleton.serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                ObservableCollection<User> userList = new ObservableCollection<User>();
+
+                try
+                {
+                    var response = await client.GetAsync("api/Users");
+                    var users = response.Content.ReadAsAsync<IEnumerable<User>>().Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        foreach (var singleUser in users)
+                        {
+                            userList.Add(singleUser);
+                        }
+                        return userList;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #region Location Persistancy
+
+        public static async Task<ObservableCollection<Location>> LoadLocationsFromJsonAsync()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(RoomCatalogSingleton.serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                ObservableCollection<Location> locationList = new ObservableCollection<Location>();
+
+                try
+                {
+                    var response = await client.GetAsync("api/Locations");
+                    var locations = response.Content.ReadAsAsync<IEnumerable<Location>>().Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        foreach (var singleLocation in locations)
+                        {
+                            locationList.Add(singleLocation);
+                        }
+                        return locationList;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return null;
+        }
+
+        #endregion
     }
 }
