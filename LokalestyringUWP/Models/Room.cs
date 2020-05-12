@@ -25,6 +25,11 @@ namespace LokalestyringUWP.Models
 
         public int Floor { get; set; }
 
+        public string FloorString 
+        { 
+            get { return $"Etage: {Floor}"; }
+        }
+
         public string No { get; set; }
 
         public int Type_Id { get; set; }
@@ -36,15 +41,20 @@ namespace LokalestyringUWP.Models
         public string Location1 { get; }
         public string RoomType { get; }
 
+        public string RoomIdString
+        {
+            get { return $"{Location1}-{Building1}.{No}"; }
+        }
+
         public virtual Building Building { get; set; }
 
         public virtual Location Location { get; set; }
 
         public virtual Roomtype Roomtype { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Room_Id}, {Floor}, {No}, {Type_Id}, {Building_Id}, {Loc_Id}";
-        }
+        //public override string ToString()
+        //{
+        //    return $"{Room_Id}, {Floor}, {No}, {Type_Id}, {Building_Id}, {Loc_Id}";
+        //}
     }
 }

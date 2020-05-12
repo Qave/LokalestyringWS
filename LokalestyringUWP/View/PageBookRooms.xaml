@@ -12,6 +12,25 @@
         <ViewModel:ViewModel />
     </Page.DataContext>
 
+    <Page.Resources>
+        <DataTemplate x:Key="RoomBookingsTemplate">
+            <Grid>
+                <Border
+                    Width="200"
+                    Height="200"
+                    Background="LightGray" />
+                <StackPanel VerticalAlignment="Top">
+                    <TextBlock Text="{Binding RoomIdString}" />
+                    <TextBlock Text="{Binding RoomType}" />
+                    <TextBlock Text="{Binding Building1}" />
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding FloorString}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />
@@ -121,16 +140,7 @@
         <GridView
             Grid.Row="3"
             Margin="10,0,10,0"
-            ItemsSource="{Binding RoomList}">
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Location1}"/>
-                        <TextBlock Text="{Binding }"/>
-                        <TextBlock Text="{Binding Location1}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+            ItemTemplate="{StaticResource RoomBookingsTemplate}"
+            ItemsSource="{Binding RoomList}" />
     </Grid>
 </Page>
