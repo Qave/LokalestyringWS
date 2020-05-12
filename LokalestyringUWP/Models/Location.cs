@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LokalestyringUWP.Models
 {
-    class Location
+    public class Location
     {
         public Location()
         {
@@ -23,6 +23,6 @@ namespace LokalestyringUWP.Models
             return $"{Loc_Id}, {Name}, {City}";
         }
 
-        public virtual ICollection<Room> Rooms { get; set; }
+        //public virtual ICollection<Room> Rooms { get; set; }
     }
 }
