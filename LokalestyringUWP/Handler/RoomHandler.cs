@@ -23,14 +23,12 @@ namespace LokalestyringUWP.Handler
 
         public void FilterSearchMethod()
         {
-            var filteredList = from fl in Reference.RoomList
-                               where fl.RoomType.Contains("Lille") && fl.Building1.Contains("B")
-                               select fl;
-
-            Reference.RoomList.Clear();
-            foreach (var item in filteredList)
+            foreach (var item in Reference.RoomList.ToList())
             {
-                Reference.RoomList.Add(item);
+                if (item.Building1 != "A")
+                {
+                    Reference.RoomList.Remove(item);
+                }
             }
         }
     }
