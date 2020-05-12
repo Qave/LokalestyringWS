@@ -8,17 +8,8 @@ using LokalestyringUWP.Common;
 
 namespace LokalestyringUWP.Handler
 {
-    public class CommandHandler
+    public static class CommandHandler
     {
-        LoginHandler login = new LoginHandler();
-        public ICommand LoginCommand { get; set; }
-
-        public CommandHandler()
-        {
-            LoginCommand = new RelayCommand(login.OnLogin, null);
-        }
-
-
-
+        public static ICommand LoginCommand { get; set; }
     }
 }

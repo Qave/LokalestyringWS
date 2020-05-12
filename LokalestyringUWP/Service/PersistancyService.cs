@@ -105,7 +105,7 @@ namespace LokalestyringUWP.Service
 
                 try
                 {
-                    var response = await client.GetAsync("api/Users");
+                    var response = await client.GetAsync("api/User");
                     var users = response.Content.ReadAsAsync<IEnumerable<User>>().Result;
 
                     if (response.IsSuccessStatusCode)
