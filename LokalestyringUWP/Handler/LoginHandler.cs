@@ -52,7 +52,7 @@ namespace LokalestyringUWP.Handler
             }
             else
             {
-                ErrorDialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
+                UserHandler.ErrorDialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
             }
         }
 
