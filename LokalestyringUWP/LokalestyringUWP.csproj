@@ -138,6 +138,7 @@
     <Compile Include="Service\MailService.cs" />
     <Compile Include="Service\PersistancyService.cs" />
     <Compile Include="ViewModel\LocationsVM.cs" />
+    <Compile Include="ViewModel\UserBookingsVM.cs" />
     <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\PageBookRooms.xaml.cs">
       <DependentUpon>PageBookRooms.xaml</DependentUpon>
