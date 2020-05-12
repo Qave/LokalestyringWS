@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
+using LokalestyringUWP.Models;
+using LokalestyringUWP.Service;
 
 namespace LokalestyringUWP.Handler
 {
@@ -18,40 +20,44 @@ namespace LokalestyringUWP.Handler
         public string Password { get; set; }
         //This method checks for correct password and username, This is however not very secure
 
-
-
-
-
-
-        //public void CheckLoginCredentials()
-        //{
-        //    if (UserName != null && Password != null) // Makes sure that password and username is filled out
-        //    {
-        //        if (User != null)
-        //        {
-        //        }
-
-
-
-
-
-        //    }
-        //    else
-        //    {
-        //       ErrorDialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
-        //    }
-        //}
-
-
-        public static async void ErrorDialog(string message, string title)
+        private bool CheckUserCredentials
         {
-            ContentDialog contentDialog = new ContentDialog
+            get
             {
-                Title = title,
-                Content = message,
-                CloseButtonText = "Ok",
-                DefaultButton = ContentDialogButton.Close
-            };
+                foreach (var user in UserCatalogSingleton.Instance.Users)
+                {
+                    
+                    
+
+
+                }
+            }
+        }
+
+
+
+
+        public void CheckLoginCredentials()
+        {
+            if (UserName != null && Password != null) // Makes sure that password and username is filled out
+            {
+                if ()
+                {
+                }
+
+
+
+
+
+            }
+            else
+            {
+                UserHandler.ErrorDialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
+            }
+        }
+
+
+       
         }
     }
 }

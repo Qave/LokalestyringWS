@@ -123,6 +123,7 @@
     <Compile Include="Handler\CommandHandler.cs" />
     <Compile Include="Handler\LoginHandler.cs" />
     <Compile Include="Handler\RoomHandler.cs" />
+    <Compile Include="Handler\UserHandler.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\BookingCatalogSingleton.cs" />
     <Compile Include="Models\Building.cs" />
