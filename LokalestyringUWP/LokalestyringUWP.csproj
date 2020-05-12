@@ -119,6 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Handler\CommandHandler.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\Location.cs" />
@@ -184,6 +186,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
