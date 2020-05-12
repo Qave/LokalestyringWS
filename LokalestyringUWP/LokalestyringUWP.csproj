@@ -122,9 +122,11 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Handler\CommandHandler.cs" />
     <Compile Include="Models\Booking.cs" />
+    <Compile Include="Models\BookingCatalogSingleton.cs" />
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Room.cs" />
+    <Compile Include="Models\RoomCatalogSingleton.cs" />
     <Compile Include="Models\Roomtype.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
