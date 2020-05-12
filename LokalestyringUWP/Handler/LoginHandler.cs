@@ -26,8 +26,6 @@ namespace LokalestyringUWP.Handler
             {
                 foreach (var user in UserCatalogSingleton.Instance.Users)
                 {
-                    
-                    
 
 
                 }

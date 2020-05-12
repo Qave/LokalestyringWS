@@ -30,6 +30,27 @@ namespace LokalestyringUWP.ViewModel
 
         public ObservableCollection<Room> RoomList { get; set; }
 
+        public List<string> RoomTypes
+        {
+            get
+            {
+                return new List<string>
+                {
+                    "Lille", "Medium", "Klasselokale"
+                };
+            }
+        }
+
+        public List<char> BuildingList
+        {
+            get
+            {
+                return new List<char>
+                {
+                    'A', 'B', 'C', 'D'
+                };
+            }
+        }
 
 
         //public static void AddRoomDummyData()
