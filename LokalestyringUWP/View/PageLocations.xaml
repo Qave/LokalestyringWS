@@ -75,7 +75,7 @@
                                     <TextBlock
                                         Grid.Column="1"
                                         HorizontalAlignment="Right"
-                                        Text="{Binding Name}" />
+                                        Text="0" />
                                 </Grid>
                             </Button>
                         </DataTemplate>
