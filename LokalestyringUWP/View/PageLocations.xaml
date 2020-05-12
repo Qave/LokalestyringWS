@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ViewModel="using:LokalestyringUWP.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:LokalestyringUWP.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
@@ -54,7 +53,7 @@
             VerticalAlignment="Center">
             <StackPanel Width="300">
                 <TextBlock Margin="15,0,0,0" Text="Vælg lokation" />
-                <ListView ItemsSource="{Binding Locations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding selectedLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView ItemsSource="{Binding Locations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -83,6 +82,5 @@
                 </ListView>
             </StackPanel>
         </StackPanel>
-
     </Grid>
 </Page>

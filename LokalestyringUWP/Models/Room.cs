@@ -30,6 +30,10 @@ namespace LokalestyringUWP.Models
             get { return $"Etage: {Floor}"; }
         }
 
+        public string BuildingString 
+        { 
+            get { return $"Bygning: {Building1}"; } 
+        }
         public string No { get; set; }
 
         public int Type_Id { get; set; }
@@ -37,8 +41,11 @@ namespace LokalestyringUWP.Models
         public int Building_Id { get; set; }
 
         public int Loc_Id { get; set; }
+
         public string Building1 { get; }
+
         public string Location1 { get; }
+
         public string RoomType { get; }
 
         public string RoomIdString
