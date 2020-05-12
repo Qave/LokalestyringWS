@@ -54,7 +54,7 @@
             VerticalAlignment="Center">
             <StackPanel Width="300">
                 <TextBlock Margin="15,0,0,0" Text="Vælg lokation" />
-                <ListView ItemsSource="{Binding Locations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ListView ItemsSource="{Binding Locations, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding selectedLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />

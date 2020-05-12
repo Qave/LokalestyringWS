@@ -135,7 +135,7 @@ namespace LokalestyringUWP.Service
             handler.UseDefaultCredentials = true;
             using (var client = new HttpClient(handler))
             {
-                client.BaseAddress = new Uri(RoomCatalogSingleton.serverUrl);
+                client.BaseAddress = new Uri("http://localhost:51531");
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 

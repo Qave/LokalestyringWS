@@ -10,16 +10,189 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="70" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <!--  HEADER  -->
+        <Grid
+            Grid.Row="0"
+            Height="70"
+            VerticalAlignment="Center"
+            BorderBrush="LightGray"
+            BorderThickness="0,0,0,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Border
+                Grid.Row="0"
+                Grid.ColumnSpan="3"
+                BorderBrush="#81a6c7"
+                BorderThickness="0,0,0,0.5">
+                <StackPanel
+                    Margin="10,10,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <AppBarButton
+                        Width="30"
+                        Height="40"
+                        Icon="Back" />
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Center"
+                        Text="Bookings" />
+                </StackPanel>
+            </Border>
+            <StackPanel
+                Grid.Column="3"
+                Margin="0,10,10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                <AppBarButton
+                    Width="50"
+                    Height="40"
+                    Icon="GlobalNavigationButton" />
+            </StackPanel>
+        </Grid>
 
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="1.3*" />
+            </Grid.RowDefinitions>
+            <Border
+                Grid.Row="0"
+                Margin="35"
+                BorderBrush="#81a6c7"
+                BorderThickness="1">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Border
+                        Grid.Row="0"
+                        BorderBrush="#81a6c7"
+                        BorderThickness="0,0,0,1">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock>
+                                <Run
+                                    FontSize="18"
+                                    Foreground="black"
+                                    Text="RO-D1.01" />
+                                <Run
+                                    FontSize="14"
+                                    Foreground="Gray"
+                                    Text="Klasselokale" />
+                            </TextBlock>
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                FontSize="18"
+                                Text="20/02/2020" />
+                        </Grid>
+                    </Border>
+                    <Grid Grid.Row="1" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            FontSize="18"
+                            Text="Etage: 1" />
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            FontSize="18">
+                            <Run Text="10:00" />
+                            <Run Text="-" />
+                            <Run Text="14:00" />
+                        </TextBlock>
+                    </Grid>
+                    <Grid Grid.Row="2" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            FontSize="16"
+                            Foreground="Gray"
+                            Text="Bygning: D" />
+                        <Border
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            BorderBrush="Gray"
+                            BorderThickness="0.5"
+                            CornerRadius="5">
 
-        <GridView Grid.Row="3" Margin="10,0,10,0">
-            <GridView.ItemTemplate>
-                <DataTemplate />
-            </GridView.ItemTemplate>
-        </GridView>
+                            <Button Background="AliceBlue" Content="Book igen imorgen" />
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Row="3" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                    </Grid>
+                    <Grid Grid.Row="4" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontSize="18" Text="Etage: 1" />
+                    </Grid>
+                    <Grid Grid.Row="5" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock FontSize="18" Text="Etage: 1" />
+                    </Grid>
+                </Grid>
+            </Border>
+            <ScrollViewer Grid.Row="1">
+                <Grid>
+                    <ListView Margin="35">
+                        <ListView.ItemTemplate>
+                            <DataTemplate />
+                        </ListView.ItemTemplate>
+                        <ListViewItem>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Text="23" />
+                            </Grid>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <x:String>Hej</x:String>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <x:String>Hej</x:String>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <x:String>Hej</x:String>
+                        </ListViewItem>
+                        <ListViewItem>
+                            <x:String>Hej</x:String>
+                        </ListViewItem>
+                    </ListView>
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
     </Grid>
 </Page>

@@ -96,7 +96,10 @@
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
                 <TextBlock Margin="5" Text="Vælg bygning:" />
-                <ComboBox Width="75" Margin="10,0,0,0" />
+                <ComboBox
+                    Width="75"
+                    Margin="10,0,0,0"
+                    ItemsSource="{Binding BuildingList}" />
             </StackPanel>
             <StackPanel
                 Grid.Row="1"
@@ -106,7 +109,7 @@
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
                 <TextBlock Margin="5" Text="Vælg rumtype:" />
-                <ComboBox Width="100" />
+                <ComboBox Width="100" ItemsSource="{Binding RoomTypes}" />
             </StackPanel>
             <StackPanel
                 Grid.Row="2"
