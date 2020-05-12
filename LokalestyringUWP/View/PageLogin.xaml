@@ -4,9 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:LokalestyringUWP.View"
+    xmlns:login ="using:LokalestyringUWP.Handler"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
+    <Page.DataContext>
+        <login:LoginHandler/>
+    </Page.DataContext>
     <Grid>
         <Grid>
             <Grid.Background>
@@ -43,11 +47,13 @@
                         Margin="10,50,10,10"
                         FontFamily="dubai"
                         FontSize="35"
+                        Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         PlaceholderText="Brugernavn" />
                     <PasswordBox
                         Margin="10,10,10,10"
                         FontFamily="dubai"
                         FontSize="35"
+                        Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         PlaceholderText="Password" />
                     <!--  Knapper  -->
                     <Button
