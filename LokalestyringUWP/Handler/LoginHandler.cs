@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.Service;
+using LokalestyringUWP.View;
 
 namespace LokalestyringUWP.Handler
 {
@@ -18,47 +20,49 @@ namespace LokalestyringUWP.Handler
         //Properties for logging in
         public string UserName { get; set; }
         public string Password { get; set; }
-        //This method checks for correct password and username, This is however not very secure
 
+
+        //This method checks for correct password and username, This is however not very secure
+        // It does this by checking if password and username inputted matches a users password and username in the database.
         private bool CheckUserCredentials
         {
             get
             {
                 foreach (var user in UserCatalogSingleton.Instance.Users)
                 {
-                    
-                    
-
-
+                    if (user.User_Name == UserName && user.Password == Password)
+                    {
+                        UserHandler.CurrentUserName = user.User_Name;
+                        UserHandler.CurrentUserTeacher = user.Teacher;
+                        return true;
+                    }
                 }
+                return false;
             }
         }
 
 
 
 
-        public void CheckLoginCredentials()
+        public void OnLogin()
         {
             if (UserName != null && Password != null) // Makes sure that password and username is filled out
             {
-                if ()
+                if (CheckUserCredentials) // Checks if password and username inputted matches in database.
                 {
+                    ((Frame) Window.Current.Content).Navigate(typeof(PageLocations)); //redirect to the next page
                 }
-
-
-
-
-
+                else
+                {
+                    UserName = ""; // this call clears the password box's textfield by Clearing the two-way-binded property UserName.
+                    UserHandler.ErrorDialog("Forkert brugernavn eller password", "Fejlet login"); // Error MessageBox
+                }
             }
             else
             {
                 UserHandler.ErrorDialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
             }
         }
-
-
-       
-        }
     }
 }
-}
+
