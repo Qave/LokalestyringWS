@@ -12,13 +12,18 @@ namespace LokalestyringUWP.ViewModel
 {
     public class LocationsVM
     {
-        ObservableCollection<Location> Locations { get; set; }
-        static Location selectedLocation { get; set; }
+        public ObservableCollection<Location> Locations { get; set; }
+        public static Location selectedLocation { get; set; }
 
         public LocationsVM()
         {
             Locations = new ObservableCollection<Location>();
-            LoadLocations();
+            Locations.Add(new Location() { Loc_Id = 1, City = "Roskilde", Name = "RO" });
+            Locations.Add(new Location() { Loc_Id = 2, City = "Køge", Name = "KOE" });
+            Locations.Add(new Location() { Loc_Id = 3, City = "Næstved", Name = "NAE" });
+
+
+            //LoadLocations();
         }
 
         public async void LoadLocations()
