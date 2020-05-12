@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LokalestyringUWP.Service;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,6 +20,16 @@ namespace LokalestyringUWP.Models
         {
             Rooms = new ObservableCollection<Room>();
             LoadRoomsAsync();
+        }
+
+        public async void LoadRoomsAsync()
+        {
+            ObservableCollection<Room> rooms = await PersistancyService.LoadRoomsFromJsonAsync();
+
+            foreach (var item in rooms)
+            {
+                this.Rooms.Add(item);
+            }
         }
     }
 }
