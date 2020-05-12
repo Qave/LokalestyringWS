@@ -99,7 +99,8 @@
                 <ComboBox
                     Margin="10,0,0,0"
                     Header="Vælg bygning:"
-                    ItemsSource="{Binding BuildingList}" />
+                    ItemsSource="{Binding BuildingList}"
+                    SelectedValue="{Binding SelectedBuildingFilter, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel
                 Grid.Row="1"
@@ -110,8 +111,7 @@
                 <ComboBox
                     Width="100"
                     Header="Vælg rumtype:"
-                    ItemsSource="{Binding RoomtypeList}"
-                    SelectedItem="{Binding RoomTypes}" />
+                    ItemsSource="{Binding RoomtypeList}" />
             </StackPanel>
             <StackPanel
                 Grid.Row="2"

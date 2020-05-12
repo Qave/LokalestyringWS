@@ -25,7 +25,7 @@ namespace LokalestyringUWP.Handler
         {
             foreach (var item in Reference.RoomList.ToList())
             {
-                if (item.Building1 != "A")
+                if (item.Building1 != Reference.SelectedBuildingFilter)
                 {
                     Reference.RoomList.Remove(item);
                 }

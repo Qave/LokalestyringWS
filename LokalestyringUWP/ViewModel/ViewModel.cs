@@ -34,6 +34,7 @@ namespace LokalestyringUWP.ViewModel
         }
 
         public RoomHandler RoomHandler { get; set; }
+        public string SelectedBuildingFilter { get; set; }
         public ICommand FilterSearchCommand { get; set; }
         public DateTimeOffset Date { get; set; }
         public ObservableCollection<Room> RoomList { get; set; }
