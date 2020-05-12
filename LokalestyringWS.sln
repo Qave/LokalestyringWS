@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LokalestyringWS", "Lokalest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LokalestyringUWP", "LokalestyringUWP\LokalestyringUWP.csproj", "{4597EF5C-D3DA-49C9-A849-05410807E342}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTester", "UnitTester\UnitTester.csproj", "{5EA6DCF1-34BD-426D-B745-0406159F360F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,26 @@ Global
 		{4597EF5C-D3DA-49C9-A849-05410807E342}.Release|x86.ActiveCfg = Release|x86
 		{4597EF5C-D3DA-49C9-A849-05410807E342}.Release|x86.Build.0 = Release|x86
 		{4597EF5C-D3DA-49C9-A849-05410807E342}.Release|x86.Deploy.0 = Release|x86
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|x64.Build.0 = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Debug|x86.Build.0 = Debug|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|ARM.Build.0 = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|ARM64.Build.0 = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|x64.ActiveCfg = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|x64.Build.0 = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|x86.ActiveCfg = Release|Any CPU
+		{5EA6DCF1-34BD-426D-B745-0406159F360F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
