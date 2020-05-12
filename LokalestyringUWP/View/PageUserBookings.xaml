@@ -166,7 +166,6 @@
                             <Run Text="-" />
                             <Run Text="14:00" />
                         </TextBlock>
-
                     </Grid>
                     <Grid Grid.Row="4" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -191,9 +190,7 @@
                             Content="Aflys Tavle"
                             CornerRadius="5"
                             FontSize="15" />
-
                     </Grid>
-
                     <Grid Grid.Row="5" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
