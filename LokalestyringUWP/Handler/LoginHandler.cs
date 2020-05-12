@@ -21,7 +21,6 @@ namespace LokalestyringUWP.Handler
         public string UserName { get; set; }
         public string Password { get; set; }
 
-
         //This method checks for correct password and username, This is however not very secure
         // It does this by checking if password and username inputted matches a users password and username in the database.
         private bool CheckUserCredentials
@@ -34,16 +33,15 @@ namespace LokalestyringUWP.Handler
                     {
                         UserHandler.CurrentUserName = user.User_Name;
                         UserHandler.CurrentUserTeacher = user.Teacher;
+                        CurrentUserId = user.User_Id;
+                        IsTeacher = user.Teacher;
                         return true;
                     }
                 }
                 return false;
             }
         }
-
-
-
-
+        //this method has to be bound to the login button, in the PageLogin view
         public void OnLogin()
         {
             if (UserName != null && Password != null) // Makes sure that password and username is filled out

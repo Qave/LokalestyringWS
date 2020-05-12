@@ -11,15 +11,15 @@ namespace LokalestyringUWP.Handler
 {
     public class UserHandler
     {
+        //Properties for the CurrentUserTeacher and CurrentUserName
         public static bool CurrentUserTeacher { get; set; }
         public static string CurrentUserName { get; set; }
-
+        //Default Constructor
         public UserHandler()
         {
             
         }
-
-
+        //Checks the UserSingleTon for username availability
         public static bool UsernameAvailble(string username)
         {
             if (UserCatalogSingleton.Instance.Users.Any(u => u.User_Name == username))
@@ -28,8 +28,7 @@ namespace LokalestyringUWP.Handler
             }
             else return false;
         }
-
-
+        //The Errordialog can be called when the program has run into an error to tell the user what's wrong
         public static async void ErrorDialog(string message, string title)
         {
             ContentDialog contentDialog = new ContentDialog
