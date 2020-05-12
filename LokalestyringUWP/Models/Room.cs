@@ -8,6 +8,19 @@ namespace LokalestyringUWP.Models
 {
     class Room
     {
+        public Room(int room_Id, int floor, string no, int type_Id, int building_Id, int loc_Id, string building, string location, string roomType)
+        {
+            Room_Id = room_Id;
+            Floor = floor;
+            No = no;
+            Type_Id = type_Id;
+            Building_Id = building_Id;
+            Loc_Id = loc_Id;
+            Building1 = building;
+            Location1 = location;
+            RoomType = roomType;
+        }
+
         public int Room_Id { get; set; }
 
         public int Floor { get; set; }
@@ -19,6 +32,9 @@ namespace LokalestyringUWP.Models
         public int Building_Id { get; set; }
 
         public int Loc_Id { get; set; }
+        public string Building1 { get; }
+        public string Location1 { get; }
+        public string RoomType { get; }
 
         public virtual Building Building { get; set; }
 

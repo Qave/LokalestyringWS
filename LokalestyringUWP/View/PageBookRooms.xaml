@@ -118,9 +118,18 @@
                 Background="Gold"
                 Content="Filtrér lokaler" />
         </Grid>
-        <GridView Grid.Row="3" Margin="10,0,10,0">
+        <GridView
+            Grid.Row="3"
+            Margin="10,0,10,0"
+            ItemsSource="{Binding RoomList}">
             <GridView.ItemTemplate>
-                <DataTemplate />
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Location1}"/>
+                        <TextBlock Text="{Binding }"/>
+                        <TextBlock Text="{Binding Location1}"/>
+                    </StackPanel>
+                </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
     </Grid>
