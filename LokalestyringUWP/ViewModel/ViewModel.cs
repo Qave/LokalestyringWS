@@ -17,14 +17,14 @@ namespace LokalestyringUWP.ViewModel
         {
             RoomList = new ObservableCollection<Room>();
             //RoomList = RoomCatalogSingleton.Instance.Rooms;
-            RoomList.Add(new Room(1, 1, "05", 1, 2, 1, "RO", "Klasse", "Aids"));
-            RoomList.Add(new Room(1, 1, "fisk", 1, 2, 1, "RO", "Klasse", "Aids"));
-            RoomList.Add(new Room(1, 1, "fisk", 1, 2, 1, "RO", "Klasse", "Aids"));
-            RoomList.Add(new Room(1, 1, "fisk", 1, 2, 1, "RO", "Klasse", "Aids"));
-            RoomList.Add(new Room(1, 1, "fisk", 1, 2, 1, "RO", "Klasse", "Aids"));
-            RoomList.Add(new Room(1, 1, "fisk", 1, 2, 1, "RO", "Klasse", "Aids"));
-            RoomList.Add(new Room(1, 1, "fisk", 1, 2, 1, "RO", "Klasse", "Aids"));
-            RoomList.Add(new Room(1, 1, "fisk", 1, 2, 1, "RO", "Klasse", "Aids"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "Bygning A","RO", "Klasselokale"));
             OnPropertyChanged(nameof(RoomList));
         }
 
