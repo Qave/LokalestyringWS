@@ -11,6 +11,44 @@ namespace LokalestyringUWP.Service
 {
     class PersistancyService
     {
+        public const string serverUrl = "http://localhost:51531";
+        #region generic load table
+        public static async Task<ObservableCollection<T>> LoadTableFromJsonAsync<T>(string uriIdentifier)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                ObservableCollection<T> tableContents = new ObservableCollection<T>();
+
+                try
+                {
+                    var response = await client.GetAsync("api/"+uriIdentifier);
+                    var tableData = response.Content.ReadAsAsync<IEnumerable<T>>().Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        foreach (var row in tableData)
+                        {
+                            tableContents.Add(row);
+                        }
+                        return tableContents;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return null;
+        }
+        #endregion
+
         #region Room Persistancy
         public static async void SaveRoomAsJsonAsync(Room roomObj)
         {

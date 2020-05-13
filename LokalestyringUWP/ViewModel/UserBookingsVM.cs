@@ -1,4 +1,5 @@
 ﻿using LokalestyringUWP.Models;
+using LokalestyringUWP.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,6 +22,10 @@ namespace LokalestyringUWP.ViewModel
             Mockdata.Add(new Location() { Loc_Id = 1, City = "RO-D1.08", Name = "Virk"});
             Mockdata.Add(new Location() { Loc_Id = 1, City = "RO-D1.09", Name = "Virk"});
             Mockdata.Add(new Location() { Loc_Id = 1, City = "RO-D1.10", Name = "Virk"});
+
+
+            PersistancyService.LoadTableFromJsonAsync<Booking>("Bookings");
+
         }
     }
 }
