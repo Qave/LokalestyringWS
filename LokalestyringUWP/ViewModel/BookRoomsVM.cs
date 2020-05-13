@@ -21,10 +21,11 @@ namespace LokalestyringUWP.ViewModel
             RoomHandler = new RoomHandler(this);
             RoomList = new ObservableCollection<RoomsView>();
             RoomList = RoomsViewCatalogSingleton.Instance.RoomsView;
-
+            ResettedList = new ObservableCollection<RoomsView>();
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             OnPropertyChanged(nameof(RoomList));
         }
+        public ObservableCollection<RoomsView> ResettedList { get; set; }
 
         public RoomHandler RoomHandler { get; set; }
         public TimeSpan TimeStart { get; set; }
@@ -34,7 +35,7 @@ namespace LokalestyringUWP.ViewModel
         public string SelectedRoomtypeFilter { get; set; }
         public ICommand FilterSearchCommand { get; set; }
         public ObservableCollection<RoomsView> RoomList { get; set; }
-        public string selectedLocation => LocationsVM.SelectedLocation.City;
+        //public string selectedLocation => LocationsVM.SelectedLocation.City;
 
         public List<string> RoomtypeList
         {
@@ -47,13 +48,13 @@ namespace LokalestyringUWP.ViewModel
             }
         }
 
-        public List<string> BuildingList
+        public List<char> BuildingList
         {
             get
             {
-                return new List<string>
+                return new List<char>
                 {
-                   "Alle", "A", "B", "C", "D"
+                    'A', 'B', 'C', 'D'
                 };
             }
         }

@@ -19,11 +19,13 @@
                     Width="200"
                     Height="100"
                     Background="LightGray" />
-                <StackPanel VerticalAlignment="Top">
+                <StackPanel Margin="5,5,0,0" VerticalAlignment="Top">
                     <TextBlock Text="{Binding RoomName}" />
+                    <TextBlock Text="{Binding Type}" />
+                    <TextBlock Text="{Binding BuildingString}" />
                 </StackPanel>
-                <StackPanel HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Floor}" />
+                <StackPanel Margin="0,5,5,0" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding FloorString}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>

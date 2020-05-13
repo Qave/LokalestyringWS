@@ -14,7 +14,17 @@ namespace LokalestyringUWP.Models
 
         public string Building_Letter { get; set; }
 
+        public string BuildingString 
+        { 
+            get { return $"Bygning: {Building_Letter}"; } 
+        }
+
         public int Floor { get; set; }
+
+        public string FloorString 
+        { 
+            get { return $"Etage: {Floor}"; } 
+        }
 
         public string No { get; set; }
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,9 +20,10 @@ namespace LokalestyringUWP.Models.Singletons
             LoadRoomsViewAsync();
         }
 
+
         public async void LoadRoomsViewAsync()
         {
-            ObservableCollection<RoomsView> roomsView = await PersistancyService.LoadTableFromJsonAsync<RoomsView>("Bookings");
+            ObservableCollection<RoomsView> roomsView = await PersistancyService.LoadTableFromJsonAsync<RoomsView>("RoomsViews");
 
             foreach (var item in roomsView)
             {
