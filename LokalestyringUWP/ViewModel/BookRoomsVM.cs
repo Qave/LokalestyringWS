@@ -34,6 +34,7 @@ namespace LokalestyringUWP.ViewModel
         public string SelectedRoomtypeFilter { get; set; }
         public ICommand FilterSearchCommand { get; set; }
         public ObservableCollection<RoomsView> RoomList { get; set; }
+        public string selectedLocation => LocationsVM.SelectedLocation.City;
 
         public List<string> RoomtypeList
         {

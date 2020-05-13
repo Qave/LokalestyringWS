@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.Service;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Windows.UI.Xaml;
@@ -23,10 +22,10 @@ namespace LokalestyringUWP.ViewModel
     public class LocationsVM
     {
         public ObservableCollection<Location> Locations { get; set; }
-        private Location _selectedLocation { get; set; }
-        public ICommand GoBackCommand => CommandHandler.GoBackCommand;
+        private static Location _selectedLocation { get; set; }
+        public ICommand LogOutCommand => CommandHandler.GoBackCommand;
 
-        public Location SelectedLocation
+        public static Location SelectedLocation
         {
             get { return _selectedLocation; }
             set
@@ -38,7 +37,7 @@ namespace LokalestyringUWP.ViewModel
 
         public LocationsVM()
         {
-            CommandHandler.GoBackCommand = new RelayCommand(goBack, null);
+            CommandHandler.LogOutCommand = new RelayCommand(logOutMethod, null);
 
             Locations = new ObservableCollection<Location>();
             Locations.Add(new Location() { Loc_Id = 1, City = "Roskilde", Name = "RO" });
@@ -48,12 +47,13 @@ namespace LokalestyringUWP.ViewModel
             //LoadLocations();
         }
 
-        private void goBack()
+        private void logOutMethod()
         {
+            LoginHandler.OnLogout();
             ((Frame)Window.Current.Content).GoBack();
         }
 
-        private void setLocation()
+        private static void setLocation()
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms)); //redirect to the next page
         }
