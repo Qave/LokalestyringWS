@@ -6,11 +6,56 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using LokalestyringUWP.Models.Singletons;
 
 namespace LokalestyringUWP.Service
 {
     class PersistancyService
     {
+        public const string serverUrl = "http://localhost:51531";
+        #region generic load table
+        /// <summary>
+        /// Generic metode til at load data fra databasen via den specificerede tabel, via HTTP requests
+        /// </summary>
+        /// <typeparam name="T">Typen på den Table to vil have data fra. For eksempel: Booking </typeparam>
+        /// <param name="uriIdentifier">Den string (I flertal) der skal kaldes i URL'en for at kalde HTTP requests For eksempel: api/bookings, hvor "Bookings" skal skrives i uriIdentifier</param>
+        /// <returns></returns>
+        public static async Task<ObservableCollection<T>> LoadTableFromJsonAsync<T>(string uriIdentifier)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                ObservableCollection<T> tableContents = new ObservableCollection<T>();
+
+                try
+                {
+                    var response = await client.GetAsync("api/"+uriIdentifier);
+                    var tableData = response.Content.ReadAsAsync<IEnumerable<T>>().Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        foreach (var row in tableData)
+                        {
+                            tableContents.Add(row);
+                        }
+                        return tableContents;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return null;
+        }
+        #endregion
+
         #region Room Persistancy
         public static async void SaveRoomAsJsonAsync(Room roomObj)
         {

@@ -27,16 +27,12 @@ namespace LokalestyringUWP.ViewModel
 
        public LoginVM()
         {
+            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.OnLogout,null);
             CommandHandler.LoginCommand = new RelayCommand(LoginHandler.OnLogin, null);
-            UserCatalogSingleton.Instance.LoadUsersAsync();
+            //UserCatalogSingleton.Instance.LoadUsersAsync();
             //UserCatalogSingleton abc = UserCatalogSingleton.Instance;
         }
-
-        public void Login()
-        {
-
-        }
-
+        public ICommand LogOutCommand => CommandHandler.LoginCommand;
         public ICommand LoginCommand => CommandHandler.LoginCommand;
     }
 }
