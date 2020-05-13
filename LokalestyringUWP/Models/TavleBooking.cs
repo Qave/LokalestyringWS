@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LokalestyringUWP.Models
 {
-    class TavleBooking
+    public class TavleBooking
     {
         public TavleBooking()
         {
