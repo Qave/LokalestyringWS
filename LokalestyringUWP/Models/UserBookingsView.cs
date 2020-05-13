@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LokalestyringUWP.Models
 {
-    public class RoomsView
+    public class UserBookingsView
     {
         public string RoomName { get; set; }
 
@@ -19,5 +19,11 @@ namespace LokalestyringUWP.Models
         public string No { get; set; }
 
         public string Type { get; set; }
+
+        public DateTime Date { get; set; }
+
+        public TimeSpan Time_start { get; set; }
+
+        public TimeSpan Time_end { get; set; }
     }
 }

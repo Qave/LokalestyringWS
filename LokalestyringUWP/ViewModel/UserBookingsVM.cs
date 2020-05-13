@@ -20,7 +20,7 @@ namespace LokalestyringUWP.ViewModel
         public UserBookingsVM()
         {
             Bookings = new ObservableCollection<RoomsView>();
-            Bookings = RoomsViewCatalogSingleton.Instance.RoomsViewCollection;
+           // Bookings = RoomsViewCatalogSingleton.Instance.RoomsViewCollection;
 
         }
     }
