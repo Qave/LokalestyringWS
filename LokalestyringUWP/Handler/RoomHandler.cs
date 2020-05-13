@@ -28,7 +28,7 @@ namespace LokalestyringUWP.Handler
             //add data
 
             //CheckBuilding();
-            CheckRoomtype();
+            //CheckRoomtype();
         }
 
         //public void CheckBuilding()
@@ -46,21 +46,21 @@ namespace LokalestyringUWP.Handler
         //    }
         //}
 
-        public void CheckRoomtype()
-        {
+        //public void CheckRoomtype()
+        //{
 
-            foreach (var item in RoomReference.RoomList.ToList())
-            {
-                if (RoomReference.SelectedRoomtypeFilter == "Alle")
-                {
-                    // Do nothing
-                }
-                else if (item.RoomType != RoomReference.SelectedRoomtypeFilter)
-                {
-                    RoomReference.RoomList.Remove(item);
-                }
-            }
-        }
+        //    foreach (var item in RoomReference.RoomList.ToList())
+        //    {
+        //        if (RoomReference.SelectedRoomtypeFilter == "Alle")
+        //        {
+        //            // Do nothing
+        //        }
+        //        else if (item.RoomType != RoomReference.SelectedRoomtypeFilter)
+        //        {
+        //            RoomReference.RoomList.Remove(item);
+        //        }
+        //    }
+        //}
         public void CheckDate()
         {
 
