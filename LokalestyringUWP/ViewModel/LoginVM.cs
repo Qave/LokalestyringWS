@@ -33,7 +33,8 @@ namespace LokalestyringUWP.ViewModel
             //UserCatalogSingleton.Instance.LoadUsersAsync();
             UserCatalogSingleton abc = UserCatalogSingleton.Instance;
         }
-        public ICommand LogOutCommand => CommandHandler.LoginCommand;
+       //These properties are for binding in the UWP project
+        public static ICommand LogOutCommand => CommandHandler.LoginCommand;
         public ICommand LoginCommand => CommandHandler.LoginCommand;
     }
 }

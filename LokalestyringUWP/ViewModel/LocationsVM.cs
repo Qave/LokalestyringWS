@@ -15,13 +15,17 @@ using Windows.UI.Xaml.Controls;
 using LokalestyringUWP.Annotations;
 using LokalestyringUWP.Common;
 using LokalestyringUWP.Handler;
+using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.View;
 
 namespace LokalestyringUWP.ViewModel
 {
     public class LocationsVM
     {
-        public ObservableCollection<Location> Locations { get; set; }
+        public ObservableCollection<Location> Locations
+        {
+            get { return LocationSingleton.Instance.Locations; }
+        }
         private static Location _selectedLocation { get; set; }
 
         public static Location SelectedLocation
@@ -36,12 +40,6 @@ namespace LokalestyringUWP.ViewModel
 
         public LocationsVM()
         {
-            Locations = new ObservableCollection<Location>();
-            Locations.Add(new Location() { Loc_Id = 1, City = "Roskilde", Name = "RO" });
-            Locations.Add(new Location() { Loc_Id = 2, City = "Køge", Name = "KOE" });
-            Locations.Add(new Location() { Loc_Id = 3, City = "Næstved", Name = "NAE" });
-
-            //LoadLocations();
         }
         
         private static void setLocation()
@@ -49,9 +47,5 @@ namespace LokalestyringUWP.ViewModel
             ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms)); //redirect to the next page
         }
         
-        public async void LoadLocations()
-        {
-            Locations = await PersistancyService.LoadLocationsFromJsonAsync();
-        }
     }
 }
