@@ -16,10 +16,10 @@ namespace LokalestyringUWP.Models.Singletons
         public RoomsViewCatalogSingleton()
         {
             RoomsViewCollection = new ObservableCollection<RoomsView>();
-            LoadbookingsAsync();
+            LoadRoomsViewAsync();
         }
 
-        public async void LoadbookingsAsync()
+        public async void LoadRoomsViewAsync()
         {
             ObservableCollection<RoomsView> roomsViewCollection = await PersistancyService.LoadTableFromJsonAsync<RoomsView>("RoomsViews");
 
