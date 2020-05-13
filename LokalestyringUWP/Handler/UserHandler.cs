@@ -4,9 +4,11 @@ using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
+using LokalestyringUWP.View;
 
 namespace LokalestyringUWP.Handler
 {
@@ -40,6 +42,27 @@ namespace LokalestyringUWP.Handler
                 DefaultButton = ContentDialogButton.Close
             };
             ContentDialogResult result = await contentDialog.ShowAsync();
+        }
+
+        public static async void LogOutDialog(string message, string title)
+        {
+            ContentDialog YesNoDialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                PrimaryButtonText = "Ja",
+                CloseButtonText = "Nej"
+
+            };
+            ContentDialogResult resultYesNo = await YesNoDialog.ShowAsync();
+            if (resultYesNo == ContentDialogResult.Primary)
+            {
+                ((Frame) Window.Current.Content).Navigate(typeof(PageLogin));
+            }
+            else
+            {
+                //do nothing
+            }
         }
     }
 }

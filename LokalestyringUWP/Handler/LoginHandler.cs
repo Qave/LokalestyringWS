@@ -73,7 +73,7 @@ namespace LokalestyringUWP.Handler
 
         public static void OnLogout()
         {
-
+            UserHandler.LogOutDialog("Er du sikker på du vil logge ud?", "Log ud");
         }
 
 
