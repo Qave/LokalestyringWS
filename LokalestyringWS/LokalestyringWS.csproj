@@ -167,6 +167,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationsController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\RoomsViewsController.cs" />
     <Compile Include="Controllers\RoomtypesController.cs" />
     <Compile Include="Controllers\TavleBookingsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LokalestyringDBContext.cs" />
     <Compile Include="Models\Room.cs" />
+    <Compile Include="Models\RoomsView.cs" />
     <Compile Include="Models\Roomtype.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
