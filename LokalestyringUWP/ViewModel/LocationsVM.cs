@@ -23,7 +23,6 @@ namespace LokalestyringUWP.ViewModel
     {
         public ObservableCollection<Location> Locations { get; set; }
         private static Location _selectedLocation { get; set; }
-        public ICommand LogOutCommand => CommandHandler.GoBackCommand;
 
         public static Location SelectedLocation
         {
@@ -37,8 +36,6 @@ namespace LokalestyringUWP.ViewModel
 
         public LocationsVM()
         {
-            CommandHandler.LogOutCommand = new RelayCommand(logOutMethod, null);
-
             Locations = new ObservableCollection<Location>();
             Locations.Add(new Location() { Loc_Id = 1, City = "Roskilde", Name = "RO" });
             Locations.Add(new Location() { Loc_Id = 2, City = "Køge", Name = "KOE" });
@@ -46,13 +43,7 @@ namespace LokalestyringUWP.ViewModel
 
             //LoadLocations();
         }
-
-        private void logOutMethod()
-        {
-            LoginHandler.OnLogout();
-            ((Frame)Window.Current.Content).GoBack();
-        }
-
+        
         private static void setLocation()
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms)); //redirect to the next page
