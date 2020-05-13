@@ -13,6 +13,7 @@ namespace LokalestyringUWP.Service
     class PersistancyService
     {
         public const string serverUrl = "http://localhost:51531";
+
         #region generic load table
         /// <summary>
         /// Generic metode til at load data fra databasen via den specificerede tabel, via HTTP requests
