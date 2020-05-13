@@ -51,6 +51,7 @@ namespace LokalestyringUWP.Handler
         //this method has to be bound to the login button, in the PageLogin view
         public static void OnLogin()
         {
+            UserCatalogSingleton.Instance.LoadUsersAsync();
             if (UserName != null && Password != null) // Makes sure that password and username is filled out
             {
                 if (CheckUserCredentials) // Checks if password and username inputted matches in database.
@@ -68,6 +69,15 @@ namespace LokalestyringUWP.Handler
                 UserHandler.ErrorDialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
             }
         }
+
+        public static void OnLogout()
+        {
+
+        }
+
+
+
+
     }
 }
 
