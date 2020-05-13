@@ -29,7 +29,7 @@ namespace LokalestyringUWP.Handler
         {
             RestoreList();
             CheckBuilding();
-            //CheckRoomtype();
+            CheckRoomtype();
         }
 
         public void CheckBuilding()
@@ -62,21 +62,25 @@ namespace LokalestyringUWP.Handler
                 RoomReference.RoomList.Add(item);
             }
         }
-        //public void CheckRoomtype()
-        //{
+        public void CheckRoomtype()
+        {
+            if (RoomReference.SelectedRoomtypeFilter == "Alle")
+            {
+                // Do nothing
+            }
+            else
+            {
+                var tempList = (from tl in RoomReference.RoomList
+                                where tl.Type == RoomReference.SelectedRoomtypeFilter
+                                select tl).ToList();
 
-        //    foreach (var item in RoomReference.RoomList.ToList())
-        //    {
-        //        if (RoomReference.SelectedRoomtypeFilter == "Alle")
-        //        {
-        //            // Do nothing
-        //        }
-        //        else if (item.RoomType != RoomReference.SelectedRoomtypeFilter)
-        //        {
-        //            RoomReference.RoomList.Remove(item);
-        //        }
-        //    }
-        //}
+                RoomReference.RoomList.Clear();
+                foreach (var item in tempList)
+                {
+                    RoomReference.RoomList.Add(item);
+                }
+            }
+        }
         public void CheckDate()
         {
 
