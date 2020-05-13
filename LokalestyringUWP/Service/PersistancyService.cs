@@ -79,7 +79,7 @@ namespace LokalestyringUWP.Service
                 }
             }
         }
-        public static async Task<ObservableCollection<Room>> LoadRoomsFromJsonAsync()
+        public static async Task<ObservableCollection<RoomsView>> LoadRoomsFromJsonAsync()
         {
             HttpClientHandler handler = new HttpClientHandler();
             handler.UseDefaultCredentials = true;
@@ -89,12 +89,12 @@ namespace LokalestyringUWP.Service
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
 
-                ObservableCollection<Room> roomList = new ObservableCollection<Room>();
+                ObservableCollection<RoomsView> roomList = new ObservableCollection<RoomsView>();
 
                 try
                 {
                     var response = await client.GetAsync("api/Rooms");
-                    var rooms = response.Content.ReadAsAsync<IEnumerable<Room>>().Result;
+                    var rooms = response.Content.ReadAsAsync<IEnumerable<RoomsView>>().Result;
 
                     if (response.IsSuccessStatusCode)
                     {
