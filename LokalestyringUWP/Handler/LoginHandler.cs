@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using LokalestyringUWP.Annotations;
 using LokalestyringUWP.Models;
+using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
 using LokalestyringUWP.View;
 using LokalestyringUWP.ViewModel;

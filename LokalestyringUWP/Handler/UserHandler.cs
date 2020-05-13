@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using LokalestyringUWP.Models;
+using LokalestyringUWP.Models.Singletons;
 
 namespace LokalestyringUWP.Handler
 {
