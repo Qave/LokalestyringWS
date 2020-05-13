@@ -10,7 +10,7 @@ using LokalestyringUWP.Models.Singletons;
 
 namespace LokalestyringUWP.Service
 {
-    class PersistancyService
+    public class PersistancyService
     {
         public const string serverUrl = "http://localhost:51531";
 
