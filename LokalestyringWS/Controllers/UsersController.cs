@@ -12,17 +12,17 @@ using LokalestyringWS.Models;
 
 namespace LokalestyringWS.Controllers
 {
-    public class UserController : ApiController
+    public class UsersController : ApiController
     {
         private LokalestyringDBContext db = new LokalestyringDBContext();
 
-        // GET: api/User
+        // GET: api/Users
         public IQueryable<User> GetUsers()
         {
             return db.Users;
         }
 
-        // GET: api/User/5
+        // GET: api/Users/5
         [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(int id)
         {
@@ -35,7 +35,7 @@ namespace LokalestyringWS.Controllers
             return Ok(user);
         }
 
-        // PUT: api/User/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutUser(int id, User user)
         {
@@ -70,7 +70,7 @@ namespace LokalestyringWS.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/User
+        // POST: api/Users
         [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(User user)
         {
@@ -85,7 +85,7 @@ namespace LokalestyringWS.Controllers
             return CreatedAtRoute("DefaultApi", new { id = user.User_Id }, user);
         }
 
-        // DELETE: api/User/5
+        // DELETE: api/Users/5
         [ResponseType(typeof(User))]
         public IHttpActionResult DeleteUser(int id)
         {
