@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LokalestyringUWP.Models
 {
-    class RoomsView
+    public class RoomsView
     {
         public string RoomName { get; set; }
 

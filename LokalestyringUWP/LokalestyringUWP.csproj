@@ -130,12 +130,13 @@
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Room.cs" />
-    <Compile Include="Models\Singletons\BuildingSingleton.cs" />
-    <Compile Include="Models\Singletons\LocationSingleton.cs" />
+    <Compile Include="Models\Singletons\BuildingCatalogSingleton.cs" />
+    <Compile Include="Models\Singletons\LocationCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\RoomCatalogSingleton.cs" />
     <Compile Include="Models\Roomtype.cs" />
-    <Compile Include="Models\Singletons\RoomtypeSingleton.cs" />
-    <Compile Include="Models\Singletons\TavleBookingSingleton.cs" />
+    <Compile Include="Models\Singletons\RoomsViewCatalogSingleton.cs" />
+    <Compile Include="Models\Singletons\RoomtypeCatalogSingleton.cs" />
+    <Compile Include="Models\Singletons\TavleBookingCatalogSingleton.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Singletons\UserCatalogSingleton.cs" />
