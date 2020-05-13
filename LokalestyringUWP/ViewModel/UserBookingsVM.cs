@@ -18,8 +18,8 @@ namespace LokalestyringUWP.ViewModel
 
         public UserBookingsVM()
         {
-            Mockdata = new ObservableCollection<Location>();
-            Mockdata = SingletonService<Location>.Instance.Bookings;
+            //Mockdata = new ObservableCollection<Location>();
+            //Mockdata = SingletonService<Location>.Instance.Bookings;
 
         }
     }
