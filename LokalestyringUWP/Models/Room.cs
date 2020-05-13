@@ -8,24 +8,14 @@ namespace LokalestyringUWP.Models
 {
     public class Room
     {
-        public Room(Building b)
+        public Room()
         {
-            Building = b;
         }
 
         public int Room_Id { get; set; }
 
         public int Floor { get; set; }
 
-        public string FloorString 
-        { 
-            get { return $"Etage: {Floor}"; }
-        }
-
-        public string BuildingString
-        {
-            get { return $"Bygning: {Building.Building_Letter}"; }
-        }
         public string No { get; set; }
 
         public int Type_Id { get; set; }
@@ -36,10 +26,6 @@ namespace LokalestyringUWP.Models
 
         public string RoomType { get; }
 
-        public string RoomIdString
-        {
-            get { return $"{Location.City}-{Building.Building_Letter}.{No}"; }
-        }
 
         public virtual Building Building { get; set; }
 
