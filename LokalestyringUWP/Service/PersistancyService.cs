@@ -17,7 +17,7 @@ namespace LokalestyringUWP.Service
         /// Generic metode til at load data fra databasen via den specificerede tabel, via HTTP requests
         /// </summary>
         /// <typeparam name="T">Typen på den Table to vil have data fra. For eksempel: Booking </typeparam>
-        /// <param name="uriIdentifier">Den string der skal kaldes i URL'en for at kalde HTTP requests For eksempel: api/bookings, hvor "Bookings" skal skrives i uriIdentifier</param>
+        /// <param name="uriIdentifier">Den string (I flertal) der skal kaldes i URL'en for at kalde HTTP requests For eksempel: api/bookings, hvor "Bookings" skal skrives i uriIdentifier</param>
         /// <returns></returns>
         public static async Task<ObservableCollection<T>> LoadTableFromJsonAsync<T>(string uriIdentifier)
         {
