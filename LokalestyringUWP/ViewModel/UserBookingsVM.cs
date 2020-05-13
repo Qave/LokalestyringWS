@@ -1,4 +1,5 @@
-﻿using LokalestyringUWP.Models;
+﻿using LokalestyringUWP.Handler;
+using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
 using System;
@@ -13,15 +14,18 @@ namespace LokalestyringUWP.ViewModel
     public class UserBookingsVM
     {
         
-        public ObservableCollection<RoomsView> Bookings { get; set; }
-        public ObservableCollection<Location> Locations { get; set; }
-        public ObservableCollection<Location> Buildings { get; set; }
-
+        public ObservableCollection<UserBookingsView> UserBookingsViewCollection { get; set; }
         public UserBookingsVM()
         {
-            Bookings = new ObservableCollection<RoomsView>();
-           // Bookings = RoomsViewCatalogSingleton.Instance.RoomsViewCollection;
+            UserBookingsViewCollection = new ObservableCollection<UserBookingsView>();
+            UserBookingsViewCollection = UserBookingsCatalogSingleton.Instance.UserBookings;
 
+        }
+        public void UserBookingsOnId(int userid)
+        {
+            //var query = from c in UserBookingsViewCollection
+            //            where c.User_Id = LoginHandler.CurrentUserId
+            //            select c;
         }
     }
 }

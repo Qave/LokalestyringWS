@@ -244,7 +244,7 @@
             </Border>
             <ScrollViewer Grid.Row="1">
                 <Grid>
-                    <ListView Margin="35" ItemsSource="{Binding Mockdata, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView Margin="35" ItemsSource="{Binding UserBookingsViewCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
