@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LokalestyringUWP.Models
 {
-    class Room
+    public class Room
     {
         public Room(Building b)
         {

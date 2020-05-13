@@ -142,7 +142,6 @@
     <Compile Include="ViewModel\LocationsVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\UserBookingsVM.cs" />
-    <Compile Include="ViewModel\ViewModel.cs" />
     <Compile Include="View\PageBookRooms.xaml.cs">
       <DependentUpon>PageBookRooms.xaml</DependentUpon>
     </Compile>
