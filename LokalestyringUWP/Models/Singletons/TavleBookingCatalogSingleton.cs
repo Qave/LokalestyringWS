@@ -10,7 +10,6 @@ namespace LokalestyringUWP.Models.Singletons
 {
     public class TavleBookingCatalogSingleton
     {
-        public const string serverUrl = "http://localhost:51531";
         private static TavleBookingCatalogSingleton _instance = null;
 
         public ObservableCollection<TavleBooking> TavleBookings { get; }

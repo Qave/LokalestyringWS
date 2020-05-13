@@ -7,6 +7,7 @@ using System.Windows.Input;
 using LokalestyringUWP.Common;
 using LokalestyringUWP.Handler;
 using LokalestyringUWP.Models;
+using LokalestyringUWP.Models.Singletons;
 
 namespace LokalestyringUWP.ViewModel
 {
@@ -30,7 +31,7 @@ namespace LokalestyringUWP.ViewModel
             CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.OnLogout,null);
             CommandHandler.LoginCommand = new RelayCommand(LoginHandler.OnLogin, null);
             //UserCatalogSingleton.Instance.LoadUsersAsync();
-            //UserCatalogSingleton abc = UserCatalogSingleton.Instance;
+            UserCatalogSingleton abc = UserCatalogSingleton.Instance;
         }
         public ICommand LogOutCommand => CommandHandler.LoginCommand;
         public ICommand LoginCommand => CommandHandler.LoginCommand;

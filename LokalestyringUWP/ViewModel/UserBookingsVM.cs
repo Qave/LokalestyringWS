@@ -1,4 +1,5 @@
 ﻿using LokalestyringUWP.Models;
+using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,14 @@ namespace LokalestyringUWP.ViewModel
     public class UserBookingsVM
     {
         
-        public ObservableCollection<Location> Bookings { get; set; }
+        public ObservableCollection<RoomsView> Bookings { get; set; }
         public ObservableCollection<Location> Locations { get; set; }
         public ObservableCollection<Location> Buildings { get; set; }
 
         public UserBookingsVM()
         {
-            //Mockdata = new ObservableCollection<Location>();
-            //Mockdata = SingletonService<Location>.Instance.Bookings;
+            Bookings = new ObservableCollection<RoomsView>();
+            Bookings = RoomsViewCatalogSingleton.Instance.RoomsViewCollection;
 
         }
     }
