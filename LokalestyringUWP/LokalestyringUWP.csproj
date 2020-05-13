@@ -139,6 +139,7 @@
     <Compile Include="Service\MailService.cs" />
     <Compile Include="Service\PersistancyService.cs" />
     <Compile Include="Service\SingletonService.cs" />
+    <Compile Include="ViewModel\BookRoomsVM.cs" />
     <Compile Include="ViewModel\LocationsVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\UserBookingsVM.cs" />
