@@ -5,8 +5,7 @@ namespace LokalestyringUWP.Models.Singletons
 {
     public class UserCatalogSingleton
     {
-            public const string serverUrl = "http://localhost:51531";
-            private static UserCatalogSingleton _instance = null;
+        private static UserCatalogSingleton _instance = null;
 
             public ObservableCollection<User> Users { get; }
             public static UserCatalogSingleton Instance { get { return _instance ?? (_instance = new UserCatalogSingleton()); } }

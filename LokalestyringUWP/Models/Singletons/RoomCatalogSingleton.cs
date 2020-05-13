@@ -5,7 +5,6 @@ namespace LokalestyringUWP.Models.Singletons
 {
     class RoomCatalogSingleton
     {
-        public const string serverUrl = "http://localhost:51531";
         private static RoomCatalogSingleton _instance = null;
 
         public ObservableCollection<RoomsView> Rooms { get; }

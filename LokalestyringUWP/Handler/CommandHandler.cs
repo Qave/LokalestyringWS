@@ -12,5 +12,6 @@ namespace LokalestyringUWP.Handler
     {
         public static ICommand LoginCommand { get; set; }
         public static ICommand LogOutCommand { get; set; }
+        public static ICommand GoBackCommand { get; set; }
     }
 }
