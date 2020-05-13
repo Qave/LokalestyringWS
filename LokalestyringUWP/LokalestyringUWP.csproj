@@ -125,6 +125,7 @@
     <Compile Include="Handler\RoomHandler.cs" />
     <Compile Include="Handler\UserHandler.cs" />
     <Compile Include="Models\Booking.cs" />
+    <Compile Include="Models\RoomsView.cs" />
     <Compile Include="Models\Singletons\BookingCatalogSingleton.cs" />
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\Location.cs" />

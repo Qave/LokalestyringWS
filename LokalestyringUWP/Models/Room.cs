@@ -22,11 +22,10 @@ namespace LokalestyringUWP.Models
             get { return $"Etage: {Floor}"; }
         }
 
-        // LORTET VIRKER IKKE; NULLREFEXCEPTION ??? HVORDAN FÅR MAN PROPERTIES FRA ANDRE TABELLER TIL AT VISES I ROOM TABELLEN UD FRA ID??
-        //public string BuildingString
-        //{
-        //    get { return $"Bygning: {Building.Building_Letter}"; }
-        //}
+        public string BuildingString
+        {
+            get { return $"Bygning: {Building.Building_Letter}"; }
+        }
         public string No { get; set; }
 
         public int Type_Id { get; set; }
@@ -37,10 +36,10 @@ namespace LokalestyringUWP.Models
 
         public string RoomType { get; }
 
-        //public string RoomIdString
-        //{
-        //    get { return $"{Location.City}-{Building.Building_Letter}.{No}"; }
-        //}
+        public string RoomIdString
+        {
+            get { return $"{Location.City}-{Building.Building_Letter}.{No}"; }
+        }
 
         public virtual Building Building { get; set; }
 

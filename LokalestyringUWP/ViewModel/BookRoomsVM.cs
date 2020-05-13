@@ -1,6 +1,7 @@
 ﻿using LokalestyringUWP.Common;
 using LokalestyringUWP.Handler;
 using LokalestyringUWP.Models;
+using LokalestyringUWP.Models.Singletons;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -18,7 +19,7 @@ namespace LokalestyringUWP.ViewModel
         public BookRoomsVM()
         {
             RoomHandler = new RoomHandler(this);
-            RoomList = new ObservableCollection<Room>();
+            RoomList = new ObservableCollection<RoomsView>();
             RoomList = RoomCatalogSingleton.Instance.Rooms;
 
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
@@ -32,7 +33,7 @@ namespace LokalestyringUWP.ViewModel
         public string SelectedBuildingFilter { get; set; }
         public string SelectedRoomtypeFilter { get; set; }
         public ICommand FilterSearchCommand { get; set; }
-        public ObservableCollection<Room> RoomList { get; set; }
+        public ObservableCollection<RoomsView> RoomList { get; set; }
 
         public List<string> RoomtypeList
         {
