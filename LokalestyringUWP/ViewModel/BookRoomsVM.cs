@@ -20,7 +20,7 @@ namespace LokalestyringUWP.ViewModel
         {
             RoomHandler = new RoomHandler(this);
             RoomList = new ObservableCollection<RoomsView>();
-            RoomList = RoomsViewCatalogSingleton.Instance.RoomsViewCollection;
+            RoomList = RoomsViewCatalogSingleton.Instance.RoomsView;
 
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             OnPropertyChanged(nameof(RoomList));
