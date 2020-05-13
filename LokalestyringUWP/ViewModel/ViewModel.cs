@@ -20,23 +20,26 @@ namespace LokalestyringUWP.ViewModel
             RoomHandler = new RoomHandler(this);
             RoomList = new ObservableCollection<Room>();
             //RoomList = RoomCatalogSingleton.Instance.Rooms;
-            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "A","RO", "Klasselokale"));
-            RoomList.Add(new Room(2, 1, "04", 1, 2, 1, "A","RO", "Klasselokale"));
-            RoomList.Add(new Room(3, 1, "10", 1, 2, 1, "B","RO", "Lille"));
-            RoomList.Add(new Room(4, 2, "22", 1, 2, 1, "B","RO", "Lille"));
-            RoomList.Add(new Room(5, 2, "35", 1, 2, 1, "C","RO", "Medium"));
-            RoomList.Add(new Room(6, 2, "05", 1, 2, 1, "C","RO", "Medium"));
-            RoomList.Add(new Room(7, 3, "11", 1, 2, 1, "D","RO", "Klasselokale"));
-            RoomList.Add(new Room(8, 3, "17", 1, 2, 1, "D","RO", "Klasselokale"));
+            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "A", "RO", "Klasselokale"));
+            RoomList.Add(new Room(2, 1, "04", 1, 2, 1, "A", "RO", "Klasselokale"));
+            RoomList.Add(new Room(3, 1, "10", 1, 2, 1, "B", "RO", "Lille"));
+            RoomList.Add(new Room(4, 2, "22", 1, 2, 1, "B", "RO", "Lille"));
+            RoomList.Add(new Room(5, 2, "35", 1, 2, 1, "C", "RO", "Medium"));
+            RoomList.Add(new Room(6, 2, "05", 1, 2, 1, "C", "RO", "Medium"));
+            RoomList.Add(new Room(7, 3, "11", 1, 2, 1, "D", "RO", "Klasselokale"));
+            RoomList.Add(new Room(8, 3, "17", 1, 2, 1, "D", "RO", "Klasselokale"));
 
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             OnPropertyChanged(nameof(RoomList));
         }
 
         public RoomHandler RoomHandler { get; set; }
+        public TimeSpan TimeStart { get; set; }
+        public TimeSpan TimeEnd { get; set; }
+        public DateTime Date { get; set; }
         public string SelectedBuildingFilter { get; set; }
+        public string SelectedRoomtypeFilter { get; set; }
         public ICommand FilterSearchCommand { get; set; }
-        public DateTimeOffset Date { get; set; }
         public ObservableCollection<Room> RoomList { get; set; }
 
         public List<string> RoomtypeList
@@ -45,18 +48,18 @@ namespace LokalestyringUWP.ViewModel
             {
                 return new List<string>
                 {
-                    "Lille", "Medium", "Klasselokale"
+                   "Alle", "Lille", "Medium", "Klasselokale"
                 };
             }
         }
 
-        public List<char> BuildingList
+        public List<string> BuildingList
         {
             get
             {
-                return new List<char>
+                return new List<string>
                 {
-                    'A', 'B', 'C', 'D'
+                   "Alle", "A", "B", "C", "D"
                 };
             }
         }

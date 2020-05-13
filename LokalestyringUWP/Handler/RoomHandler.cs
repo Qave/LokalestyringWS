@@ -23,13 +23,49 @@ namespace LokalestyringUWP.Handler
 
         public void FilterSearchMethod()
         {
+            //add data
+            CheckBuilding();
+            CheckRoomtype();
+        }
+
+        public void CheckBuilding()
+        {
             foreach (var item in Reference.RoomList.ToList())
             {
-                if (item.Building1 != Reference.SelectedBuildingFilter)
+                if (Reference.SelectedBuildingFilter == "Alle")
+                {
+                    // Do nothing
+                }
+                else if (item.Building1 != Reference.SelectedBuildingFilter)
                 {
                     Reference.RoomList.Remove(item);
                 }
             }
+        }
+
+        public void CheckRoomtype()
+        {
+
+            foreach (var item in Reference.RoomList.ToList())
+            {
+                if (Reference.SelectedRoomtypeFilter == "Alle")
+                {
+                    // Do nothing
+                }
+                else if (item.RoomType != Reference.SelectedRoomtypeFilter)
+                {
+                    Reference.RoomList.Remove(item);
+                }
+            }
+        }
+        public void CheckDate()
+        {
+
+        }
+
+        public void CheckTime()
+        {
+
         }
     }
 }
