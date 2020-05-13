@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LokalestyringUWP.Models.Singletons
 {
-    public class TavleBookingSingleton
+    public class TavleBookingCatalogSingleton
     {
     }
 }
