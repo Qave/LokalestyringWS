@@ -211,5 +211,42 @@ namespace LokalestyringUWP.Service
         }
 
         #endregion
+
+        #region Building Persistancy
+        public static async Task<ObservableCollection<Building>> LoadBuildingsFromJsonAsync()
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(RoomCatalogSingleton.serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                ObservableCollection<Building> buildingList = new ObservableCollection<Building>();
+
+                try
+                {
+                    var response = await client.GetAsync("api/Buildings");
+                    var buildings = response.Content.ReadAsAsync<IEnumerable<Building>>().Result;
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        foreach (var singleBuilding in buildings)
+                        {
+                            buildingList.Add(singleBuilding);
+                        }
+                        return buildingList;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return null;
+        }
+        #endregion
     }
 }

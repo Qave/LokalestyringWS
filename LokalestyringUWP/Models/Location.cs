@@ -23,6 +23,6 @@ namespace LokalestyringUWP.Models
             return $"{Loc_Id}, {Name}, {City}";
         }
 
-        //public virtual ICollection<Room> Rooms { get; set; }
+        //public virtual ICollection<Room> AllRooms { get; set; }
     }
 }

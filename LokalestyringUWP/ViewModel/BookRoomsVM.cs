@@ -13,21 +13,13 @@ using System.Windows.Input;
 
 namespace LokalestyringUWP.ViewModel
 {
-    class ViewModel : INotifyPropertyChanged
+    class BookRoomsVM : INotifyPropertyChanged
     {
-        public ViewModel()
+        public BookRoomsVM()
         {
             RoomHandler = new RoomHandler(this);
             RoomList = new ObservableCollection<Room>();
-            //RoomList = RoomCatalogSingleton.Instance.Rooms;
-            RoomList.Add(new Room(1, 1, "01", 1, 2, 1, "A", "RO", "Klasselokale"));
-            RoomList.Add(new Room(2, 1, "04", 1, 2, 1, "A", "RO", "Klasselokale"));
-            RoomList.Add(new Room(3, 1, "10", 1, 2, 1, "B", "RO", "Lille"));
-            RoomList.Add(new Room(4, 2, "22", 1, 2, 1, "B", "RO", "Lille"));
-            RoomList.Add(new Room(5, 2, "35", 1, 2, 1, "C", "RO", "Medium"));
-            RoomList.Add(new Room(6, 2, "05", 1, 2, 1, "C", "RO", "Medium"));
-            RoomList.Add(new Room(7, 3, "11", 1, 2, 1, "D", "RO", "Klasselokale"));
-            RoomList.Add(new Room(8, 3, "17", 1, 2, 1, "D", "RO", "Klasselokale"));
+            RoomList = RoomCatalogSingleton.Instance.Rooms;
 
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             OnPropertyChanged(nameof(RoomList));

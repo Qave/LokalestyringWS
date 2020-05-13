@@ -26,5 +26,6 @@ namespace LokalestyringUWP.Models.Singletons
                 this.Rooms.Add(item);
             }
         }
+
     }
 }
