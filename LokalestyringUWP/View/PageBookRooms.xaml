@@ -20,12 +20,10 @@
                     Height="100"
                     Background="LightGray" />
                 <StackPanel VerticalAlignment="Top">
-                    <TextBlock Text="{Binding RoomIdString}" />
-                    <TextBlock Text="{Binding RoomType}" />
-                    <TextBlock Text="{Binding BuildingString}" />
+                    <TextBlock Text="{Binding RoomName}" />
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding FloorString}" />
+                    <TextBlock Text="{Binding Floor}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
