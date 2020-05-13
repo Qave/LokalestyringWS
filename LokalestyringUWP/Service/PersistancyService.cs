@@ -82,7 +82,7 @@ namespace LokalestyringUWP.Service
 
                 try
                 {
-                    var response = client.PostAsJsonAsync("api/User", userObj).Result;
+                    var response = client.PostAsJsonAsync("api/Users", userObj).Result;
                 }
                 catch (Exception)
                 {
@@ -105,7 +105,7 @@ namespace LokalestyringUWP.Service
 
                 try
                 {
-                    var response = await client.GetAsync("api/User");
+                    var response = await client.GetAsync("api/Users");
                     var users = response.Content.ReadAsAsync<IEnumerable<User>>().Result;
 
                     if (response.IsSuccessStatusCode)
