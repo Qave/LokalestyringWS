@@ -1,5 +1,6 @@
 ﻿using LokalestyringUWP.Models;
 using LokalestyringUWP.Service;
+using LokalestyringUWP.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,10 +12,11 @@ namespace LokalestyringUWP.Handler
 {
     class RoomHandler
     {
-        public ViewModel.ViewModel Reference { get; set; }
-        public RoomHandler(ViewModel.ViewModel p)
+        public BookRoomsVM RoomReference { get; set; }
+        public UserBookingsVM BookingReference { get; set; }
+        public RoomHandler(BookRoomsVM r)
         {
-            Reference = p;
+            RoomReference = r;
         }
         public static void SaveRoomsAsync(Room obj)
         {
@@ -24,37 +26,38 @@ namespace LokalestyringUWP.Handler
         public void FilterSearchMethod()
         {
             //add data
-            CheckBuilding();
+
+            //CheckBuilding();
             CheckRoomtype();
         }
 
-        public void CheckBuilding()
-        {
-            foreach (var item in Reference.RoomList.ToList())
-            {
-                if (Reference.SelectedBuildingFilter == "Alle")
-                {
-                    // Do nothing
-                }
-                else if (item.Building1 != Reference.SelectedBuildingFilter)
-                {
-                    Reference.RoomList.Remove(item);
-                }
-            }
-        }
+        //public void CheckBuilding()
+        //{
+        //    foreach (var item in RoomReference.RoomList.ToList())
+        //    {
+        //        if (RoomReference.SelectedBuildingFilter == "Alle")
+        //        {
+        //            // Do nothing
+        //        }
+        //        else if (item.Building1 != RoomReference.SelectedBuildingFilter)
+        //        {
+        //            RoomReference.RoomList.Remove(item);
+        //        }
+        //    }
+        //}
 
         public void CheckRoomtype()
         {
 
-            foreach (var item in Reference.RoomList.ToList())
+            foreach (var item in RoomReference.RoomList.ToList())
             {
-                if (Reference.SelectedRoomtypeFilter == "Alle")
+                if (RoomReference.SelectedRoomtypeFilter == "Alle")
                 {
                     // Do nothing
                 }
-                else if (item.RoomType != Reference.SelectedRoomtypeFilter)
+                else if (item.RoomType != RoomReference.SelectedRoomtypeFilter)
                 {
-                    Reference.RoomList.Remove(item);
+                    RoomReference.RoomList.Remove(item);
                 }
             }
         }

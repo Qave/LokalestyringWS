@@ -31,5 +31,6 @@ namespace LokalestyringUWP.Models
                 this.Rooms.Add(item);
             }
         }
+
     }
 }

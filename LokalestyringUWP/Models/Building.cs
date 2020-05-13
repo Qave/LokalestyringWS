@@ -18,11 +18,6 @@ namespace LokalestyringUWP.Models
 
         public string Title { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Building_Id}, {Building_Letter}, {Title}";
-        }
-
         public virtual ICollection<Room> Rooms { get; set; }
     }
 }

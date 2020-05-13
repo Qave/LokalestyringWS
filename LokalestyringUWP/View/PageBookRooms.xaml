@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     <Page.DataContext>
-        <ViewModel:ViewModel />
+        <ViewModel:BookRoomsVM />
     </Page.DataContext>
 
     <Page.Resources>
