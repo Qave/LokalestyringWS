@@ -134,6 +134,7 @@
     <Compile Include="Models\Singletons\LocationCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\RoomCatalogSingleton.cs" />
     <Compile Include="Models\Roomtype.cs" />
+    <Compile Include="Models\Singletons\RoomsViewCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\RoomtypeCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\TavleBookingCatalogSingleton.cs" />
     <Compile Include="Models\TavleBooking.cs" />
