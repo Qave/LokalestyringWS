@@ -36,13 +36,8 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     Orientation="Horizontal">
-                    <AppBarButton
-                        Width="30"
-                        Height="40"
-                        Command="{Binding LogOutCommand}"
-                        Icon="Back" />
                     <TextBlock
-                        Margin="5,0,0,0"
+                        Margin="35,0,0,0"
                         VerticalAlignment="Center"
                         Text="Lokation" />
                 </StackPanel>
