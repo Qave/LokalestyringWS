@@ -162,15 +162,20 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            FontSize="15"
-                            Foreground="gray">
-                            <Run Text="Tavletid:" />
-                            <Run Text="12:00" />
-                            <Run Text="-" />
-                            <Run Text="14:00" />
-                        </TextBlock>
+                        <StackPanel Grid.Column="0" Visibility="Collapsed">
+                            <TextBlock
+                                FontSize="15"
+                                Foreground="gray"
+                                Text="Tavle: N/A" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock FontSize="15" Foreground="gray">
+                                <Run Text="Tavletid:" />
+                                <Run Text="{Binding SelectedBooking.}" />
+                                <Run Text="-" />
+                                <Run Text="14:00" />
+                            </TextBlock>
+                        </StackPanel>
                     </Grid>
                     <Grid Grid.Row="4" VerticalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -251,7 +256,7 @@
                 <Grid>
                     <ListView
                         Margin="35"
-                        ItemsSource="{Binding UserBookingsViewCollectionFromSingleton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        ItemsSource="{Binding AllBookingsViewSingleton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SelectedItem="{Binding SelectedBooking, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">

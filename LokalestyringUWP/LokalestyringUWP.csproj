@@ -129,6 +129,7 @@
     <Compile Include="Models\AllBookingsView.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\RoomsView.cs" />
+    <Compile Include="Models\Singletons\AllBookingsViewCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\BookingCatalogSingleton.cs" />
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\Location.cs" />
@@ -140,7 +141,6 @@
     <Compile Include="Models\Singletons\RoomsViewCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\RoomtypeCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\TavleBookingCatalogSingleton.cs" />
-    <Compile Include="Models\Singletons\UserBookingsCatalogSingleton.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Singletons\UserCatalogSingleton.cs" />
