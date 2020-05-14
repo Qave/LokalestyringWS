@@ -109,16 +109,19 @@ namespace LokalestyringUWP.Handler
         {
 
             var query = (from r in RoomReference.RoomList
-                         join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id
-                         where !b.Date.Equals(RoomReference.Date.DateTime)
+                         join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id into temp
+                         from t in temp
+                         where t.Date.Equals(RoomReference.Date.DateTime) && (t.Time_end <= RoomReference.TimeStart) && (t.Time_start >= RoomReference.TimeStart) || (t.Time_end >= RoomReference.TimeEnd)
                          select r).ToList();
-
-            RoomReference.RoomList.Clear();
-
+                                                                                    //12         //10                -                                                  //12                  12
             foreach (var item in query)
             {
-                RoomReference.RoomList.Add(item);
+                RoomReference.RoomList.Remove(item);
             }
+            //foreach (var item in query)
+            //{
+            //    RoomReference.RoomList.Add(item);
+            //}
 
         }
 
