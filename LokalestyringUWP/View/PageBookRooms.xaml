@@ -95,9 +95,9 @@
                 Grid.ColumnSpan="2"
                 Margin="0,0,10,0"
                 HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Orientation="Horizontal">
+                VerticalAlignment="Center">
                 <ComboBox
+                    Width="100"
                     Margin="10,0,0,0"
                     Header="Vælg bygning:"
                     ItemsSource="{Binding BuildingList}"
@@ -105,20 +105,22 @@
                     SelectedValue="{Binding SelectedBuildingFilter, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel
-                Grid.Row="2"
+                Grid.Row="1"
                 Grid.ColumnSpan="2"
                 Margin="10,0,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <DatePicker
-                    Date="{Binding Date}"
-                    Header="Dato:" />
+                    Date="{Binding Date, Mode=TwoWay}"
+                    Header="Dato:"
+                    YearVisible="False" />
             </StackPanel>
             <StackPanel
-                Grid.Row="1"
+                Grid.Row="2"
+                Grid.Column="2"
                 Grid.ColumnSpan="3"
-                Margin="10,0,0,0"
-                HorizontalAlignment="Left"
+                Margin="0,0,10,0"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 <ComboBox
                     Width="100"
@@ -129,26 +131,27 @@
             <StackPanel
                 Grid.Row="2"
                 Grid.RowSpan="2"
-                Grid.Column="1"
+                Grid.Column="0"
                 Grid.ColumnSpan="2"
-                Margin="0,0,10,0"
-                HorizontalAlignment="Right"
+                Margin="10,0,10,0"
+                HorizontalAlignment="Left"
                 VerticalAlignment="Top">
                 <TimePicker
                     ClockIdentifier="24HourClock"
                     Header="Tid:"
-                    SelectedTime="{Binding TimeStart}" />
+                    SelectedTime="{Binding TimeStart, Mode=TwoWay}" />
                 <TimePicker
                     ClockIdentifier="24HourClock"
                     Header="Til"
-                    SelectedTime="{Binding TimeEnd}" />
+                    SelectedTime="{Binding TimeEnd, Mode=TwoWay}" />
 
             </StackPanel>
             <Button
                 Grid.Row="3"
+                Grid.Column="3"
                 Grid.ColumnSpan="3"
-                Margin="10,0,0,0"
-                HorizontalAlignment="Left"
+                Margin="0,0,10,0"
+                HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Background="Gold"
                 Command="{Binding FilterSearchCommand}"

@@ -28,6 +28,7 @@ namespace LokalestyringUWP.ViewModel
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
             OnPropertyChanged(nameof(RoomList));
             SelectedRoomtypeFilter = RoomtypeList[0];
+            Date = DateTimeOffset.Now.ToUniversalTime();
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.RestoreList();
         }
@@ -36,7 +37,7 @@ namespace LokalestyringUWP.ViewModel
         public RoomHandler RoomHandler { get; set; }
         public TimeSpan TimeStart { get; set; }
         public TimeSpan TimeEnd { get; set; }
-        public DateTime Date { get; set; }
+        public DateTimeOffset Date { get; set; }
         public string SelectedBuildingFilter { get; set; }
         public string SelectedRoomtypeFilter { get; set; }
         public ICommand FilterSearchCommand { get; set; }

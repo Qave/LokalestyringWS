@@ -181,7 +181,6 @@
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\RoomsView.cs" />
     <Compile Include="Models\Roomtype.cs" />
-    <Compile Include="Models\SDSDS.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
