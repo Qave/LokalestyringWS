@@ -12,9 +12,9 @@ namespace LokalestyringWS.Models
         [StringLength(58)]
         public string RoomName { get; set; }
 
-        public int? Room_Id { get; set; }
+        public int Room_Id { get; set; }
 
-        public int? Floor { get; set; }
+        public int Floor { get; set; }
 
         [StringLength(5)]
         public string No { get; set; }
