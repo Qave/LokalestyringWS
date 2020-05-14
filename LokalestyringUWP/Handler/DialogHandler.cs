@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using LokalestyringUWP.Models;
 using LokalestyringUWP.View;
 
 namespace LokalestyringUWP.Handler
@@ -57,7 +58,7 @@ namespace LokalestyringUWP.Handler
             ContentDialogResult result = await confirmBookingDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                
+                BookingHandler.CreateBooking();
             }
             else
             {
