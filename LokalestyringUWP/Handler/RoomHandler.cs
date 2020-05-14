@@ -17,10 +17,10 @@ namespace LokalestyringUWP.Handler
     class RoomHandler
     {
         public static BookRoomsVM RoomReference { get; set; }
-        public AllBookingsViewCatalogSingleton BookingReference { get; set; }
+        public BookingCatalogSingleton BookingReference { get; set; }
         public RoomHandler(BookRoomsVM r)
         {
-            BookingReference = new AllBookingsViewCatalogSingleton();
+            BookingReference = new BookingCatalogSingleton();
             RoomReference = r;
         }
         public static void SaveRoomsAsync(Room obj)
@@ -107,9 +107,12 @@ namespace LokalestyringUWP.Handler
         //Check Room_ID match in Bookings with Room_Id in rooms - If ID match, check dates and time
         public void CheckDateAndTime()
         {
-            var query = (from b in BookingReference.AllBookings
-                        where b.Date != RoomReference.Date
-                        select b).ToList();
+
+            var query = (from r in RoomReference.RoomList
+                         join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id
+                         where !b.Date.Equals(RoomReference.Date.DateTime)
+                         select r).ToList();
+
             RoomReference.RoomList.Clear();
 
             foreach (var item in query)

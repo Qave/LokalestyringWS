@@ -28,7 +28,8 @@ namespace LokalestyringUWP.ViewModel
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
             OnPropertyChanged(nameof(RoomList));
             SelectedRoomtypeFilter = RoomtypeList[0];
-            Date = DateTimeOffset.Now.ToUniversalTime();
+            Date = DateTimeOffset.Now;
+            Date = Date.Date;
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.RestoreList();
         }
