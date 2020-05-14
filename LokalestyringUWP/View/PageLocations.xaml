@@ -15,7 +15,7 @@
             <RowDefinition Height="70" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <!--  HEADER  -->
+        <!--  HEADER START  -->
         <Grid
             Grid.Row="0"
             Height="70"
@@ -54,6 +54,7 @@
                     Command="{Binding LogOutCommand}"/>
             </StackPanel>
         </Grid>
+        <!--  HEADER END  -->
         <StackPanel
             Grid.Row="1"
             HorizontalAlignment="Center"
@@ -87,6 +88,11 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="{Binding City}" />
+                                <TextBlock
+                                    Grid.Column="1"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Text="0" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
