@@ -15,7 +15,7 @@
             <RowDefinition Height="70" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <!--  HEADER  -->
+        <!--  HEADER START  -->
         <Grid
             Grid.Row="0"
             Height="70"
@@ -50,9 +50,11 @@
                 <AppBarButton
                     Width="50"
                     Height="40"
+                    Command="{Binding LogOutCommand}"
                     Icon="GlobalNavigationButton" />
             </StackPanel>
         </Grid>
+        <!--  HEADER END  -->
         <StackPanel
             Grid.Row="1"
             HorizontalAlignment="Center"
