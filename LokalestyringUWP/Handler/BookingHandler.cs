@@ -9,12 +9,12 @@ namespace LokalestyringUWP.Handler
 {
     public static class BookingHandler
     {
-        public TYPE Type { get; set; }
+        //public TYPE Type { get; set; }
 
-        public BookingHandler()
-        {
+        //public BookingHandler()
+        //{
             
-        }
+        //}
 
 
 
