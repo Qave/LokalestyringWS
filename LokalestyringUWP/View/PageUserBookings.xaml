@@ -2,6 +2,7 @@
     x:Class="LokalestyringUWP.View.PageUserBookings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="using:LokalestyringUWP.Handler"
     xmlns:Viewmodel="using:LokalestyringUWP.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:LokalestyringUWP.View"
@@ -11,6 +12,9 @@
     <Page.DataContext>
         <Viewmodel:UserBookingsVM />
     </Page.DataContext>
+    <Page.Resources>
+        <Converter:DateFormatConverter x:Name="DateToStringFormatConverter" />
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
@@ -66,12 +70,12 @@
             </Grid.RowDefinitions>
             <Border
                 Grid.Row="0"
-                Margin="35"
+                Margin="35,50,35,35"
                 Background="AliceBlue"
                 BorderBrush="#81a6c7"
                 BorderThickness="1"
                 CornerRadius="5">
-                <Grid Margin="8">
+                <Grid Margin="0" Padding="20,0,20,15">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -85,16 +89,17 @@
                         Grid.Row="0"
                         BorderBrush="#81a6c7"
                         BorderThickness="0,0,0,1">
-                        <Grid>
+
+                        <Grid VerticalAlignment="Center">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="1.6*" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <TextBlock>
                                 <Run
                                     FontSize="18"
                                     Foreground="black"
-                                    Text="RO-D1.01" />
+                                    Text="{Binding SelectedBooking.RoomName}" />
                                 <Run
                                     FontSize="14"
                                     Foreground="Gray"
@@ -104,7 +109,7 @@
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
                                 FontSize="18"
-                                Text="20/02/2020" />
+                                Text="{Binding SelectedBooking.Date, Converter={StaticResource DateToStringFormatConverter}}" />
                         </Grid>
                     </Border>
                     <Grid Grid.Row="1" VerticalAlignment="Center">
@@ -244,7 +249,10 @@
             </Border>
             <ScrollViewer Grid.Row="1">
                 <Grid>
-                    <ListView Margin="35" ItemsSource="{Binding UserBookingsViewCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView
+                        Margin="35"
+                        ItemsSource="{Binding UserBookingsViewCollectionFromSingleton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding SelectedBooking, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <ListView.ItemContainerStyle>
                             <Style TargetType="ListViewItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -263,11 +271,11 @@
                                             <ColumnDefinition />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="{Binding City}" />
+                                        <TextBlock Grid.Column="0" Text="{Binding RoomName}" />
                                         <TextBlock
                                             Grid.Column="1"
                                             HorizontalAlignment="Right"
-                                            Text="{Binding Name}" />
+                                            Text="{Binding City}" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>

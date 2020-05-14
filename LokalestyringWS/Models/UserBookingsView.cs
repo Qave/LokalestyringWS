@@ -48,5 +48,24 @@ namespace LokalestyringWS.Models
         [Key]
         [Column(Order = 7)]
         public TimeSpan Time_end { get; set; }
+
+        [Key]
+        [Column(Order = 8)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int User_Id { get; set; }
+
+        [Key]
+        [Column(Order = 9)]
+        [StringLength(50)]
+        public string User_Name { get; set; }
+
+        [Key]
+        [Column(Order = 10)]
+        [StringLength(100)]
+        public string User_Email { get; set; }
+
+        [Key]
+        [Column(Order = 11)]
+        public bool Teacher { get; set; }
     }
 }

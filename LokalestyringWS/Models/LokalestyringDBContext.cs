@@ -133,6 +133,15 @@ namespace LokalestyringWS.Models
             modelBuilder.Entity<UserBookingsView>()
                 .Property(e => e.Type)
                 .IsUnicode(false);
+
+            modelBuilder.Entity<UserBookingsView>()
+                .Property(e => e.User_Name)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<UserBookingsView>()
+                .Property(e => e.User_Email)
+                .IsUnicode(false);
+
         }
     }
 }
