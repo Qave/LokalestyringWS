@@ -45,8 +45,10 @@ namespace LokalestyringUWP.ViewModel
         
         private static void setLocation()
         {
-            
-            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms)); //redirect to the next page
+            if (SelectedLocation != null)
+            {
+                ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms)); //redirect to the next page
+            }
         }
         public ICommand LogOutCommand => CommandHandler.LogOutCommand;
     }

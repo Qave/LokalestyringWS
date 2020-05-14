@@ -70,6 +70,7 @@ namespace LokalestyringUWP.ViewModel
         public void GoBackMethod()
         {
             ((Frame)Window.Current.Content).GoBack();
+            LocationsVM.SelectedLocation = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
