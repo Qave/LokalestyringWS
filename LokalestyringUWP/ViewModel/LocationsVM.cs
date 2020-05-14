@@ -40,12 +40,13 @@ namespace LokalestyringUWP.ViewModel
 
         public LocationsVM()
         {
+            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.OnLogout, null);
         }
         
         private static void setLocation()
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms)); //redirect to the next page
         }
-        
+        public ICommand LogOutCommand => CommandHandler.LogOutCommand;
     }
 }

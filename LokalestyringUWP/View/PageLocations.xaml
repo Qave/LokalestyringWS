@@ -50,7 +50,8 @@
                 <AppBarButton
                     Width="50"
                     Height="40"
-                    Icon="GlobalNavigationButton" />
+                    Icon="GlobalNavigationButton"
+                    Command="{Binding LogOutCommand}"/>
             </StackPanel>
         </Grid>
         <StackPanel
