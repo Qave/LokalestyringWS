@@ -1,6 +1,5 @@
 namespace LokalestyringWS.Models
 {
-    using Antlr.Runtime;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -29,14 +28,9 @@ namespace LokalestyringWS.Models
 
         public TimeSpan Time_end { get; set; }
 
-        public int? Tavle_Id { get; set; }
+        public virtual Room Room { get; set; }
 
-        public virtual TavleBooking TavleBooking { get; set; }
-
-        public override string ToString()
-        {
-            return $"{Booking_Id}, {User_Id}, {Room_Id}, {Date}, {Time_start}, {Time_end}, {Tavle_Id}"; 
-        }
+        public virtual User User { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TavleBooking> TavleBookings { get; set; }

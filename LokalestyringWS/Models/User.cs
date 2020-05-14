@@ -9,6 +9,12 @@ namespace LokalestyringWS.Models
     [Table("User")]
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            Bookings = new HashSet<Booking>();
+        }
+
         [Key]
         public int User_Id { get; set; }
 
@@ -26,9 +32,7 @@ namespace LokalestyringWS.Models
 
         public bool Teacher { get; set; }
 
-        public override string ToString()
-        {
-            return $"{User_Id}, {User_Name}, {User_Email}, {Teacher}";
-        }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

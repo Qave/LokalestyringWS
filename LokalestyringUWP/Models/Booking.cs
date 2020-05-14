@@ -24,10 +24,6 @@ namespace LokalestyringUWP.Models
 
         public TimeSpan Time_end { get; set; }
 
-        public int? Tavle_Id { get; set; }
-
-        public virtual TavleBooking TavleBooking { get; set; }
-
         public virtual ICollection<TavleBooking> TavleBookings { get; set; }
     }
 }

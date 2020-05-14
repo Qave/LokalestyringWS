@@ -9,6 +9,12 @@ namespace LokalestyringWS.Models
     [Table("Room")]
     public partial class Room
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Room()
+        {
+            Bookings = new HashSet<Booking>();
+        }
+
         [Key]
         public int Room_Id { get; set; }
 
@@ -24,16 +30,13 @@ namespace LokalestyringWS.Models
 
         public int Loc_Id { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
+
         public virtual Building Building { get; set; }
 
         public virtual Location Location { get; set; }
 
         public virtual Roomtype Roomtype { get; set; }
-
-        public override string ToString()
-        {
-            return $"{Room_Id}, {Floor}, {No}, {Type_Id}, {Building_Id}, {Loc_Id}";
-        }
-
     }
 }

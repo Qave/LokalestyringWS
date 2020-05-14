@@ -90,7 +90,10 @@ namespace LokalestyringUWP.Handler
         {
             List<Booking> newBookingList = BookingReference.Bookings.ToList();
 
-            var tempList = 
+            //var rooms = from r in RoomCatalogSingleton.Instance.Rooms
+            //        join b in BookingReference.Bookings on r.Room_Id  equals b.Room_Id
+            //        where b.
+
         }
     }
 }
