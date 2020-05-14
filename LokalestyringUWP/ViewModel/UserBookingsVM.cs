@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 
 namespace LokalestyringUWP.ViewModel
 {
@@ -26,9 +27,21 @@ namespace LokalestyringUWP.ViewModel
 
             AllBookingsViewSingleton = AllBookingsViewCatalogSingleton.Instance.AllBookings;
             Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
+            BookTavleBtnVisibility = Visibility.Collapsed;
             UserBookingsOnId(1);
         }
-        public AllBookingsView SelectedBooking { get { return _selectedBooking; } set { _selectedBooking = value; OnPropertyChanged(); } }
+        public AllBookingsView SelectedBooking 
+        { 
+            get 
+            { return _selectedBooking; } 
+            set
+            {
+                _selectedBooking = value;
+                CheckIfTavleBookingExists();
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(BookTavleBtnVisibility));
+            } 
+        }
         
 
 
@@ -44,17 +57,29 @@ namespace LokalestyringUWP.ViewModel
                 AllBookingsViewSingleton.Add(item);
             }
         }
-        public string CheckTavleBookingOnSelectedBooking 
+        public Visibility BookTavleBtnVisibility
         {
-            get { return CheckIfTavleBookingExists(); }
+            get;set;
         }
-
-        public string CheckIfTavleBookingExists()
+        public Visibility CheckIfTavleBookingExists()
         {
-            var query = (from t in Tavlebookings
-                         select t).Where(x => x.Booking_Id == SelectedBooking.Booking_Id);
-
-            return query.ToString();
+            if (SelectedBooking == null)
+            {
+                return BookTavleBtnVisibility = Visibility.Collapsed;
+            }
+            else
+            {
+                var query = (from t in Tavlebookings
+                             select t).Where(x => x.Booking_Id == SelectedBooking.Booking_Id).ToList();
+                if (query.Count < 1)
+                {
+                    return BookTavleBtnVisibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    return BookTavleBtnVisibility = Visibility.Visible;
+                }
+            }
         }
 
 

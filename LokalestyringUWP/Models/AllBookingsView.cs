@@ -12,17 +12,17 @@ namespace LokalestyringUWP.Models
 
         public int Booking_Id { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
 
-        public TimeSpan BookingStart { get; set; }
+        public TimeSpan? BookingStart { get; set; }
 
-        public TimeSpan BookingEnd { get; set; }
+        public TimeSpan? BookingEnd { get; set; }
 
-        public int Tavle_Id { get; set; }
+        public int? Tavle_Id { get; set; }
 
-        public TimeSpan TavleStart { get; set; }
+        public TimeSpan? TavleStart { get; set; }
 
-        public TimeSpan TavleEnd { get; set; }
+        public TimeSpan? TavleEnd { get; set; }
 
         public int Room_Id { get; set; }
 
