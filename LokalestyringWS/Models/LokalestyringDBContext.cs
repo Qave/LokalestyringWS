@@ -93,8 +93,8 @@ namespace LokalestyringWS.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AllBookingsView>()
-                .Property(e => e.RoomName)
-                .IsUnicode(false);
+                 .Property(e => e.RoomName)
+                 .IsUnicode(false);
 
             modelBuilder.Entity<AllBookingsView>()
                 .Property(e => e.No)
@@ -128,6 +128,7 @@ namespace LokalestyringWS.Models
             modelBuilder.Entity<AllBookingsView>()
                 .Property(e => e.User_Email)
                 .IsUnicode(false);
+
             modelBuilder.Entity<RoomsView>()
                 .Property(e => e.RoomName)
                 .IsUnicode(false);
