@@ -11,6 +11,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using LokalestyringUWP.View;
 
 namespace LokalestyringUWP.ViewModel
 {
@@ -23,6 +26,7 @@ namespace LokalestyringUWP.ViewModel
             RoomList = RoomsViewCatalogSingleton.Instance.RoomsView;
             ResettedList = new ObservableCollection<RoomsView>();
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
+            GoBackCommand = new RelayCommand(GoBackMethod, null);
             OnPropertyChanged(nameof(RoomList));
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
@@ -40,6 +44,7 @@ namespace LokalestyringUWP.ViewModel
         public ObservableCollection<RoomsView> RoomList { get; set; }
 
         public string selectedLocation => LocationsVM.SelectedLocation.City;
+        public ICommand GoBackCommand { get; set; }
 
         public List<string> RoomtypeList
         {
@@ -61,6 +66,11 @@ namespace LokalestyringUWP.ViewModel
                     "Alle", "A", "B", "C", "D"
                 };
             }
+        }
+
+        public void GoBackMethod()
+        {
+            ((Frame)Window.Current.Content).GoBack();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

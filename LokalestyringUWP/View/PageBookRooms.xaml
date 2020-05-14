@@ -63,6 +63,7 @@
                     <AppBarButton
                         Width="30"
                         Height="40"
+                        Command="{Binding GoBackCommand}"
                         Icon="Back" />
                     <TextBlock
                         Margin="5,0,0,0"
