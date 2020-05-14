@@ -111,9 +111,9 @@ namespace LokalestyringUWP.Handler
             var query = (from r in RoomReference.RoomList
                          join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id into temp
                          from t in temp
-                         where t.Date.Equals(RoomReference.Date.DateTime) && (t.Time_end <= RoomReference.TimeStart) && (t.Time_start >= RoomReference.TimeStart) || (t.Time_end >= RoomReference.TimeEnd)
+                         where t.Date.Equals(RoomReference.Date.DateTime) && t.Time_end >= RoomReference.TimeStart && t.Time_start <= RoomReference.TimeEnd
                          select r).ToList();
-                                                                                    //12         //10                -                                                  //12                  12
+                                                                                 
             foreach (var item in query)
             {
                 RoomReference.RoomList.Remove(item);
