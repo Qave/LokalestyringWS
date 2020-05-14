@@ -12,11 +12,19 @@ namespace LokalestyringUWP.Handler
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
+            string dt = "";
             if (value == null)
                 return null;
 
-            DateTime dt = DateTime.Parse(value.ToString());
-            return dt.ToString("dd/MM/yyyy");
+            if (value.GetType() == typeof(DateTime))
+            {
+                dt = DateTime.Parse(value.ToString()).ToString("dd/MM/hh");
+            }
+            if (value.GetType() == typeof(TimeSpan))
+            {
+                dt = TimeSpan.Parse(value.ToString()).ToString(@"hh\:mm");
+            }
+            return dt;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

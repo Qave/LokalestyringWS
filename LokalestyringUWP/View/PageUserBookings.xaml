@@ -125,9 +125,9 @@
                             Grid.Column="1"
                             HorizontalAlignment="Right"
                             FontSize="18">
-                            <Run Text="10:00" />
+                            <Run Text="{Binding SelectedBooking.Time_start, Converter={StaticResource DateToStringFormatConverter}}" />
                             <Run Text="-" />
-                            <Run Text="14:00" />
+                            <Run Text="{Binding SelectedBooking.Time_end, Converter={StaticResource DateToStringFormatConverter}}" />
                         </TextBlock>
                     </Grid>
                     <Grid Grid.Row="2" VerticalAlignment="Center">
@@ -275,7 +275,7 @@
                                         <TextBlock
                                             Grid.Column="1"
                                             HorizontalAlignment="Right"
-                                            Text="{Binding City}" />
+                                            Text="{Binding SelectedBooking.Date, Converter={StaticResource DateToStringFormatConverter}}" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>
