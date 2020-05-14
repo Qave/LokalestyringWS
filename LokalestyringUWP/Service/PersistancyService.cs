@@ -35,8 +35,8 @@ namespace LokalestyringUWP.Service
 
                 try
                 {
-                    var response = await client.GetAsync("api/"+uriIdentifier);
-                    var tableData = response.Content.ReadAsAsync<IEnumerable<T>>().Result;
+                    var response = client.GetAsync("api/"+uriIdentifier).Result;
+                    var tableData = await response.Content.ReadAsAsync<IEnumerable<T>>();
 
                     if (response.IsSuccessStatusCode)
                     {

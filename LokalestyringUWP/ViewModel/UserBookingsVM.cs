@@ -5,27 +5,44 @@ using LokalestyringUWP.Service;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LokalestyringUWP.ViewModel
 {
-    public class UserBookingsVM
+    public class UserBookingsVM : INotifyPropertyChanged
     {
-        
-        public ObservableCollection<UserBookingsView> UserBookingsViewCollection { get; set; }
+        private UserBookingsView _selectedBooking;
+        public ObservableCollection<UserBookingsView> UserBookingsViewCollectionFromSingleton { get; set; }
         public UserBookingsVM()
         {
-            UserBookingsViewCollection = new ObservableCollection<UserBookingsView>();
-            UserBookingsViewCollection = UserBookingsCatalogSingleton.Instance.UserBookings;
+            UserBookingsViewCollectionFromSingleton = new ObservableCollection<UserBookingsView>();
+            UserBookingsViewCollectionFromSingleton = UserBookingsCatalogSingleton.Instance.UserBookings;
 
+            UserBookingsOnId(1);
         }
+        public UserBookingsView SelectedBooking { get { return _selectedBooking; } set { _selectedBooking = value; OnPropertyChanged(); } }
+
         public void UserBookingsOnId(int userid)
         {
-            //var query = from c in UserBookingsViewCollection
-            //            where c.User_Id = LoginHandler.CurrentUserId
-            //            select c;
+            var query = (from c in UserBookingsViewCollectionFromSingleton
+                        select c).Where(c => c.User_Id == userid).ToList();
+
+            UserBookingsViewCollectionFromSingleton.Clear();
+            foreach (var item in query)
+            {
+                UserBookingsViewCollectionFromSingleton.Add(item);
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
