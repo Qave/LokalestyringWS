@@ -18,14 +18,20 @@ namespace LokalestyringUWP.ViewModel
     {
         private UserBookingsView _selectedBooking;
         public ObservableCollection<UserBookingsView> UserBookingsViewCollectionFromSingleton { get; set; }
+        public ObservableCollection<TavleBooking> Tavlebookings { get; set; }
         public UserBookingsVM()
         {
             UserBookingsViewCollectionFromSingleton = new ObservableCollection<UserBookingsView>();
-            UserBookingsViewCollectionFromSingleton = UserBookingsCatalogSingleton.Instance.UserBookings;
+            Tavlebookings = new ObservableCollection<TavleBooking>();
 
+            UserBookingsViewCollectionFromSingleton = UserBookingsCatalogSingleton.Instance.UserBookings;
+            Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
             UserBookingsOnId(1);
         }
         public UserBookingsView SelectedBooking { get { return _selectedBooking; } set { _selectedBooking = value; OnPropertyChanged(); } }
+        
+
+
 
         public void UserBookingsOnId(int userid)
         {
@@ -38,6 +44,16 @@ namespace LokalestyringUWP.ViewModel
                 UserBookingsViewCollectionFromSingleton.Add(item);
             }
         }
+
+
+        public string CheckIfTavleBookingExists()
+        {
+            //var query = from t in Tavlebookings
+            //            where t.Booking_Id == SelectedBooking.boo
+            return "";
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
