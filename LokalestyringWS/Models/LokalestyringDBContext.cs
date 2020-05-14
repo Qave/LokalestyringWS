@@ -128,7 +128,6 @@ namespace LokalestyringWS.Models
             modelBuilder.Entity<AllBookingsView>()
                 .Property(e => e.User_Email)
                 .IsUnicode(false);
-
             modelBuilder.Entity<RoomsView>()
                 .Property(e => e.RoomName)
                 .IsUnicode(false);
@@ -153,6 +152,7 @@ namespace LokalestyringWS.Models
                 .Property(e => e.Building_Letter)
                 .IsFixedLength()
                 .IsUnicode(false);
+
         }
     }
 }
