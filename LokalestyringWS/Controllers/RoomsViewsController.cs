@@ -24,7 +24,7 @@ namespace LokalestyringWS.Controllers
 
         // GET: api/RoomsViews/5
         [ResponseType(typeof(RoomsView))]
-        public IHttpActionResult GetRoomsView(string id)
+        public IHttpActionResult GetRoomsView(int id)
         {
             RoomsView roomsView = db.RoomsViews.Find(id);
             if (roomsView == null)
@@ -37,14 +37,14 @@ namespace LokalestyringWS.Controllers
 
         // PUT: api/RoomsViews/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutRoomsView(string id, RoomsView roomsView)
+        public IHttpActionResult PutRoomsView(int id, RoomsView roomsView)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != roomsView.City)
+            if (id != roomsView.Room_Id)
             {
                 return BadRequest();
             }
@@ -87,7 +87,7 @@ namespace LokalestyringWS.Controllers
             }
             catch (DbUpdateException)
             {
-                if (RoomsViewExists(roomsView.City))
+                if (RoomsViewExists(roomsView.Room_Id))
                 {
                     return Conflict();
                 }
@@ -97,12 +97,12 @@ namespace LokalestyringWS.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = roomsView.City }, roomsView);
+            return CreatedAtRoute("DefaultApi", new { id = roomsView.Room_Id }, roomsView);
         }
 
         // DELETE: api/RoomsViews/5
         [ResponseType(typeof(RoomsView))]
-        public IHttpActionResult DeleteRoomsView(string id)
+        public IHttpActionResult DeleteRoomsView(int id)
         {
             RoomsView roomsView = db.RoomsViews.Find(id);
             if (roomsView == null)
@@ -125,9 +125,9 @@ namespace LokalestyringWS.Controllers
             base.Dispose(disposing);
         }
 
-        private bool RoomsViewExists(string id)
+        private bool RoomsViewExists(int id)
         {
-            return db.RoomsViews.Count(e => e.City == id) > 0;
+            return db.RoomsViews.Count(e => e.Room_Id == id) > 0;
         }
     }
 }
