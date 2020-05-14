@@ -14,7 +14,7 @@ namespace LokalestyringUWP.Handler
 {
     class RoomHandler
     {
-        public BookRoomsVM RoomReference { get; set; }
+        public static BookRoomsVM RoomReference { get; set; }
         public BookingCatalogSingleton BookingReference { get; set; }
         public RoomHandler(BookRoomsVM r)
         {
@@ -37,6 +37,12 @@ namespace LokalestyringUWP.Handler
 
         public void CheckBuilding()
         {
+            if (RoomReference.SelectedBuildingFilter == "Alle")
+            {
+                // Do nothing
+            }
+            else
+            {
             var tempList = (from tl in RoomReference.RoomList
                             where tl.Building_Letter == RoomReference.SelectedBuildingFilter
                             select tl).ToList();
@@ -47,14 +53,20 @@ namespace LokalestyringUWP.Handler
                 RoomReference.RoomList.Add(item);
             }
 
+            }
+
         }
 
-        public void RestoreList()
+        public static void RestoreList()
         {
             //ResettedList er en list der bruges til at reset listen til de objekter der findes i databasen. 
             if (RoomReference.ResettedList.Count == 0)
             {
-                foreach (var item in RoomReference.RoomList)
+                var query = from q in RoomReference.RoomList
+                            where RoomReference.selectedLocation == q.City
+                            select q;
+
+                foreach (var item in query)
                 {
                     RoomReference.ResettedList.Add(item);
                 }
@@ -91,8 +103,8 @@ namespace LokalestyringUWP.Handler
             List<Booking> newBookingList = BookingReference.Bookings.ToList();
 
             //var rooms = from r in RoomCatalogSingleton.Instance.Rooms
-            //        join b in BookingReference.Bookings on r.Room_Id  equals b.Room_Id
-            //        where b.
+            //            join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id
+            //            where b.
 
         }
     }
