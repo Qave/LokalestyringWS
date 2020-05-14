@@ -10,17 +10,9 @@ namespace LokalestyringUWP.Models
     {
         public string RoomName { get; set; }
 
-        public string City { get; set; }
-
-        public string Building_Letter { get; set; }
-
-        public string BuildingString 
-        { 
-            get { return $"Bygning: {Building_Letter}"; } 
-        }
+        public int Room_Id { get; set; }
 
         public int Floor { get; set; }
-
         public string FloorString 
         { 
             get { return $"Etage: {Floor}"; } 
@@ -29,5 +21,18 @@ namespace LokalestyringUWP.Models
         public string No { get; set; }
 
         public string Type { get; set; }
+
+        public int Booking_Limit { get; set; }
+
+        public string Name { get; set; }
+
+        public string City { get; set; }
+
+        public string Building_Letter { get; set; }
+        public string BuildingString 
+        { 
+            get { return $"Bygning: {Building_Letter}"; } 
+        }
+
     }
 }

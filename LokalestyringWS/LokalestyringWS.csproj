@@ -160,6 +160,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AllBookingsViewsController.cs" />
     <Compile Include="Controllers\BookingsController.cs" />
     <Compile Include="Controllers\BuildingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -168,12 +169,12 @@
     <Compile Include="Controllers\RoomsViewsController.cs" />
     <Compile Include="Controllers\RoomtypesController.cs" />
     <Compile Include="Controllers\TavleBookingsController.cs" />
-    <Compile Include="Controllers\UserBookingsViewsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AllBookingsView.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\Location.cs" />
@@ -183,7 +184,6 @@
     <Compile Include="Models\Roomtype.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
-    <Compile Include="Models\UserBookingsView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

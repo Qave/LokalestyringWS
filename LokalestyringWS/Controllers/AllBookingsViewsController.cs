@@ -12,44 +12,44 @@ using LokalestyringWS.Models;
 
 namespace LokalestyringWS.Controllers
 {
-    public class UserBookingsViewsController : ApiController
+    public class AllBookingsViewsController : ApiController
     {
         private LokalestyringDBContext db = new LokalestyringDBContext();
 
-        // GET: api/UserBookingsViews
-        public IQueryable<UserBookingsView> GetUserBookingsViews()
+        // GET: api/AllBookingsViews
+        public IQueryable<AllBookingsView> GetAllBookingsViews()
         {
-            return db.UserBookingsViews;
+            return db.AllBookingsViews;
         }
 
-        // GET: api/UserBookingsViews/5
-        [ResponseType(typeof(UserBookingsView))]
-        public IHttpActionResult GetUserBookingsView(string id)
+        // GET: api/AllBookingsViews/5
+        [ResponseType(typeof(AllBookingsView))]
+        public IHttpActionResult GetAllBookingsView(int id)
         {
-            UserBookingsView userBookingsView = db.UserBookingsViews.Find(id);
-            if (userBookingsView == null)
+            AllBookingsView allBookingsView = db.AllBookingsViews.Find(id);
+            if (allBookingsView == null)
             {
                 return NotFound();
             }
 
-            return Ok(userBookingsView);
+            return Ok(allBookingsView);
         }
 
-        // PUT: api/UserBookingsViews/5
+        // PUT: api/AllBookingsViews/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutUserBookingsView(string id, UserBookingsView userBookingsView)
+        public IHttpActionResult PutAllBookingsView(int id, AllBookingsView allBookingsView)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != userBookingsView.City)
+            if (id != allBookingsView.Booking_Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(userBookingsView).State = EntityState.Modified;
+            db.Entry(allBookingsView).State = EntityState.Modified;
 
             try
             {
@@ -57,7 +57,7 @@ namespace LokalestyringWS.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserBookingsViewExists(id))
+                if (!AllBookingsViewExists(id))
                 {
                     return NotFound();
                 }
@@ -70,16 +70,16 @@ namespace LokalestyringWS.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/UserBookingsViews
-        [ResponseType(typeof(UserBookingsView))]
-        public IHttpActionResult PostUserBookingsView(UserBookingsView userBookingsView)
+        // POST: api/AllBookingsViews
+        [ResponseType(typeof(AllBookingsView))]
+        public IHttpActionResult PostAllBookingsView(AllBookingsView allBookingsView)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.UserBookingsViews.Add(userBookingsView);
+            db.AllBookingsViews.Add(allBookingsView);
 
             try
             {
@@ -87,7 +87,7 @@ namespace LokalestyringWS.Controllers
             }
             catch (DbUpdateException)
             {
-                if (UserBookingsViewExists(userBookingsView.City))
+                if (AllBookingsViewExists(allBookingsView.Booking_Id))
                 {
                     return Conflict();
                 }
@@ -97,23 +97,23 @@ namespace LokalestyringWS.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = userBookingsView.City }, userBookingsView);
+            return CreatedAtRoute("DefaultApi", new { id = allBookingsView.Booking_Id }, allBookingsView);
         }
 
-        // DELETE: api/UserBookingsViews/5
-        [ResponseType(typeof(UserBookingsView))]
-        public IHttpActionResult DeleteUserBookingsView(string id)
+        // DELETE: api/AllBookingsViews/5
+        [ResponseType(typeof(AllBookingsView))]
+        public IHttpActionResult DeleteAllBookingsView(int id)
         {
-            UserBookingsView userBookingsView = db.UserBookingsViews.Find(id);
-            if (userBookingsView == null)
+            AllBookingsView allBookingsView = db.AllBookingsViews.Find(id);
+            if (allBookingsView == null)
             {
                 return NotFound();
             }
 
-            db.UserBookingsViews.Remove(userBookingsView);
+            db.AllBookingsViews.Remove(allBookingsView);
             db.SaveChanges();
 
-            return Ok(userBookingsView);
+            return Ok(allBookingsView);
         }
 
         protected override void Dispose(bool disposing)
@@ -125,9 +125,9 @@ namespace LokalestyringWS.Controllers
             base.Dispose(disposing);
         }
 
-        private bool UserBookingsViewExists(string id)
+        private bool AllBookingsViewExists(int id)
         {
-            return db.UserBookingsViews.Count(e => e.City == id) > 0;
+            return db.AllBookingsViews.Count(e => e.Booking_Id == id) > 0;
         }
     }
 }

@@ -125,6 +125,7 @@
     <Compile Include="Handler\LoginHandler.cs" />
     <Compile Include="Handler\RoomHandler.cs" />
     <Compile Include="Handler\UserHandler.cs" />
+    <Compile Include="Models\AllBookingsView.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\RoomsView.cs" />
     <Compile Include="Models\Singletons\BookingCatalogSingleton.cs" />
@@ -142,7 +143,6 @@
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\Singletons\UserCatalogSingleton.cs" />
-    <Compile Include="Models\UserBookingsView.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\MailService.cs" />
