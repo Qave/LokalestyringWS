@@ -122,6 +122,7 @@
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Handler\CommandHandler.cs" />
     <Compile Include="Handler\DateFormatConverter.cs" />
+    <Compile Include="Handler\DialogHandler.cs" />
     <Compile Include="Handler\LoginHandler.cs" />
     <Compile Include="Handler\RoomHandler.cs" />
     <Compile Include="Handler\UserHandler.cs" />

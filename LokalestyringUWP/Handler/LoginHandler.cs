@@ -62,18 +62,18 @@ namespace LokalestyringUWP.Handler
                 else
                 {
                     Password = ""; // this call clears the password box's textfield by Clearing the two-way-binded property UserName.
-                    UserHandler.ErrorDialog("Forkert brugernavn eller password", "Fejlet login"); // Error MessageBox
+                    DialogHandler.Dialog("Forkert brugernavn eller password", "Fejlet login"); // Error MessageBox
                 }
             }
             else
             {
-                UserHandler.ErrorDialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
+                DialogHandler.Dialog("Forkert brugernavn eller password", "Login fejlet"); //Error message
             }
         }
 
         public static void OnLogout()
         {
-            UserHandler.LogOutDialog("Er du sikker på du vil logge ud?", "Log ud");
+            DialogHandler.LogOutDialog("Er du sikker på du vil logge ud?", "Log ud");
         }
 
 
