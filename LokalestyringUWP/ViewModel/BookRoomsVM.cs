@@ -23,7 +23,6 @@ namespace LokalestyringUWP.ViewModel
         {
             RoomHandler = new RoomHandler(this);
             RoomList = new ObservableCollection<RoomsView>();
-            RoomList = RoomsViewCatalogSingleton.Instance.RoomsView;
             ResettedList = new ObservableCollection<RoomsView>();
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             GoBackCommand = new RelayCommand(GoBackMethod, null);

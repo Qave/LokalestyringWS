@@ -62,15 +62,20 @@ namespace LokalestyringUWP.Handler
             //ResettedList er en list der bruges til at reset listen til de objekter der findes i databasen. 
             if (RoomReference.ResettedList.Count == 0)
             {
-                var query = from q in RoomReference.RoomList
+                foreach (var item in RoomsViewCatalogSingleton.Instance.RoomsView)
+                {
+                    RoomReference.ResettedList.Add(item);
+                }
+                var query = (from q in RoomReference.ResettedList
                             where RoomReference.selectedLocation == q.City
-                            select q;
-
+                            select q).ToList();
+                RoomReference.ResettedList.Clear();
                 foreach (var item in query)
                 {
                     RoomReference.ResettedList.Add(item);
                 }
             }
+
             RoomReference.RoomList.Clear();
             foreach (var item in RoomReference.ResettedList)
             {
