@@ -8,6 +8,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 
 namespace LokalestyringUWP.Handler
@@ -105,12 +107,24 @@ namespace LokalestyringUWP.Handler
         //Check Room_ID match in Bookings with Room_Id in rooms - If ID match, check dates and time
         public void CheckDateAndTime()
         {
-            List<Booking> newBookingList = BookingReference.Bookings.ToList();
-
-            //var rooms = from r in RoomCatalogSingleton.Instance.Rooms
-            //            join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id
-            //            where b.
+            var query = (from rv in RoomReference.RoomList
+                         join r in RoomCatalogSingleton.Instance.Rooms on rv.No equals r.No
+                         join b in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals b.Room_Id
+                         where RoomReference.Date != b.Date
+                         select rv).ToList();
+            RoomReference.RoomList.Clear();
+            foreach (var item in query)
+            {
+                RoomReference.RoomList.Add(item);
+            }
 
         }
+
+        public static void GoBackMethod()
+        {
+            ((Frame)Window.Current.Content).GoBack();
+            LocationsVM.SelectedLocation = null;
+        }
+
     }
 }

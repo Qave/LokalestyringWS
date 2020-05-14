@@ -105,6 +105,16 @@
                     SelectedValue="{Binding SelectedBuildingFilter, Mode=TwoWay}" />
             </StackPanel>
             <StackPanel
+                Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center">
+                <DatePicker
+                    Date="{Binding Date}"
+                    Header="Dato:" />
+            </StackPanel>
+            <StackPanel
                 Grid.Row="1"
                 Grid.ColumnSpan="3"
                 Margin="10,0,0,0"
@@ -115,14 +125,6 @@
                     Header="Vælg rumtype:"
                     ItemsSource="{Binding RoomtypeList}"
                     SelectedValue="{Binding SelectedRoomtypeFilter, Mode=TwoWay}" />
-            </StackPanel>
-            <StackPanel
-                Grid.Row="2"
-                Grid.ColumnSpan="2"
-                Margin="10,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center">
-                <CalendarDatePicker Date="{Binding Date}" Header="Dato:" />
             </StackPanel>
             <StackPanel
                 Grid.Row="2"
