@@ -25,7 +25,7 @@ namespace LokalestyringUWP.ViewModel
             RoomList = new ObservableCollection<RoomsView>();
             ResettedList = new ObservableCollection<RoomsView>();
             FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
-            CommandHandler.GoBackCommand = new RelayCommand(GoBackMethod, null);
+            CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
             OnPropertyChanged(nameof(RoomList));
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
@@ -65,12 +65,6 @@ namespace LokalestyringUWP.ViewModel
                     "Alle", "A", "B", "C", "D"
                 };
             }
-        }
-
-        public void GoBackMethod()
-        {
-            ((Frame)Window.Current.Content).GoBack();
-            LocationsVM.SelectedLocation = null;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
