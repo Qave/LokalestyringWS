@@ -7,18 +7,18 @@ namespace LokalestyringUWP.Models.Singletons
     {
         private static RoomCatalogSingleton _instance = null;
 
-        public ObservableCollection<RoomsView> Rooms { get; }
+        public ObservableCollection<Room> Rooms { get; }
         public static RoomCatalogSingleton Instance { get { return _instance ?? (_instance = new RoomCatalogSingleton()); } }
 
         public RoomCatalogSingleton()
         {
-            Rooms = new ObservableCollection<RoomsView>();
+            Rooms = new ObservableCollection<Room>();
             LoadRoomsAsync();
         }
 
         public async void LoadRoomsAsync()
         {
-            ObservableCollection<RoomsView> rooms = await PersistancyService.LoadRoomsFromJsonAsync();
+            ObservableCollection<Room> rooms = await PersistancyService.LoadTableFromJsonAsync<Room>("Rooms");
 
             foreach (var item in rooms)
             {

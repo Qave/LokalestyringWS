@@ -24,15 +24,6 @@ namespace LokalestyringUWP.Models
 
         public TimeSpan Time_end { get; set; }
 
-        public int? Tavle_Id { get; set; }
-
-        public virtual TavleBooking TavleBooking { get; set; }
-
-        public override string ToString()
-        {
-            return $"{Booking_Id}, {User_Id}, {Room_Id}, {Date}, {Time_start}, {Time_end}, {Tavle_Id}";
-        }
-
         public virtual ICollection<TavleBooking> TavleBookings { get; set; }
     }
 }

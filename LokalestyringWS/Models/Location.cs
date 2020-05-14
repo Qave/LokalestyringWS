@@ -26,12 +26,6 @@ namespace LokalestyringWS.Models
         [StringLength(50)]
         public string City { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Loc_Id}, {Name}, {City}";
-        }
-
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Room> Rooms { get; set; }
     }

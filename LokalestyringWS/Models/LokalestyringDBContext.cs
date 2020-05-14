@@ -20,7 +20,6 @@ namespace LokalestyringWS.Models
         public virtual DbSet<Roomtype> Roomtypes { get; set; }
         public virtual DbSet<TavleBooking> TavleBookings { get; set; }
         public virtual DbSet<User> Users { get; set; }
-        //---
         public virtual DbSet<RoomsView> RoomsViews { get; set; }
         public virtual DbSet<UserBookingsView> UserBookingsViews { get; set; }
 
@@ -29,7 +28,6 @@ namespace LokalestyringWS.Models
             modelBuilder.Entity<Booking>()
                 .HasMany(e => e.TavleBookings)
                 .WithRequired(e => e.Booking)
-                .HasForeignKey(e => e.Booking_Id)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Building>()
@@ -63,6 +61,11 @@ namespace LokalestyringWS.Models
                 .Property(e => e.No)
                 .IsUnicode(false);
 
+            modelBuilder.Entity<Room>()
+                .HasMany(e => e.Bookings)
+                .WithRequired(e => e.Room)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Roomtype>()
                 .Property(e => e.Type)
                 .IsUnicode(false);
@@ -71,12 +74,6 @@ namespace LokalestyringWS.Models
                 .HasMany(e => e.Rooms)
                 .WithRequired(e => e.Roomtype)
                 .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<TavleBooking>()
-                .HasMany(e => e.Bookings)
-                .WithOptional(e => e.TavleBooking)
-                .HasForeignKey(e => e.Tavle_Id)
-                .WillCascadeOnDelete();
 
             modelBuilder.Entity<User>()
                 .Property(e => e.User_Name)
@@ -90,7 +87,10 @@ namespace LokalestyringWS.Models
                 .Property(e => e.Password)
                 .IsUnicode(false);
 
-            //---
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Bookings)
+                .WithRequired(e => e.User)
+                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<RoomsView>()
                 .Property(e => e.RoomName)
@@ -141,7 +141,6 @@ namespace LokalestyringWS.Models
             modelBuilder.Entity<UserBookingsView>()
                 .Property(e => e.User_Email)
                 .IsUnicode(false);
-
         }
     }
 }

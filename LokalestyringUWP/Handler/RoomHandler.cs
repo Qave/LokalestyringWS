@@ -15,8 +15,10 @@ namespace LokalestyringUWP.Handler
     class RoomHandler
     {
         public BookRoomsVM RoomReference { get; set; }
+        public BookingCatalogSingleton BookingReference { get; set; }
         public RoomHandler(BookRoomsVM r)
         {
+            BookingReference = new BookingCatalogSingleton();
             RoomReference = r;
         }
         public static void SaveRoomsAsync(Room obj)
@@ -30,6 +32,7 @@ namespace LokalestyringUWP.Handler
             RestoreList();
             CheckBuilding();
             CheckRoomtype();
+            CheckDateAndTime();
         }
 
         public void CheckBuilding()
@@ -81,13 +84,15 @@ namespace LokalestyringUWP.Handler
                 }
             }
         }
-        public void CheckDate()
-        {
 
-        }
-
-        public void CheckTime()
+        //Check Room_ID match in Bookings with Room_Id in rooms - If ID match, check dates and time
+        public void CheckDateAndTime()
         {
+            List<Booking> newBookingList = BookingReference.Bookings.ToList();
+
+            //var rooms = from r in RoomCatalogSingleton.Instance.Rooms
+            //        join b in BookingReference.Bookings on r.Room_Id  equals b.Room_Id
+            //        where b.
 
         }
     }
