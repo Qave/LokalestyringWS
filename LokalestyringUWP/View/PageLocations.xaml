@@ -50,8 +50,8 @@
                 <AppBarButton
                     Width="50"
                     Height="40"
-                    Icon="GlobalNavigationButton"
-                    Command="{Binding LogOutCommand}"/>
+                    Command="{Binding LogOutCommand}"
+                    Icon="GlobalNavigationButton" />
             </StackPanel>
         </Grid>
         <!--  HEADER END  -->
@@ -88,11 +88,6 @@
                                     HorizontalAlignment="Left"
                                     VerticalAlignment="Center"
                                     Text="{Binding City}" />
-                                <TextBlock
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Text="0" />
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
