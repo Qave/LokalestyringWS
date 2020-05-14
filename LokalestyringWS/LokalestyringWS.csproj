@@ -160,7 +160,6 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\AllBookingsViewsController.cs" />
     <Compile Include="Controllers\BookingsController.cs" />
     <Compile Include="Controllers\BuildingsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -182,6 +181,7 @@
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\RoomsView.cs" />
     <Compile Include="Models\Roomtype.cs" />
+    <Compile Include="Models\SDSDS.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
