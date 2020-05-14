@@ -128,6 +128,7 @@ namespace LokalestyringWS.Models
             modelBuilder.Entity<AllBookingsView>()
                 .Property(e => e.User_Email)
                 .IsUnicode(false);
+
             modelBuilder.Entity<RoomsView>()
                 .Property(e => e.RoomName)
                 .IsUnicode(false);
