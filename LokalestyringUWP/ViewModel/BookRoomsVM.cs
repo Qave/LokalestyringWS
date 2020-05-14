@@ -19,12 +19,16 @@ namespace LokalestyringUWP.ViewModel
 {
     class BookRoomsVM : INotifyPropertyChanged
     {
+        public ICommand BookSelectedRoomCommand => CommandHandler.BookSelectedRoomCommand;
+        public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
+        public ICommand GoBackCommand => CommandHandler.GoBackCommand;
+        public string selectedLocation => LocationsVM.SelectedLocation.City;
         public BookRoomsVM()
         {
             RoomHandler = new RoomHandler(this);
             RoomList = new ObservableCollection<RoomsView>();
             ResettedList = new ObservableCollection<RoomsView>();
-            FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
+            CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
             OnPropertyChanged(nameof(RoomList));
             SelectedRoomtypeFilter = RoomtypeList[0];
@@ -32,8 +36,11 @@ namespace LokalestyringUWP.ViewModel
             Date = Date.Date;
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.RestoreList();
+            //BookSelectedRoomCommand = new RelayCommand();
         }
+
         public ObservableCollection<RoomsView> ResettedList { get; set; }
+        public ObservableCollection<RoomsView> RoomList { get; set; }
 
         public RoomHandler RoomHandler { get; set; }
         public TimeSpan TimeStart { get; set; }
@@ -41,11 +48,7 @@ namespace LokalestyringUWP.ViewModel
         public DateTimeOffset Date { get; set; }
         public string SelectedBuildingFilter { get; set; }
         public string SelectedRoomtypeFilter { get; set; }
-        public ICommand FilterSearchCommand { get; set; }
-        public ObservableCollection<RoomsView> RoomList { get; set; }
 
-        public string selectedLocation => LocationsVM.SelectedLocation.City;
-        public ICommand GoBackCommand => CommandHandler.GoBackCommand;
 
         public List<string> RoomtypeList
         {
