@@ -39,6 +39,7 @@ namespace LokalestyringUWP.ViewModel
                 setLocation();
             }
         }
+        public User CurrentUser { get {return LoginHandler.SelectedUser; } }
 
         public LocationsVM()
         {

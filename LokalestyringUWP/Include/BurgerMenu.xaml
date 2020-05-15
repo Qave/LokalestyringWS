@@ -14,11 +14,17 @@
     </UserControl.DataContext>
     <Grid>
         <Button Background="Transparent">
-            <Image Source="/Assets/Images/BMmenu.png" />
+            <Image Source="/Assets/Images/BurgermenuIcon.png" />
             <Button.Flyout>
                 <Flyout>
                     <StackPanel>
                         <StackPanel>
+                            <Button
+                                Width="200"
+                                Margin="0,5"
+                                HorizontalAlignment="Center"
+                                Command="{Binding GoToUserBookingsCommand}"
+                                Content="Se Dine Bookninger" />
                             <Button
                                 Width="200"
                                 Margin="0,5"

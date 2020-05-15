@@ -3,6 +3,7 @@ using LokalestyringUWP.Handler;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
+using LokalestyringUWP.View;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace LokalestyringUWP.ViewModel
 {
@@ -40,6 +42,7 @@ namespace LokalestyringUWP.ViewModel
             AflysBookingCommand = new RelayCommand(AflysBookingMethod, null);
             AflysTavleCommand = new RelayCommand(AflysTavleBookingMethod, null);
             BookTavleCommand = new RelayCommand(BookTavleMethod, null);
+            GoBackCommand = new RelayCommand(GoBackMethod ,null);
 
             // Loads default visibility states
             OnPageLoadVisibilities();
@@ -67,13 +70,16 @@ namespace LokalestyringUWP.ViewModel
                 OnPropertyChanged(nameof(ElementIsChosenVisibility));
             } 
         }
+
+        public User SelectedUser { get { return LoginHandler.SelectedUser; } }
+
         // ICommands that gets bound to XAML-Controllers
         #region Command Properties
         public ICommand BookIgenImorgenCommand { get; set; }
         public ICommand BookTavleCommand { get; set; }
         public ICommand AflysBookingCommand { get; set; }
         public ICommand AflysTavleCommand { get; set; }
-        public ICommand GoBack { get; set; }
+        public ICommand GoBackCommand { get; set; }
         #endregion
 
         // Properties that is bound to the pageview. When a value is chosen on the page, that value gets put into these properties respectively
@@ -95,6 +101,12 @@ namespace LokalestyringUWP.ViewModel
 
 
         #region Button Command Methods
+
+        public void GoBackMethod()
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
+        }
+
         /// <summary>
         /// Method for inserting a booking into the database.
         /// </summary>
