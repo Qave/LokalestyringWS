@@ -39,14 +39,14 @@ namespace LokalestyringUWP.Handler
             if (RoomReference.TimeStart >= RoomReference.TimeEnd)
             {
                 DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid.", "Ugyldigt tidspunkt");
-            } 
+            }
             else if (RoomReference.Date.DateTime < currentDate.Date)
             {
                 DialogHandler.Dialog("Vælg venligst en gyldig dato fra denne måned eller frem", "Ugyldig dato");
             }
             else
             {
-            RestoreList();
+                RestoreList();
                 CheckBuilding();
                 CheckRoomtype();
                 CheckBookingLimit();
@@ -66,15 +66,15 @@ namespace LokalestyringUWP.Handler
             }
             else
             {
-            var tempList = (from tl in RoomReference.RoomList
-                            where tl.Building_Letter == RoomReference.SelectedBuildingFilter
-                            select tl).ToList();
+                var tempList = (from tl in RoomReference.RoomList
+                                where tl.Building_Letter == RoomReference.SelectedBuildingFilter
+                                select tl).ToList();
 
-            RoomReference.RoomList.Clear();
-            foreach (var item in tempList)
-            {
-                RoomReference.RoomList.Add(item);
-            }
+                RoomReference.RoomList.Clear();
+                foreach (var item in tempList)
+                {
+                    RoomReference.RoomList.Add(item);
+                }
 
             }
         }
@@ -104,28 +104,31 @@ namespace LokalestyringUWP.Handler
         }
         public void CheckBookingLimit()
         {
-                    var query = (from b in BookingReference.Bookings
-                                 join r in RoomReference.RoomList on b.Room_Id equals r.Room_Id
-                                 where b.Date.Equals(RoomReference.Date.DateTime) && b.Time_end >= RoomReference.TimeStart && b.Time_start <= RoomReference.TimeEnd && r.Type == "Klasselokale"
-                                 group b by b.Room_Id into RoomGroup
-                                 select new
-                                 {
-                                     LimitKey = RoomGroup.Key,
-                                     Count = RoomGroup.Count()
-                                 }).ToList();
+            if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
+            {
+                var query = (from b in BookingReference.Bookings
+                             join r in RoomReference.RoomList on b.Room_Id equals r.Room_Id
+                             where b.Date.Equals(RoomReference.Date.DateTime) && b.Time_end >= RoomReference.TimeStart && b.Time_start <= RoomReference.TimeEnd && r.Type == "Klasselokale"
+                             group b by b.Room_Id into RoomGroup
+                             select new
+                             {
+                                 LimitKey = RoomGroup.Key,
+                                 Count = RoomGroup.Count()
+                             }).ToList();
 
-                    foreach (var klasseLokaler in query)
+                foreach (var klasseLokaler in query)
+                {
+                    if (klasseLokaler.Count >= 2)
                     {
-                        if (klasseLokaler.Count >= 2)
+                        var query1 = (from r in RoomReference.RoomList
+                                      where r.Room_Id.Equals(klasseLokaler.LimitKey)
+                                      select r).ToList();
+                        foreach (var variable in query1)
                         {
-                            var query1 = (from r in RoomReference.RoomList
-                                          where r.Room_Id.Equals(klasseLokaler.LimitKey)
-                                          select r).ToList();
-                            foreach (var variable in query1)
-                            {
-                                RoomReference.RoomList.Remove(variable);
-                            }
+                            RoomReference.RoomList.Remove(variable);
                         }
+                    }
+                }
 
             }
         }
@@ -136,15 +139,19 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public void CheckDateAndTime()
         {
-            var query = (from r in RoomReference.RoomList
-                         join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id into temp
-                         from t in temp
-                         where t.Date.Equals(RoomReference.Date.DateTime) && t.Time_end >= RoomReference.TimeStart && t.Time_start <= RoomReference.TimeEnd && r.Type != "Klasselokale"
-                         select r).ToList();
-                                                                                 
-            foreach (var item in query)
+            if (RoomReference.SelectedRoomtypeFilter != "Klasselokale")
             {
-                RoomReference.RoomList.Remove(item);
+
+                var query = (from r in RoomReference.RoomList
+                             join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id into temp
+                             from t in temp
+                             where t.Date.Equals(RoomReference.Date.DateTime) && t.Time_end >= RoomReference.TimeStart && t.Time_start <= RoomReference.TimeEnd && r.Type != "Klasselokale"
+                             select r).ToList();
+
+                foreach (var item in query)
+                {
+                    RoomReference.RoomList.Remove(item);
+                }
             }
         }
 
