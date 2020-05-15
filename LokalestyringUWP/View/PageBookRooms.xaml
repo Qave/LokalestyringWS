@@ -111,7 +111,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Center">
                 <DatePicker
-                    Date="{Binding Date, Mode=TwoWay}"
+                    Date="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Header="Dato:"
                     YearVisible="False" />
             </StackPanel>
