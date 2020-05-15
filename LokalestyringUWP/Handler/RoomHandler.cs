@@ -31,6 +31,10 @@ namespace LokalestyringUWP.Handler
 
         public void FilterSearchMethod()
         {
+            if (RoomReference.TimeStart >= RoomReference.TimeEnd || RoomReference.TimeStart == null || RoomReference.TimeEnd == null)
+            {
+                DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid.", "Ugyldigt tidspunkt");
+            }
             RestoreList();
             CheckBuilding();
             CheckRoomtype();
