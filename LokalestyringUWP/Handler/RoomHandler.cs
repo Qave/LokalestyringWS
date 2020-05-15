@@ -47,10 +47,10 @@ namespace LokalestyringUWP.Handler
             else
             {
             RestoreList();
-            CheckBuilding();
-            CheckRoomtype();
-            CheckDateAndTime();
                 CheckBookingLimit();
+                //CheckBuilding();
+                //CheckRoomtype();
+                //CheckDateAndTime();
             }
         }
         /// <summary>
@@ -105,15 +105,29 @@ namespace LokalestyringUWP.Handler
 
         public void CheckBookingLimit()
         {
+            var query = (from b in BookingReference.Bookings
+                         where b.Date.Equals(RoomReference.Date.DateTime) && b.Time_end >= RoomReference.TimeStart && b.Time_start <= RoomReference.TimeEnd
+                         group b by b.Room_Id into RoomGroup
+                         select new
+                         {
+                             LimitKey = RoomGroup.Key,
+                             Count = RoomGroup.Count()
+                         }).ToList();
 
-            //Room_Id = 21
+            foreach (var item in query)
+            {
+                if (item.Count >= 2)
+                {
+                    var query1 = (from r in RoomReference.RoomList
+                                  where r.Room_Id.Equals(item.LimitKey)
+                                  select r).ToList();
+                    foreach (var variable in query1)
+                    {
+                        RoomReference.RoomList.Remove(variable);
+                    }
+                }
+            }
 
-            //var query = (from b in BookingReference.Bookings
-            //             join r in RoomReference.RoomList on b.Room_Id equals r.Room_Id
-            //             where 
-            //             );
-
-                        
         }
         /// <summary>
         /// Filters by date and time. With LINQ we join the tables from the RoomsView table and the booking table, so we're able to use the date and time properties.
