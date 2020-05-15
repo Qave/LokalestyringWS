@@ -57,6 +57,30 @@ namespace LokalestyringUWP.Service
         }
         #endregion
 
+        #region Generic Insert
+        public static async void SaveInsertAsJsonAsync<T>(T obj, string uriIdentifier)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    var response = await client.PostAsJsonAsync("api/"+ uriIdentifier, obj);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+        }
+        #endregion
+
         #region Room Persistancy
         public static async void SaveRoomAsJsonAsync(Room roomObj)
         {
