@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace LokalestyringUWP.Handler
 {
-    class RoomHandler
+    public class RoomHandler
     {
         public static BookRoomsVM RoomReference { get; set; }
         public BookingCatalogSingleton BookingReference { get; set; }
