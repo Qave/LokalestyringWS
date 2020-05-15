@@ -217,12 +217,11 @@ namespace LokalestyringUWP.Handler
             };
             if (result)
             {
-                PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
-                BookingCatalogSingleton.Instance.Bookings.Add(booking);
+                BookingReference.Bookings.Add(booking);
                 FilterSearchMethod();
-                RoomReference.RoomIsSelectedCheck = false;
-                OnPropertyChanged(nameof(RoomReference.RoomIsSelectedCheck));
-                
+                RoomReference.SelectedRoomsView = null;
+                PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
+
             }
         }
 

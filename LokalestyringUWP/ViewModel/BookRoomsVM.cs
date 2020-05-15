@@ -23,7 +23,7 @@ namespace LokalestyringUWP.ViewModel
         private TimeSpan _timeStart;
         private TimeSpan _timeEnd;
         private RoomsView _selectedRoomsView;
-        public ICommand BookSelectedRoomCommand { get; set; }
+        public RelayCommand BookSelectedRoomCommand { get; set; }
         public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
         public ICommand GoBackCommand => CommandHandler.GoBackCommand;
         public string selectedLocation => LocationsVM.SelectedLocation.City;
@@ -35,7 +35,7 @@ namespace LokalestyringUWP.ViewModel
             Date = Date.Date;
             TimeStart = DateTime.Now.TimeOfDay;
             TimeEnd = DateTime.Now.TimeOfDay + TimeSpan.FromHours(4);
-            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, null);
+            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomIsSelectedCheck);
             CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
             CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
@@ -45,18 +45,29 @@ namespace LokalestyringUWP.ViewModel
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.FilterSearchMethod();
+            
         }
 
         public ObservableCollection<RoomsView> ResettedList { get; set; }
         public ObservableCollection<RoomsView> RoomList { get; set; }
 
         public RoomHandler RoomHandler { get; set; }
-        public void RoomIsSelected()
+        public RoomsView SelectedRoomsView
         {
-            RoomIsSelectedCheck = true;
-            OnPropertyChanged(nameof(RoomIsSelectedCheck));
+            get { return _selectedRoomsView; }
+            set
+            {
+                _selectedRoomsView = value;
+                OnPropertyChanged(nameof(RoomIsSelectedCheck));
+                BookSelectedRoomCommand.RaiseCanExecuteChanged();
+            }
         }
-        public bool RoomIsSelectedCheck { get; set; }
+
+        public bool RoomIsSelectedCheck()
+        { 
+            return (SelectedRoomsView != null);
+        }
+
         public TimeSpan TimeStart 
         {
             get
@@ -88,16 +99,6 @@ namespace LokalestyringUWP.ViewModel
             set
             {
                 _selectedDate = value;
-                OnPropertyChanged();
-            }
-        }
-        public RoomsView SelectedRoomsView
-        {
-            get { return _selectedRoomsView; }
-            set
-            {
-                _selectedRoomsView = value;
-                RoomIsSelected();
                 OnPropertyChanged();
             }
         }

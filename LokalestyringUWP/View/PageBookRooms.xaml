@@ -173,7 +173,6 @@
             VerticalAlignment="Center"
             Background="Gold"
             Command="{Binding BookSelectedRoomCommand}"
-            Content="Book valgt lokale"
-            IsEnabled="{Binding RoomIsSelectedCheck}" />
+            Content="Book valgt lokale"/>
     </Grid>
 </Page>
