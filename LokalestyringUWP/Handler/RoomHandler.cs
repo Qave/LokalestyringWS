@@ -29,20 +29,32 @@ namespace LokalestyringUWP.Handler
         }
 
         #region FILTER LOGIC
-
-        //Filters rooms by building, roomtype and date and time.
+        /// <summary>
+        /// Filters rooms by building, roomtype and date and time. If the chosen time is not valid, a dialog message is shown, asking the user to pick a valid time.
+        /// 
+        /// </summary>
         public void FilterSearchMethod()
         {
-            if (RoomReference.TimeStart >= RoomReference.TimeEnd || RoomReference.TimeStart == null || RoomReference.TimeEnd == null) //If the chosen time is not valid, a dialog message is shown, asking the user to pick a valid time.
+            DateTime currentDate = DateTime.Now;
+            if (RoomReference.TimeStart >= RoomReference.TimeEnd)
             {
                 DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid.", "Ugyldigt tidspunkt");
+            } else if (RoomReference.Date < currentDate)
+            {
+                DialogHandler.Dialog("Vælg venligst en gyldig dato fra denne måned eller frem", "Ugyldig dato");
             }
+            else
+            {
             RestoreList();
             CheckBuilding();
             CheckRoomtype();
             CheckDateAndTime();
+            }
         }
-
+        /// <summary>
+        /// Filters by selected building. If "Alle" is selected, it doesn't filter. If selected BuildingFilter matches with the building_Letter in RoomList, it is added to the tempList.
+        /// RoomList is then cleared and the tempList items is added back to RoomList.
+        /// </summary>
         public void CheckBuilding()
         {
             if (RoomReference.SelectedBuildingFilter == "Alle")
@@ -64,7 +76,10 @@ namespace LokalestyringUWP.Handler
             }
 
         }
-
+        /// <summary>
+        /// Filters by selected roomtype. If "Alle" is selected, it doesn't filter. If selected RoomtypeFilter matches with the roomtype in RoomList, it is added to the tempList.
+        /// RoomList is then cleared and the tempList items is added back to RoomList.
+        /// </summary>
         public void CheckRoomtype()
         {
             if (RoomReference.SelectedRoomtypeFilter == "Alle")
@@ -85,10 +100,13 @@ namespace LokalestyringUWP.Handler
             }
         }
 
-        //Check Room_ID match in Bookings with Room_Id in rooms - If ID match, check dates and time
+        /// <summary>
+        /// Filters by date and time. With LINQ we join the tables from the RoomsView table and the booking table, so we're able to use the date and time properties.
+        /// The date and time properties are compared with the selected date and time properties. If the comparison is true (meaning the room is booked), it gets added to the query.
+        /// Afterwards the items in the query is removed from the original roomlist in the view, meaning it has removed all booked rooms from the list. 
+        /// </summary>
         public void CheckDateAndTime()
         {
-
             var query = (from r in RoomReference.RoomList
                          join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id into temp
                          from t in temp
@@ -99,16 +117,14 @@ namespace LokalestyringUWP.Handler
             {
                 RoomReference.RoomList.Remove(item);
             }
-            //foreach (var item in query)
-            //{
-            //    RoomReference.RoomList.Add(item);
-            //}
-
         }
 
         #endregion
 
-        //This method is used to "reset" the list, so every time you want to change filter, you can do it on the fly without having to restart the program. 
+        /// <summary>
+        /// Resets the list, so every time you want to change filter, you can do it on the fly without having to restart the program. 
+        /// Gets called when a location is selected or the filter button is clicked. 
+        /// </summary>
         public static void RestoreList()
         {
             if (RoomReference.ResettedList.Count == 0)
@@ -117,9 +133,13 @@ namespace LokalestyringUWP.Handler
                 {
                     RoomReference.ResettedList.Add(item); //Adds all items from the singleton into a new resetted list, that we can use to filter with.
                 }
+
+                //Filters the list by selected location.
                 var query = (from q in RoomReference.ResettedList
                              where RoomReference.selectedLocation == q.City
                              select q).ToList();
+
+                //The resetted list is cleared and is filled with the results from the LINQ statement.
                 RoomReference.ResettedList.Clear();
                 foreach (var item in query)
                 {
@@ -127,6 +147,7 @@ namespace LokalestyringUWP.Handler
                 }
             }
 
+            //The list that gets shown is cleared, and the filtered results gets added to it, so it gets updated in the view.
             RoomReference.RoomList.Clear();
             foreach (var item in RoomReference.ResettedList)
             {
@@ -134,6 +155,9 @@ namespace LokalestyringUWP.Handler
             }
         }
 
+        /// <summary>
+        /// When called, it sends the user back to the previous page. It also deselects the selected location, so you're able to pick a new or the same location again.
+        /// </summary>
         public static void GoBackMethod()
         {
             ((Frame)Window.Current.Content).GoBack();
