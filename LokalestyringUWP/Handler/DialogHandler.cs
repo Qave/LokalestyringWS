@@ -13,12 +13,13 @@ namespace LokalestyringUWP.Handler
     public class DialogHandler
     {
         /// <summary>
-        /// 
+        /// A generic dialog popup, that display whenever theres a need for a Yes/No popup, returns true or false
         /// </summary>
         /// <param name="message">The message that needs to be send to the user when the dialog is called</param>
         /// <param name="title">The Title of the dialog</param>
         /// <param name="yes">The positive choice of the dialog box (YES)</param>
         /// <param name="no">The Negative choice of the dialog box (NO)</param>
+        /// <returns>bool</returns>
         public static async Task<bool> GenericYesNoDialog(string message, string title, string yes, string no)
         {
             ContentDialog contentDialog = new ContentDialog

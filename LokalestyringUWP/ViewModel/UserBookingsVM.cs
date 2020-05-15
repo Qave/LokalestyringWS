@@ -25,7 +25,7 @@ namespace LokalestyringUWP.ViewModel
         public ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton { get; set; }
         // ObservableCollection of type TavleBooking that is instantiated in the viewmodel constructor
         public ObservableCollection<TavleBooking> Tavlebookings { get; set; }
-
+    
 
         public UserBookingsVM()
         {
@@ -38,6 +38,7 @@ namespace LokalestyringUWP.ViewModel
 
             // Instantiates the ICommands properties with a relaycommand
             AflysBookingCommand = new RelayCommand(AflysBookingMethod, null);
+            AflysTavleCommand = new RelayCommand(AflysTavleBookingMethod, null);
 
             // Loads default visibility states
             OnPageLoadVisibilities();
@@ -69,12 +70,14 @@ namespace LokalestyringUWP.ViewModel
         public ICommand BookTavleCommand { get; set; }
         public ICommand AflysBookingCommand { get; set; }
         public ICommand AflysTavleCommand { get; set; }
+        public ICommand GoBack { get; set; }
         #endregion
 
         // Properties that is bound to the pageview. When a value is chosen on the page, that value gets put into these properties respectively
         #region Binding Properties
         public TimeSpan TavleBookingStartTime { get; set; }
         public TimeSpan SelectedDuration { get; set; }
+
         #endregion
 
         // Visibility Properties that is bound to elements that needs to show and hide on the page view
@@ -83,22 +86,74 @@ namespace LokalestyringUWP.ViewModel
         public Visibility BookTavleBtnVisibility { get; set; }
         public Visibility NoElementsChosenVisibility { get; set; }
         public Visibility ElementIsChosenVisibility { get; set; }
-
         #endregion
 
 
         #region Button Command Methods
+        public async void OpretTavleBookingMethod()
+        {
+            
+        }
+        public async void BookIgenImorgenMethod()
+        {
+            //PersistancyService.SaveInsertAsJsonAsync(SelectedBooking, "Bookings");
+        }
+
         /// <summary>
-        /// Async method that deletes 
+        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
         /// </summary>
         public async void AflysBookingMethod()
         {
-            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil slette denne bookning?\nTilhørende tavlebookings vil også blive slettet.", "Slet Bookning?", "Ja, Fjern booking", "Fortryd");
+            // Checks if the user wants to delete the booking, or not
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
+            // If user wants to delete the booking.
             if (result)
             {
+                // The async delete method from PersistancyService.
                 PersistancyService.DeleteFromDatabaseAsync("Bookings", SelectedBooking.Booking_Id);
+
+                // Deletes the selected object from the singleton observable collection
+                AllBookingsViewCatalogSingleton.Instance.AllBookings.Remove(SelectedBooking);
+                // Update the view
+                ElementIsChosenVisibility = Visibility.Collapsed;
+                NoElementsChosenVisibility = Visibility.Visible;
+                OnPropertyChanged(nameof(ElementIsChosenVisibility));
+                OnPropertyChanged(nameof(NoElementsChosenVisibility));
+
+            }            
+        }
+        /// <summary>
+        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking's Tavle booking from the database 
+        /// </summary>
+        public async void AflysTavleBookingMethod()
+        {
+            // Checks if the user wants to delete the TavleBooking, or not
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse tavlen for denne bookning?\nDin Booking på rummet vil ikke blive slettet", "Aflys Tavle?", "Ja, Aflys Tavle", "Fortryd");
+            // If user wants to delete the booking.
+            if (result)
+            {
+                // Try and run the code, if the code cant run, catch the exception and notify the user that something went wrong.
+                try
+                {
+                    // Gets the selected booking's tavlebooking as an object.
+                    TavleBooking _selectedTavleBooking = TavleBookingCatalogSingleton.Instance.TavleBookings.Single(t => t.Booking_Id == SelectedBooking.Booking_Id);
+                    // The async delete method from PersistancyService.
+                    PersistancyService.DeleteFromDatabaseAsync("TavleBookings", _selectedTavleBooking.Tavle_Id);
+                    // Deletes the selected object from the singleton observable collection, which in turn updates the view.
+                    TavleBookingCatalogSingleton.Instance.TavleBookings.Remove(_selectedTavleBooking);
+                    SelectedBooking.TavleStart = null;
+                    SelectedBooking.TavleEnd = null;
+                    AflysTavleBtnVisibility = Visibility.Collapsed;
+                    BookTavleBtnVisibility = Visibility.Visible;
+                    OnPropertyChanged(nameof(AflysTavleBtnVisibility));
+                    OnPropertyChanged(nameof(BookTavleBtnVisibility));
+                    OnPropertyChanged(nameof(SelectedBooking));
+                }
+                catch (Exception)
+                {
+                    DialogHandler.Dialog("Noget gik galt med aflysning af tavle, kontakt Zealands IT-Helpdesk for mere information.", "Fejl i aflysning");
+                }            
             }
-            
         }
 
         #endregion
