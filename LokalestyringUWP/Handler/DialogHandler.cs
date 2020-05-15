@@ -86,7 +86,7 @@ namespace LokalestyringUWP.Handler
             ContentDialogResult result = await confirmBookingDialog.ShowAsync();
             if (result == ContentDialogResult.Primary)
             {
-                BookingHandler.CreateBooking();
+                
             }
             else
             {
