@@ -127,6 +127,9 @@
     <Compile Include="Handler\LoginHandler.cs" />
     <Compile Include="Handler\RoomHandler.cs" />
     <Compile Include="Handler\UserHandler.cs" />
+    <Compile Include="Include\BurgerMenu.xaml.cs">
+      <DependentUpon>BurgerMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\AllBookingsView.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\RoomsView.cs" />
@@ -151,11 +154,16 @@
     <Compile Include="Service\PersistancyService.cs" />
     <Compile Include="Service\SingletonService.cs" />
     <Compile Include="ViewModel\BookRoomsVM.cs" />
+    <Compile Include="ViewModel\BurgerMenuVM.cs" />
+    <Compile Include="ViewModel\CreateAccountVM.cs" />
     <Compile Include="ViewModel\LocationsVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\UserBookingsVM.cs" />
     <Compile Include="View\PageBookRooms.xaml.cs">
       <DependentUpon>PageBookRooms.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PageCreateAccount.xaml.cs">
+      <DependentUpon>PageCreateAccount.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PageLocations.xaml.cs">
       <DependentUpon>PageLocations.xaml</DependentUpon>
@@ -173,6 +181,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\BMmenu.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -203,7 +212,15 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Include\BurgerMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\PageBookRooms.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PageCreateAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

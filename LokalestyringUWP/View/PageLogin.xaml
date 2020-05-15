@@ -71,6 +71,7 @@
                         Margin="10,20,10,10"
                         HorizontalAlignment="Center"
                         Background="DarkCyan"
+                        Command="{Binding CreateAccountCommand}"
                         Content="Opret Konto"
                         FontFamily="dubai"
                         Foreground="White" />

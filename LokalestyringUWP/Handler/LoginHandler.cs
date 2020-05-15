@@ -76,6 +76,11 @@ namespace LokalestyringUWP.Handler
             DialogHandler.LogOutDialog("Er du sikker på du vil logge ud?", "Log ud");
         }
 
+        public static void OnCreateAccount()
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(PageCreateAccount));
+        }
+
 
 
 
