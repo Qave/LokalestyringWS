@@ -23,7 +23,6 @@ namespace LokalestyringUWP.ViewModel
         private TimeSpan _timeStart;
         private TimeSpan _timeEnd;
         private RoomsView _selectedRoomsView;
-
         public ICommand BookSelectedRoomCommand { get; set; }
         public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
         public ICommand GoBackCommand => CommandHandler.GoBackCommand;
@@ -36,7 +35,7 @@ namespace LokalestyringUWP.ViewModel
             Date = Date.Date;
             TimeStart = DateTime.Now.TimeOfDay;
             TimeEnd = DateTime.Now.TimeOfDay + TimeSpan.FromHours(4);
-            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomIsSelected);
+            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, null);
             CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
             CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
@@ -52,10 +51,12 @@ namespace LokalestyringUWP.ViewModel
         public ObservableCollection<RoomsView> RoomList { get; set; }
 
         public RoomHandler RoomHandler { get; set; }
-        public bool RoomIsSelected()
+        public void RoomIsSelected()
         {
-             return SelectedRoomsView != null; 
+            RoomIsSelectedCheck = true;
+            OnPropertyChanged(nameof(RoomIsSelectedCheck));
         }
+        public bool RoomIsSelectedCheck { get; set; }
         public TimeSpan TimeStart 
         {
             get
@@ -96,7 +97,8 @@ namespace LokalestyringUWP.ViewModel
             set
             {
                 _selectedRoomsView = value;
-                OnPropertyChanged(nameof(_selectedRoomsView));
+                RoomIsSelected();
+                OnPropertyChanged();
             }
         }
         public string SelectedBuildingFilter { get; set; }
