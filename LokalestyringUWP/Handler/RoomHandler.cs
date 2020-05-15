@@ -39,22 +39,25 @@ namespace LokalestyringUWP.Handler
             if (RoomReference.TimeStart >= RoomReference.TimeEnd)
             {
                 DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid.", "Ugyldigt tidspunkt");
-            } else if (RoomReference.Date < currentDate)
+            } 
+            else if (RoomReference.Date.DateTime < currentDate.Date)
             {
                 DialogHandler.Dialog("Vælg venligst en gyldig dato fra denne måned eller frem", "Ugyldig dato");
             }
             else
             {
             RestoreList();
-            CheckBuilding();
-            CheckRoomtype();
-            CheckDateAndTime();
+                CheckBookingLimit();
+                //CheckBuilding();
+                //CheckRoomtype();
+                //CheckDateAndTime();
             }
         }
         /// <summary>
         /// Filters by selected building. If "Alle" is selected, it doesn't filter. If selected BuildingFilter matches with the building_Letter in RoomList, it is added to the tempList.
         /// RoomList is then cleared and the tempList items is added back to RoomList.
         /// </summary>
+        /// 
         public void CheckBuilding()
         {
             if (RoomReference.SelectedBuildingFilter == "Alle")
@@ -74,8 +77,8 @@ namespace LokalestyringUWP.Handler
             }
 
             }
-
         }
+
         /// <summary>
         /// Filters by selected roomtype. If "Alle" is selected, it doesn't filter. If selected RoomtypeFilter matches with the roomtype in RoomList, it is added to the tempList.
         /// RoomList is then cleared and the tempList items is added back to RoomList.
@@ -100,6 +103,32 @@ namespace LokalestyringUWP.Handler
             }
         }
 
+        public void CheckBookingLimit()
+        {
+            var query = (from b in BookingReference.Bookings
+                         where b.Date.Equals(RoomReference.Date.DateTime) && b.Time_end >= RoomReference.TimeStart && b.Time_start <= RoomReference.TimeEnd
+                         group b by b.Room_Id into RoomGroup
+                         select new
+                         {
+                             LimitKey = RoomGroup.Key,
+                             Count = RoomGroup.Count()
+                         }).ToList();
+
+            foreach (var item in query)
+            {
+                if (item.Count >= 2)
+                {
+                    var query1 = (from r in RoomReference.RoomList
+                                  where r.Room_Id.Equals(item.LimitKey)
+                                  select r).ToList();
+                    foreach (var variable in query1)
+                    {
+                        RoomReference.RoomList.Remove(variable);
+                    }
+                }
+            }
+
+        }
         /// <summary>
         /// Filters by date and time. With LINQ we join the tables from the RoomsView table and the booking table, so we're able to use the date and time properties.
         /// The date and time properties are compared with the selected date and time properties. If the comparison is true (meaning the room is booked), it gets added to the query.

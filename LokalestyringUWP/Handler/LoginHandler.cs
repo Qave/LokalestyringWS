@@ -22,7 +22,7 @@ namespace LokalestyringUWP.Handler
         //This is a global property, so we always know who is logged in
         public static int CurrentUserId { get; set; }
         //This is a bool that shows if the user is a teacher or not, Teachers have more power
-        public static bool IsTeacher { get; set; }
+        public static User SelectedUser { get; set; }
         //Properties for logging in
         public static string UserName { get; set; }
       
@@ -42,7 +42,7 @@ namespace LokalestyringUWP.Handler
                             UserHandler.CurrentUserName = user.User_Name;
                             UserHandler.CurrentUserTeacher = user.Teacher;
                             CurrentUserId = user.User_Id;
-                            IsTeacher = user.Teacher;
+                            SelectedUser = user;
                             return true;
                     }
                 }
