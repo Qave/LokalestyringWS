@@ -12,6 +12,33 @@ namespace LokalestyringUWP.Handler
 {
     public class DialogHandler
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message">The message that needs to be send to the user when the dialog is called</param>
+        /// <param name="title">The Title of the dialog</param>
+        /// <param name="yes">The positive choice of the dialog box (YES)</param>
+        /// <param name="no">The Negative choice of the dialog box (NO)</param>
+        public static async Task<bool> GenericYesNoDialog(string message, string title, string yes, string no)
+        {
+            ContentDialog contentDialog = new ContentDialog
+            {
+                Title = title,
+                Content = message,
+                PrimaryButtonText = yes,
+                SecondaryButtonText = no,
+                DefaultButton = ContentDialogButton.Close
+            };
+            ContentDialogResult result = await contentDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public static async void Dialog(string message, string title)
         {
             ContentDialog contentDialog = new ContentDialog

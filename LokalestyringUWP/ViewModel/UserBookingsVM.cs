@@ -71,7 +71,7 @@ namespace LokalestyringUWP.ViewModel
         public ICommand AflysTavleCommand { get; set; }
         #endregion
 
-        // Properties that is bound to the pageview, that when a value is chosen on the page, that value gets put into these respectively
+        // Properties that is bound to the pageview. When a value is chosen on the page, that value gets put into these properties respectively
         #region Binding Properties
         public TimeSpan TavleBookingStartTime { get; set; }
         public TimeSpan SelectedDuration { get; set; }
@@ -88,9 +88,17 @@ namespace LokalestyringUWP.ViewModel
 
 
         #region Button Command Methods
-        public void AflysBookingMethod()
+        /// <summary>
+        /// Async method that deletes 
+        /// </summary>
+        public async void AflysBookingMethod()
         {
-
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil slette denne bookning?\nTilhørende tavlebookings vil også blive slettet.", "Slet Bookning?", "Ja, Fjern booking", "Fortryd");
+            if (result)
+            {
+                PersistancyService.DeleteFromDatabaseAsync("Bookings", SelectedBooking.Booking_Id);
+            }
+            
         }
 
         #endregion
