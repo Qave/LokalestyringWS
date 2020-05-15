@@ -5,16 +5,19 @@ using LokalestyringUWP.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
+using LokalestyringUWP.Annotations;
 
 namespace LokalestyringUWP.Handler
 {
-    public class RoomHandler
+    public class RoomHandler : INotifyPropertyChanged
     {
         public static BookRoomsVM RoomReference { get; set; }
         public BookingCatalogSingleton BookingReference { get; set; }
@@ -217,10 +220,19 @@ namespace LokalestyringUWP.Handler
                 PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 BookingCatalogSingleton.Instance.Bookings.Add(booking);
                 FilterSearchMethod();
+                RoomReference.RoomIsSelectedCheck = false;
+                OnPropertyChanged(nameof(RoomReference.RoomIsSelectedCheck));
+                
             }
         }
 
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
