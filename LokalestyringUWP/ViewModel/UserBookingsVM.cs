@@ -1,4 +1,5 @@
-﻿using LokalestyringUWP.Handler;
+﻿using LokalestyringUWP.Common;
+using LokalestyringUWP.Handler;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
@@ -11,25 +12,42 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 
 namespace LokalestyringUWP.ViewModel
 {
     public class UserBookingsVM : INotifyPropertyChanged
     {
+        // Private variable that references AllBookingsView, used in the property "SelectedBooking" to return the selected booking.
         private AllBookingsView _selectedBooking;
-        public ObservableCollection<AllBookingsView> AllBookingsViewSingleton { get; set; }
+        // ObservableCollection of type AllBookingsView that is instantiated in the UserBookingsVM constructor
+        public ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton { get; set; }
+        // ObservableCollection of type TavleBooking that is instantiated in the viewmodel constructor
         public ObservableCollection<TavleBooking> Tavlebookings { get; set; }
+
+
         public UserBookingsVM()
         {
-            AllBookingsViewSingleton = new ObservableCollection<AllBookingsView>();
+            AllUserBookingsFromSingleton = new ObservableCollection<AllBookingsView>();
             Tavlebookings = new ObservableCollection<TavleBooking>();
 
-            AllBookingsViewSingleton = AllBookingsViewCatalogSingleton.Instance.AllBookings;
+            // Create copies of the singleton ObservableCollections
+            AllUserBookingsFromSingleton = AllBookingsViewCatalogSingleton.Instance.AllBookings;
             Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
-            BookTavleBtnVisibility = Visibility.Collapsed;
+
+            // Instantiates the ICommands properties with a relaycommand
+            AflysBookingCommand = new RelayCommand(AflysBookingMethod, null);
+
+            // Loads default visibility states
+            OnPageLoadVisibilities();
+
+            // HARD CODED USER ID, for use on the page, as a logged in user.
             UserBookingsOnId(1);
         }
+        /// <summary>
+        /// Returns the selected Booking as type: AllBookingsView
+        /// </summary>
         public AllBookingsView SelectedBooking 
         { 
             get 
@@ -38,56 +56,124 @@ namespace LokalestyringUWP.ViewModel
             {
                 _selectedBooking = value;
                 CheckIfTavleBookingExists();
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(BookTavleBtnVisibility));
+                NoElementsChosenVisibility = Visibility.Collapsed;
+                ElementIsChosenVisibility = Visibility.Visible;
+                OnPropertyChanged();              
+                OnPropertyChanged(nameof(NoElementsChosenVisibility));
+                OnPropertyChanged(nameof(ElementIsChosenVisibility));
             } 
         }
-        
+        // ICommands that gets bound to XAML-Controllers
+        #region Command Properties
+        public ICommand BookIgenImorgenCommand { get; set; }
+        public ICommand BookTavleCommand { get; set; }
+        public ICommand AflysBookingCommand { get; set; }
+        public ICommand AflysTavleCommand { get; set; }
+        #endregion
+
+        // Properties that is bound to the pageview, that when a value is chosen on the page, that value gets put into these respectively
+        #region Binding Properties
+        public TimeSpan TavleBookingStartTime { get; set; }
+        public TimeSpan SelectedDuration { get; set; }
+        #endregion
+
+        // Visibility Properties that is bound to elements that needs to show and hide on the page view
+        #region Visibility Properties
+        public Visibility AflysTavleBtnVisibility { get; set; }
+        public Visibility BookTavleBtnVisibility { get; set; }
+        public Visibility NoElementsChosenVisibility { get; set; }
+        public Visibility ElementIsChosenVisibility { get; set; }
+
+        #endregion
 
 
+        #region Button Command Methods
+        public void AflysBookingMethod()
+        {
 
+        }
+
+        #endregion
+        /// <summary>
+        /// Find and add the bookings for the user that is logged in to ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton
+        /// </summary>
+        /// <param name="userid">The current user's ID</param>
         public void UserBookingsOnId(int userid)
         {
-            var query = (from c in AllBookingsViewSingleton
+
+            // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
+            var query = (from c in AllUserBookingsFromSingleton
                          select c).Where(c => c.User_Id == userid).ToList();
 
-            AllBookingsViewSingleton.Clear();
+            // Clears the ObservableCollection
+            AllUserBookingsFromSingleton.Clear();
+
+            // Adds the queried result to the ObservableCollection
             foreach (var item in query)
             {
-                AllBookingsViewSingleton.Add(item);
+                AllUserBookingsFromSingleton.Add(item);
             }
         }
-        public Visibility BookTavleBtnVisibility
+
+        /// <summary>
+        /// Checks if there is any "tavle" bookings for the selected booking. if there is, change the "BookTavleBtnVisibility" to Visible or Collasped respectively
+        /// </summary>
+        /// <returns>Visiblity</returns>
+        public void CheckIfTavleBookingExists()
         {
-            get;set;
-        }
-        public Visibility CheckIfTavleBookingExists()
-        {
+            // Checks if the selected booking is NULL, if not jump to else
             if (SelectedBooking == null)
             {
-                return BookTavleBtnVisibility = Visibility.Collapsed;
+                AflysTavleBtnVisibility = Visibility.Collapsed;
+                BookTavleBtnVisibility = Visibility.Collapsed;
             }
             else
             {
+                /* 
+                 * Queries the ObservableCollection TavleBookings (Which is a copy from the tavlebookings singleton)
+                 * and checks if TavleBookings contains a booking id that matches that of the selected booking.
+                 * if not, update the visibilities for the buttons "Aflys Tavle" and "Book Tavle" respectively
+                */
                 var query = (from t in Tavlebookings
                              select t).Where(x => x.Booking_Id == SelectedBooking.Booking_Id).ToList();
                 if (query.Count < 1)
                 {
-                    return BookTavleBtnVisibility = Visibility.Collapsed;
+                    AflysTavleBtnVisibility = Visibility.Collapsed;
+                    BookTavleBtnVisibility = Visibility.Visible;
+
                 }
                 else
                 {
-                    return BookTavleBtnVisibility = Visibility.Visible;
+                    BookTavleBtnVisibility = Visibility.Collapsed;
+                    AflysTavleBtnVisibility = Visibility.Visible;
+
                 }
             }
+            // Refreshes the visibility properties
+            OnPropertyChanged(nameof(AflysTavleBtnVisibility));
+            OnPropertyChanged(nameof(BookTavleBtnVisibility));
         }
 
+        /// <summary>
+        /// When the viewmodel (Page) gets loaded or comes into view set default values on visibilities
+        /// </summary>
+        public void OnPageLoadVisibilities()
+        {
+            AflysTavleBtnVisibility = Visibility.Collapsed;
+            ElementIsChosenVisibility = Visibility.Collapsed;
+            NoElementsChosenVisibility = Visibility.Visible;
+        }
 
+        #region INotifyPropertyChanged interface implementation
         public event PropertyChangedEventHandler PropertyChanged;
-
+        /// <summary>
+        /// Refreshes the property on the pageview.
+        /// </summary>
+        /// <param name="propertyName">You can specify the property to update when using "nameof(propertyName)" as a parameter</param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }
