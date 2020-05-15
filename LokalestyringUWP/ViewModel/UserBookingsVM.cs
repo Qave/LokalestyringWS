@@ -92,7 +92,8 @@ namespace LokalestyringUWP.ViewModel
         #region Button Command Methods
         public async void OpretTavleBookingMethod()
         {
-            
+            //var query = (from t in TavleBookingCatalogSingleton.Instance.TavleBookings
+            //             select t).Where(x => x.Tavle_Id == SelectedBooking.Tavle_Id);
         }
         public async void BookIgenImorgenMethod()
         {
