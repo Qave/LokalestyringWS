@@ -162,12 +162,13 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Stretch">
 
-            <GridView ItemTemplate="{StaticResource RoomBookingsTemplate}" ItemsSource="{Binding RoomList}" />
+            <GridView SelectedItem="{Binding SelectedRoomsView, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource RoomBookingsTemplate}" ItemsSource="{Binding RoomList}" />
         </ScrollViewer>
         <Button
             Grid.Row="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
+            Command="{Binding BookSelectedRoomCommand}"
             Background="Gold"
             Content="Book valgt lokale" />
     </Grid>

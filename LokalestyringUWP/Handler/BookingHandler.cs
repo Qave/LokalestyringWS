@@ -20,19 +20,7 @@ namespace LokalestyringUWP.Handler
         public static Room SelectedRoom { get; set; }
 
 
-        public static void CreateBooking()
-        {
-            PersistancyService.SaveBookingAsJsonAsync(new Booking()
-            {
-                Date = SelectedDate,
-                Booking_Id = BookingId,
-                Room_Id = SelectedRoom.Room_Id,
-                TavleBookings = TavleBooking,
-                Time_end = SelectedTimeEnd,
-                Time_start = SelectedTimeStart,
-                User_Id = LoginHandler.SelectedUser.User_Id
-            });
-        }
+        
 
 
     }

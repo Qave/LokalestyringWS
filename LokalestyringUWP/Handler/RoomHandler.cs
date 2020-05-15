@@ -200,5 +200,27 @@ namespace LokalestyringUWP.Handler
             LocationsVM.SelectedLocation = null;
         }
 
+        public async void CreateBooking()
+        {
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke dette lokale?",
+                "Book lokale?", "Ja, tak", "Nej, tak");
+            Booking booking = new Booking()
+            {
+                Date = RoomReference.Date.Date,
+                Room_Id = RoomReference.SelectedRoomsView.Room_Id,
+                Time_end = RoomReference.TimeEnd,
+                Time_start = RoomReference.TimeStart,
+                User_Id = LoginHandler.SelectedUser.User_Id
+            };
+            if (result)
+            {
+                PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
+                BookingCatalogSingleton.Instance.Bookings.Add(booking);
+                FilterSearchMethod();
+            }
+        }
+
+
+
     }
 }
