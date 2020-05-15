@@ -46,7 +46,7 @@ namespace LokalestyringUWP.ViewModel
             CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.OnLogout, null);
         }
         /// <summary>
-        /// Checks if selectedlocation is null if it's not null it changes the page to PageBookRooms
+        /// Checks if selectedlocation is null if it's not null it changes the page to PageBookRooms.
         /// </summary>
         private static void setLocation()
         {
