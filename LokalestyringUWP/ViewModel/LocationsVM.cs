@@ -30,7 +30,6 @@ namespace LokalestyringUWP.ViewModel
             get { return LocationSingleton.Instance.Locations; }
         }
         private static Location _selectedLocation { get; set; }
-        public ICommand LogOutCommand => CommandHandler.LogOutCommand;
         public static Location SelectedLocation
         {
             get { return _selectedLocation; }
@@ -43,7 +42,7 @@ namespace LokalestyringUWP.ViewModel
 
         public LocationsVM()
         {
-            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.OnLogout, null);
+            
         }
         /// <summary>
         /// Checks if selectedlocation is null if it's not null it changes the page to PageBookRooms.

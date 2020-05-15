@@ -19,6 +19,10 @@ namespace LokalestyringUWP.ViewModel
 {
     public class BookRoomsVM : INotifyPropertyChanged
     {
+        private DateTimeOffset _selectedDate;
+        private TimeSpan _timeStart;
+        private TimeSpan _timeEnd;
+
         public ICommand BookSelectedRoomCommand => CommandHandler.BookSelectedRoomCommand;
         public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
         public ICommand GoBackCommand => CommandHandler.GoBackCommand;
@@ -27,6 +31,10 @@ namespace LokalestyringUWP.ViewModel
         public BookRoomsVM()
         {
             RoomHandler = new RoomHandler(this); //SKAL INITIALISERES FØRST
+            Date = DateTimeOffset.Now;
+            Date = Date.Date;
+            TimeStart = DateTime.Now.TimeOfDay;
+            TimeEnd = DateTime.Now.TimeOfDay + TimeSpan.FromHours(4);
             CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
             CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
@@ -34,21 +42,49 @@ namespace LokalestyringUWP.ViewModel
             OnPropertyChanged(nameof(RoomList));
             ResettedList = new ObservableCollection<RoomsView>();
             SelectedRoomtypeFilter = RoomtypeList[0];
-            Date = DateTimeOffset.Now;
-            Date = Date.Date;
-            TimeStart = DateTime.Now.TimeOfDay;
-            TimeEnd = DateTime.Now.TimeOfDay + TimeSpan.FromHours(2);
             SelectedBuildingFilter = BuildingList[0];
-            RoomHandler.RestoreList();
+            RoomHandler.FilterSearchMethod();
         }
 
         public ObservableCollection<RoomsView> ResettedList { get; set; }
         public ObservableCollection<RoomsView> RoomList { get; set; }
 
         public RoomHandler RoomHandler { get; set; }
-        public TimeSpan TimeStart { get; set; }
-        public TimeSpan TimeEnd { get; set; }
-        public DateTimeOffset Date { get; set; }
+        public TimeSpan TimeStart 
+        {
+            get
+            {
+                return _timeStart;
+            }
+            set
+            {
+                _timeStart = value;
+            } 
+        }
+        public TimeSpan TimeEnd 
+        { 
+            get
+            {
+                return _timeEnd;
+            }
+            set
+            {
+                _timeEnd = value;
+            }
+        }
+        public DateTimeOffset Date 
+        {
+            get
+            {
+                return _selectedDate;
+            }
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string SelectedBuildingFilter { get; set; }
         public string SelectedRoomtypeFilter { get; set; }
 
