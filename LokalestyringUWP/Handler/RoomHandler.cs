@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace LokalestyringUWP.Handler
 {
-    class RoomHandler
+    public class RoomHandler
     {
         public static BookRoomsVM RoomReference { get; set; }
         public BookingCatalogSingleton BookingReference { get; set; }
@@ -28,9 +28,15 @@ namespace LokalestyringUWP.Handler
             PersistancyService.SaveRoomAsJsonAsync(obj);
         }
 
+        #region FILTER LOGIC
 
+        //Filters rooms by building, roomtype and date and time.
         public void FilterSearchMethod()
         {
+            if (RoomReference.TimeStart >= RoomReference.TimeEnd || RoomReference.TimeStart == null || RoomReference.TimeEnd == null) //If the chosen time is not valid, a dialog message is shown, asking the user to pick a valid time.
+            {
+                DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid.", "Ugyldigt tidspunkt");
+            }
             RestoreList();
             CheckBuilding();
             CheckRoomtype();
@@ -59,31 +65,6 @@ namespace LokalestyringUWP.Handler
 
         }
 
-        public static void RestoreList()
-        {
-            //ResettedList er en list der bruges til at reset listen til de objekter der findes i databasen. 
-            if (RoomReference.ResettedList.Count == 0)
-            {
-                foreach (var item in RoomsViewCatalogSingleton.Instance.RoomsView)
-                {
-                    RoomReference.ResettedList.Add(item);
-                }
-                var query = (from q in RoomReference.ResettedList
-                            where RoomReference.selectedLocation == q.City
-                            select q).ToList();
-                RoomReference.ResettedList.Clear();
-                foreach (var item in query)
-                {
-                    RoomReference.ResettedList.Add(item);
-                }
-            }
-
-            RoomReference.RoomList.Clear();
-            foreach (var item in RoomReference.ResettedList)
-            {
-                RoomReference.RoomList.Add(item);
-            }
-        }
         public void CheckRoomtype()
         {
             if (RoomReference.SelectedRoomtypeFilter == "Alle")
@@ -123,6 +104,34 @@ namespace LokalestyringUWP.Handler
             //    RoomReference.RoomList.Add(item);
             //}
 
+        }
+
+        #endregion
+
+        //This method is used to "reset" the list, so every time you want to change filter, you can do it on the fly without having to restart the program. 
+        public static void RestoreList()
+        {
+            if (RoomReference.ResettedList.Count == 0)
+            {
+                foreach (var item in RoomsViewCatalogSingleton.Instance.RoomsView)
+                {
+                    RoomReference.ResettedList.Add(item); //Adds all items from the singleton into a new resetted list, that we can use to filter with.
+                }
+                var query = (from q in RoomReference.ResettedList
+                             where RoomReference.selectedLocation == q.City
+                             select q).ToList();
+                RoomReference.ResettedList.Clear();
+                foreach (var item in query)
+                {
+                    RoomReference.ResettedList.Add(item);
+                }
+            }
+
+            RoomReference.RoomList.Clear();
+            foreach (var item in RoomReference.ResettedList)
+            {
+                RoomReference.RoomList.Add(item);
+            }
         }
 
         public static void GoBackMethod()

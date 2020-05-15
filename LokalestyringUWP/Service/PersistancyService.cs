@@ -35,7 +35,7 @@ namespace LokalestyringUWP.Service
 
                 try
                 {
-                    var response = client.GetAsync("api/"+uriIdentifier).Result;
+                    var response = client.GetAsync("api/" + uriIdentifier).Result;
                     var tableData = await response.Content.ReadAsAsync<IEnumerable<T>>();
 
                     if (response.IsSuccessStatusCode)
@@ -212,6 +212,33 @@ namespace LokalestyringUWP.Service
                 }
             }
             return null;
+        }
+        #endregion
+
+        #region Booking Persistancy
+
+
+        public static async void SaveBookingAsJsonAsync(Booking bookingObj)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    var response = client.PostAsJsonAsync("api/Booking", bookingObj).Result;
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
         }
         #endregion
     }
