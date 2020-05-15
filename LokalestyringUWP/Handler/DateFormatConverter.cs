@@ -15,7 +15,6 @@ namespace LokalestyringUWP.Handler
             string dt = "";
             if (value == null)
                 return null;
-
             if (value.GetType() == typeof(DateTime))
             {
                 dt = DateTime.Parse(value.ToString()).ToString("dd/MM/hh");
