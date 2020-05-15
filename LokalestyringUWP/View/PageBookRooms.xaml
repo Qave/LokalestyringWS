@@ -138,11 +138,11 @@
                 VerticalAlignment="Top">
                 <TimePicker
                     ClockIdentifier="24HourClock"
-                    Header="Tid:"
+                    Header="Starttid:"
                     SelectedTime="{Binding TimeStart, Mode=TwoWay}" />
                 <TimePicker
                     ClockIdentifier="24HourClock"
-                    Header="Til"
+                    Header="Sluttid"
                     SelectedTime="{Binding TimeEnd, Mode=TwoWay}" />
 
             </StackPanel>

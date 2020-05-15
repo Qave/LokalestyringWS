@@ -20,13 +20,13 @@ namespace LokalestyringUWP.ViewModel
     public class BookRoomsVM : INotifyPropertyChanged
     {
         public ICommand BookSelectedRoomCommand => CommandHandler.BookSelectedRoomCommand;
-        public ICommand FilterSearchCommand => CommandHandler.BookSelectedRoomCommand;
+        public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
         public ICommand GoBackCommand => CommandHandler.GoBackCommand;
         public string selectedLocation => LocationsVM.SelectedLocation.City;
        
         public BookRoomsVM()
         {
-            RoomHandler = new RoomHandler(this); // SKAL INITIALISERES FØRST
+            RoomHandler = new RoomHandler(this); //SKAL INITIALISERES FØRST
             CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
             CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
@@ -36,6 +36,8 @@ namespace LokalestyringUWP.ViewModel
             SelectedRoomtypeFilter = RoomtypeList[0];
             Date = DateTimeOffset.Now;
             Date = Date.Date;
+            TimeStart = DateTime.Now.TimeOfDay;
+            TimeEnd = DateTime.Now.TimeOfDay + TimeSpan.FromHours(2);
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.RestoreList();
         }
