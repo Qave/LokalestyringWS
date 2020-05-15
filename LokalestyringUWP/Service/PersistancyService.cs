@@ -16,10 +16,10 @@ namespace LokalestyringUWP.Service
 
         #region generic load table
         /// <summary>
-        /// Generic metode til at load data fra databasen via den specificerede tabel, via HTTP requests
+        /// Generic method for loading data from the database via the specified tabel, using HTTP Requests
         /// </summary>
-        /// <typeparam name="T">Typen på den Table to vil have data fra. For eksempel: Booking </typeparam>
-        /// <param name="uriIdentifier">Den string (I flertal) der skal kaldes i URL'en for at kalde HTTP requests For eksempel: api/bookings, hvor "Bookings" skal skrives i uriIdentifier</param>
+        /// <typeparam name="T">The type of the table you want to load data from. For exampel: Booking</typeparam>
+        /// <param name="uriIdentifier">The string that represents the table (in plural) that gets called in the URL to call HTTP requests. For exampel: api/Bookings, where "Bookings" needs to be specified in the uriIdentifier</param>
         /// <returns></returns>
         public static async Task<ObservableCollection<T>> LoadTableFromJsonAsync<T>(string uriIdentifier)
         {
@@ -54,6 +54,36 @@ namespace LokalestyringUWP.Service
                 }
             }
             return null;
+        }
+        #endregion
+
+        #region Generic Insert
+        /// <summary>
+        /// A generic method for saving data to the database
+        /// </summary>
+        /// <typeparam name="T">Type of the object that needs to be saved to the database</typeparam>
+        /// <param name="obj">The object that will get passed through and saved to the database</param>
+        /// <param name="uriIdentifier">The string that represents the table (in plural) that gets called in the URL to call HTTP requests. For exampel: api/Bookings, where "Bookings" needs to be specified in the uriIdentifier</param>
+        public static async void SaveInsertAsJsonAsync<T>(T obj, string uriIdentifier)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+            handler.UseDefaultCredentials = true;
+            using (var client = new HttpClient(handler))
+            {
+                client.BaseAddress = new Uri(serverUrl);
+                client.DefaultRequestHeaders.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+
+                try
+                {
+                    var response = await client.PostAsJsonAsync("api/"+ uriIdentifier, obj);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
         }
         #endregion
 
