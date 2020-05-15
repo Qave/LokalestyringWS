@@ -39,6 +39,7 @@ namespace LokalestyringUWP.ViewModel
             // Instantiates the ICommands properties with a relaycommand
             AflysBookingCommand = new RelayCommand(AflysBookingMethod, null);
             AflysTavleCommand = new RelayCommand(AflysTavleBookingMethod, null);
+            BookTavleCommand = new RelayCommand(BookTavleMethod, null);
 
             // Loads default visibility states
             OnPageLoadVisibilities();
@@ -56,7 +57,9 @@ namespace LokalestyringUWP.ViewModel
             set
             {
                 _selectedBooking = value;
+
                 CheckIfTavleBookingExists();
+                // Updates the view when a booking is selected
                 NoElementsChosenVisibility = Visibility.Collapsed;
                 ElementIsChosenVisibility = Visibility.Visible;
                 OnPropertyChanged();              
@@ -75,7 +78,7 @@ namespace LokalestyringUWP.ViewModel
 
         // Properties that is bound to the pageview. When a value is chosen on the page, that value gets put into these properties respectively
         #region Binding Properties
-        public TimeSpan TavleBookingStartTime { get; set; }
+        public TimeSpan SelectedTavleStartTime { get; set; }
         public TimeSpan SelectedDuration { get; set; }
 
         #endregion
@@ -86,15 +89,42 @@ namespace LokalestyringUWP.ViewModel
         public Visibility BookTavleBtnVisibility { get; set; }
         public Visibility NoElementsChosenVisibility { get; set; }
         public Visibility ElementIsChosenVisibility { get; set; }
+
+        public bool TavleButtonsEnabled { get; set; }
         #endregion
 
 
         #region Button Command Methods
-        public async void OpretTavleBookingMethod()
+        /// <summary>
+        /// Method for inserting a booking into the database.
+        /// </summary>
+        public async void BookTavleMethod()
         {
-            //var query = (from t in TavleBookingCatalogSingleton.Instance.TavleBookings
-            //             select t).Where(x => x.Tavle_Id == SelectedBooking.Tavle_Id);
+            TimeSpan totalTavleTime = SelectedTavleStartTime.Add(SelectedDuration);
+
+            if (true)
+            {
+
+            }
+
+            //Selected Duration = 2 timer
+            // TavlebookingStartTime = 09:00:00
+            if (SelectedBooking.Type == "Klasselokale")
+            {
+                var query = (from t in Tavlebookings
+                             join b in AllUserBookingsFromSingleton on t.Booking_Id equals b.Booking_Id
+                             select b);
+                foreach (var item in query)
+                {
+
+                }
+            }
+            //PersistancyService.SaveInsertAsJsonAsync(new TavleBooking() {Booking_Id = SelectedBooking.Booking_Id, Time_start = SelectedTavleStartTime, Time_end }, "TavleBookings");
+
         }
+        /// <summary>
+        /// This method books the selected booking/room, again tomorrow, is that is possible.
+        /// </summary>
         public async void BookIgenImorgenMethod()
         {
             //PersistancyService.SaveInsertAsJsonAsync(SelectedBooking, "Bookings");
@@ -144,6 +174,8 @@ namespace LokalestyringUWP.ViewModel
                     TavleBookingCatalogSingleton.Instance.TavleBookings.Remove(_selectedTavleBooking);
                     SelectedBooking.TavleStart = null;
                     SelectedBooking.TavleEnd = null;
+
+                    //Update the viewpage
                     AflysTavleBtnVisibility = Visibility.Collapsed;
                     BookTavleBtnVisibility = Visibility.Visible;
                     OnPropertyChanged(nameof(AflysTavleBtnVisibility));
@@ -188,6 +220,7 @@ namespace LokalestyringUWP.ViewModel
             // Checks if the selected booking is NULL, if not jump to else
             if (SelectedBooking == null)
             {
+                TavleButtonsEnabled = false;
                 AflysTavleBtnVisibility = Visibility.Collapsed;
                 BookTavleBtnVisibility = Visibility.Collapsed;
             }
@@ -204,18 +237,21 @@ namespace LokalestyringUWP.ViewModel
                 {
                     AflysTavleBtnVisibility = Visibility.Collapsed;
                     BookTavleBtnVisibility = Visibility.Visible;
+                    TavleButtonsEnabled = true;
 
                 }
                 else
                 {
-                    BookTavleBtnVisibility = Visibility.Collapsed;
                     AflysTavleBtnVisibility = Visibility.Visible;
+                    BookTavleBtnVisibility = Visibility.Collapsed;
+                    TavleButtonsEnabled = false;
 
                 }
             }
             // Refreshes the visibility properties
             OnPropertyChanged(nameof(AflysTavleBtnVisibility));
             OnPropertyChanged(nameof(BookTavleBtnVisibility));
+            OnPropertyChanged(nameof(TavleButtonsEnabled));
         }
 
         /// <summary>
