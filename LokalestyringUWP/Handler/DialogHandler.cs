@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.View;
+using LokalestyringUWP.ViewModel;
 
 namespace LokalestyringUWP.Handler
 {
@@ -66,6 +67,7 @@ namespace LokalestyringUWP.Handler
             if (resultYesNo == ContentDialogResult.Primary)
             {
                 ((Frame)Window.Current.Content).Navigate(typeof(PageLogin));
+                LocationsVM.SelectedLocation = null;
             }
             else
             {

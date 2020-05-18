@@ -14,6 +14,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using LokalestyringUWP.Annotations;
+using LokalestyringUWP.View;
 
 namespace LokalestyringUWP.Handler
 {
@@ -229,7 +230,7 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public static void GoBackMethod()
         {
-            ((Frame)Window.Current.Content).GoBack();
+            ((Frame)Window.Current.Content).Navigate(typeof(PageLocations));
             LocationsVM.SelectedLocation = null;
         }
 
