@@ -23,6 +23,7 @@ namespace LokalestyringUWP.ViewModel
         private TimeSpan _timeStart;
         private TimeSpan _timeEnd;
         private RoomsView _selectedRoomsView;
+
         public RelayCommand BookSelectedRoomCommand { get; set; }
         public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
         public ICommand GoBackCommand => CommandHandler.GoBackCommand;

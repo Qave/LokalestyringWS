@@ -239,7 +239,7 @@ namespace LokalestyringUWP.Handler
             {
                 if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date == RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd)
                 {
-                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "Søde ven");
+                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "Skift tid eller dato");
                     variable = false;
                     break;
                 }
@@ -260,7 +260,9 @@ namespace LokalestyringUWP.Handler
                 {
                     BookingReference.Bookings.Add(booking);
                     FilterSearchMethod();
-                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket ... d. {RoomReference.Date.ToString("dd/MM/yyyy")} mellem {RoomReference.TimeStart.TotalHours}:{RoomReference.TimeStart.TotalMinutes} og {RoomReference.TimeEnd}");
+                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket ... " +
+                        $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
+                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.");
                     RoomReference.SelectedRoomsView = null;
                     PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
