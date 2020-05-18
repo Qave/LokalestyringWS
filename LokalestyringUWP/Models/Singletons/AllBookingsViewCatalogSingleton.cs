@@ -21,8 +21,9 @@ namespace LokalestyringUWP.Models.Singletons
             LoadAllBookingsAsync();
         }
 
-        public async Task LoadAllBookingsAsync()
+        public async void LoadAllBookingsAsync()
         {
+            
             ObservableCollection<AllBookingsView> allBookings = await PersistancyService.LoadTableFromJsonAsync<AllBookingsView>("AllBookingsViews");
 
             foreach (var item in allBookings)

@@ -307,12 +307,12 @@
                                         <TextBlock
                                             Grid.Column="0"
                                             FontSize="18"
-                                            Text="{Binding RoomName}" />
+                                            Text="{Binding RoomName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBlock
                                             Grid.Column="1"
                                             HorizontalAlignment="Right"
                                             FontSize="18"
-                                            Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
+                                            Text="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource DateToStringFormatConverter}}" />
                                     </Grid>
                                 </Border>
                             </DataTemplate>

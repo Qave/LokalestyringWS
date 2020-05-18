@@ -25,7 +25,7 @@ namespace LokalestyringUWP.ViewModel
         // Private variable that references AllBookingsView, used in the property "SelectedBooking" to return the selected booking.
         private AllBookingsView _selectedBooking;
         // Should get all the bookings in the "AllBookingsView", this is ALL the bookings in the database. Instantiated in the constructor
-        public ObservableCollection<AllBookingsView> AllBookingsList { get; set; }
+            // public ObservableCollection<AllBookingsView> AllBookingsList { get; set; }
         // ObservableCollection of type AllBookingsView that is instantiated in the UserBookingsVM constructor.
         public ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton { get; set; }
         // ObservableCollection of type TavleBooking that is instantiated in the viewmodel constructor
@@ -39,8 +39,7 @@ namespace LokalestyringUWP.ViewModel
             Tavlebookings = new ObservableCollection<TavleBooking>();
 
             // Refreshes the AllBookingsList with the list from the singleton
-            RefreshList();
-
+            //RefreshList();
             Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
 
             // Instantiates the ICommands properties with a relaycommand
@@ -158,7 +157,7 @@ namespace LokalestyringUWP.ViewModel
             };
 
             // Checks how many instances there is of this selectedbooking's specific room.
-            var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsList
+            var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
                                         select b).Where(x => SelectedBooking.Room_Id == x.Room_Id && x.Date == tomorrow).ToList();
 
             if (howManyOfThisRoomTomorrowQuery.Count > 0)
@@ -170,7 +169,7 @@ namespace LokalestyringUWP.ViewModel
                 if (checkTime.Count < 1)
                 {
                     // Inserts the selectedbooking into the database and updates the singleton                  
-                    await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                    PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
                 }
                 else
                 {
@@ -180,29 +179,31 @@ namespace LokalestyringUWP.ViewModel
             }
             else
             {
-                //BookingCatalogSingleton.Instance.Bookings.Add(updatedBooking);
-                await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
                 RefreshList();
             }
         }
 
         public async void RefreshList()
         {
-            AllBookingsList = new ObservableCollection<AllBookingsView>();
-            //var query = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
-            //            select b).ToList();
-            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
-            await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
-            foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings)
-            {
-                AllBookingsList.Add(item);
-            }
+
+            //AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            //AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
+            //AllUserBookingsFromSingleton.Clear();
+            //foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings.ToList())
+            //{
+            //    AllUserBookingsFromSingleton.Add(item);
+            //}
+            UserBookingsOnId(1);
+
 
         }
-        /// <summary>
-        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
-        /// </summary>
-        public async void AflysBookingMethod()
+
+            //}
+            /// <summary>
+            /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
+            /// </summary>
+            public async void AflysBookingMethod()
         {
             // Checks if the user wants to delete the booking, or not
             var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
@@ -264,9 +265,8 @@ namespace LokalestyringUWP.ViewModel
         /// <param name="userid">The current user's ID</param>
         public void UserBookingsOnId(int userid)
         {
-
             // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
-            var query = (from c in AllBookingsList
+            var query = (from c in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          select c).Where(c => c.User_Id == userid).ToList();
             // Adds the queried result to the ObservableCollection
             foreach (var item in query)
