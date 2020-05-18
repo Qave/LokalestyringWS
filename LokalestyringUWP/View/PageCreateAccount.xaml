@@ -55,7 +55,7 @@
             Width="300"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
-            <TextBox Header="Brugernavn:" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Header="Navn:" Text="{Binding UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Header="Email:" Text="{Binding Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Header="Password:" Text="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <CheckBox
