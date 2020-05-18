@@ -50,7 +50,7 @@ namespace LokalestyringUWP.Handler
             }
         }
         //this method has to be bound to the login button, in the PageLogin view
-        public static void OnLogin()
+        public static void Login()
         {
             UserCatalogSingleton.Instance.LoadUsersAsync();
             if (UserName != null && Password != null) // Makes sure that password and username is filled out
@@ -71,19 +71,15 @@ namespace LokalestyringUWP.Handler
             }
         }
 
-        public static void OnLogout()
+        public static void Logout()
         {
             DialogHandler.LogOutDialog("Er du sikker på du vil logge ud?", "Log ud");
         }
 
-        public static void OnCreateAccount()
+        public static void CreateAccount()
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageCreateAccount));
         }
-
-
-
-
     }
 }
 

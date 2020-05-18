@@ -19,7 +19,7 @@ namespace LokalestyringUWP.ViewModel
 
         public BurgerMenuVM()
         {
-            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.OnLogout, null);
+            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
             //GoToUserBookingsCommand = new RelayCommand(GoToUserBookingsMethod, null);
         }
         //public void GoToUserBookingsMethod()

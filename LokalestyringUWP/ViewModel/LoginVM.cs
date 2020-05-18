@@ -28,9 +28,9 @@ namespace LokalestyringUWP.ViewModel
 
        public LoginVM()
         {
-            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.OnLogout,null);
-            CommandHandler.LoginCommand = new RelayCommand(LoginHandler.OnLogin, null);
-            CommandHandler.CreateAccountCommand = new RelayCommand(LoginHandler.OnCreateAccount, null);
+            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.Logout,null);
+            CommandHandler.LoginCommand = new RelayCommand(LoginHandler.Login, null);
+            CommandHandler.CreateAccountCommand = new RelayCommand(LoginHandler.CreateAccount, null);
             //UserCatalogSingleton.Instance.LoadUsersAsync();
             UserCatalogSingleton abc = UserCatalogSingleton.Instance;
         }
