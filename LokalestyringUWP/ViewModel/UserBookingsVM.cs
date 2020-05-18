@@ -221,10 +221,11 @@ namespace LokalestyringUWP.ViewModel
                 User_Name = SelectedBooking.User_Name,
                 User_Email = SelectedBooking.User_Email
             };
+
             AllUserBookingsFromSingleton.Add(viewToAdd);
             SelectedBooking = AllUserBookingsFromSingleton.Last();
             //UserBookingsOnId(1);
-            AllUserBookingsFromSingleton.Clear();
+            //AllUserBookingsFromSingleton.Clear();
         }
         public void RefreshList()
         {
