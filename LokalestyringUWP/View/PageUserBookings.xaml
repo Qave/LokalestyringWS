@@ -189,7 +189,8 @@
                             Background="#B2FFA9"
                             BorderBrush="#2FAB21"
                             BorderThickness="1"
-                            Content="Book igen imorgen" />
+                            Content="Book igen imorgen" 
+                            Command="{Binding BookIgenImorgenCommand}"/>
                     </StackPanel>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <Button

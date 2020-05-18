@@ -23,7 +23,9 @@ namespace LokalestyringUWP.ViewModel
     {
         // Private variable that references AllBookingsView, used in the property "SelectedBooking" to return the selected booking.
         private AllBookingsView _selectedBooking;
-        // ObservableCollection of type AllBookingsView that is instantiated in the UserBookingsVM constructor
+        // Should get all the bookings in the "AllBookingsView", this is ALL the bookings in the database. Instantiated in the constructor
+        public ObservableCollection<AllBookingsView> AllBookingsList { get; set; }
+        // ObservableCollection of type AllBookingsView that is instantiated in the UserBookingsVM constructor.
         public ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton { get; set; }
         // ObservableCollection of type TavleBooking that is instantiated in the viewmodel constructor
         public ObservableCollection<TavleBooking> Tavlebookings { get; set; }
@@ -31,23 +33,26 @@ namespace LokalestyringUWP.ViewModel
 
         public UserBookingsVM()
         {
+            // Gets filled with the bookings from the selected user on the UserBookingsOnId Method.
             AllUserBookingsFromSingleton = new ObservableCollection<AllBookingsView>();
             Tavlebookings = new ObservableCollection<TavleBooking>();
 
             // Create copies of the singleton ObservableCollections
-            AllUserBookingsFromSingleton = AllBookingsViewCatalogSingleton.Instance.AllBookings;
+            AllBookingsList = AllBookingsViewCatalogSingleton.Instance.AllBookings;
+
             Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
 
             // Instantiates the ICommands properties with a relaycommand
             AflysBookingCommand = new RelayCommand(AflysBookingMethod, null);
             AflysTavleCommand = new RelayCommand(AflysTavleBookingMethod, null);
             BookTavleCommand = new RelayCommand(BookTavleMethod, null);
-            GoBackCommand = new RelayCommand(GoBackMethod ,null);
+            GoBackCommand = new RelayCommand(GoBackMethod ,null);  // DEN ER NULL; FIX DEN xD
+            BookIgenImorgenCommand = new RelayCommand(BookIgenImorgenMethod, null);
 
             // Loads default visibility states
             OnPageLoadVisibilities();
 
-            // HARD CODED USER ID, for use on the page, as a logged in user.
+            // Filters the bookings to only show bookings for the selected user. HARD CODED USER ID, for use on the page, as a logged in user.
             UserBookingsOnId(1);
         }
         /// <summary>
@@ -139,8 +144,40 @@ namespace LokalestyringUWP.ViewModel
         /// </summary>
         public async void BookIgenImorgenMethod()
         {
+
+            DateTime tomorrow = SelectedBooking.Date.AddDays(1);
+            // er imorgendato == date ? og er selectedstart >= bookingend? || selectedend <= bookingstart ?
+
+            var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsList
+                                        select b).Where(x => SelectedBooking.Room_Id == x.Room_Id && x.Date == tomorrow).ToList();
+            if (howManyOfThisRoomTomorrowQuery.Count == 0)
+            {
+                // INSERT
+            }
+            else
+            {
+                var checkTime = (from b in howManyOfThisRoomTomorrowQuery
+                              select b).Where(x => SelectedBooking.BookingStart <= x.BookingEnd || SelectedBooking.BookingEnd >= x.BookingStart).ToList();
+                if (checkTime.Count > 0)
+                {
+                    //DialogHandler.Dialog("");
+                }
+            }
+
+            //if (howManyOfThisRoomTomorrowQuery.Count == 0)
+            //{
+            //    // INSERT
+            //}
+            //else
+            //{
+            //    var test = (from b in AllUserBookingsFromSingleton
+            //                 select b).Where(x => x.Room_Id == SelectedBooking.Room_Id && x.Date == tomorrow && SelectedBooking.BookingStart >= x.BookingEnd || SelectedBooking.BookingEnd <= x.BookingStart);
+            //    // check start end time
+
+            //}
             //PersistancyService.SaveInsertAsJsonAsync(SelectedBooking, "Bookings");
         }
+
 
         /// <summary>
         /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
@@ -210,12 +247,8 @@ namespace LokalestyringUWP.ViewModel
         {
 
             // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
-            var query = (from c in AllUserBookingsFromSingleton
+            var query = (from c in AllBookingsList
                          select c).Where(c => c.User_Id == userid).ToList();
-
-            // Clears the ObservableCollection
-            AllUserBookingsFromSingleton.Clear();
-
             // Adds the queried result to the ObservableCollection
             foreach (var item in query)
             {
