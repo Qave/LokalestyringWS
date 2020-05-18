@@ -4,6 +4,7 @@ using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
 using LokalestyringUWP.View;
+using MoreLinq.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,8 +38,8 @@ namespace LokalestyringUWP.ViewModel
             AllUserBookingsFromSingleton = new ObservableCollection<AllBookingsView>();
             Tavlebookings = new ObservableCollection<TavleBooking>();
 
-            // Create copies of the singleton ObservableCollections
-            AllBookingsList = AllBookingsViewCatalogSingleton.Instance.AllBookings;
+            // Refreshes the AllBookingsList with the list from the singleton
+            RefreshList();
 
             Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
 
@@ -144,41 +145,60 @@ namespace LokalestyringUWP.ViewModel
         /// </summary>
         public async void BookIgenImorgenMethod()
         {
-
+            // Retrieves the day after the selectedbooking date.
             DateTime tomorrow = SelectedBooking.Date.AddDays(1);
-            // er imorgendato == date ? og er selectedstart >= bookingend? || selectedend <= bookingstart ?
+            // The copied booking that needs to be inserted into the database with the updated date.
+            Booking updatedBooking = new Booking()
+            {
+                User_Id = 1,
+                Room_Id = SelectedBooking.Room_Id,
+                Date = tomorrow,
+                Time_start = (TimeSpan)SelectedBooking.BookingStart,
+                Time_end = (TimeSpan)SelectedBooking.BookingEnd
+            };
 
+            // Checks how many instances there is of this selectedbooking's specific room.
             var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsList
                                         select b).Where(x => SelectedBooking.Room_Id == x.Room_Id && x.Date == tomorrow).ToList();
-            if (howManyOfThisRoomTomorrowQuery.Count == 0)
+
+            if (howManyOfThisRoomTomorrowQuery.Count > 0)
             {
-                // INSERT
+                // checks if there is any instances that overlaps the selectedbookings's time
+                var checkTime = (from b in howManyOfThisRoomTomorrowQuery
+                                 select b).Where(x => SelectedBooking.BookingStart > x.BookingStart && SelectedBooking.BookingStart < x.BookingEnd || SelectedBooking.BookingEnd > x.BookingStart && SelectedBooking.BookingEnd < x.BookingEnd).ToList();
+                // If 0
+                if (checkTime.Count < 1)
+                {
+                    // Inserts the selectedbooking into the database and updates the singleton                  
+                    await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                }
+                else
+                {
+                    // Error message that displays if there already exists a booking in the database that overlaps with the selectedbooking on the day after the selectedbooking date
+                    DialogHandler.Dialog("Denne booking kan ikke bookes imorgen\nda den overlapper eksisterende bookninger", "Overlappende Bookninger");
+                }
             }
             else
             {
-                var checkTime = (from b in howManyOfThisRoomTomorrowQuery
-                              select b).Where(x => SelectedBooking.BookingStart <= x.BookingEnd || SelectedBooking.BookingEnd >= x.BookingStart).ToList();
-                if (checkTime.Count > 0)
-                {
-                    //DialogHandler.Dialog("");
-                }
+                //BookingCatalogSingleton.Instance.Bookings.Add(updatedBooking);
+                await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                RefreshList();
             }
-
-            //if (howManyOfThisRoomTomorrowQuery.Count == 0)
-            //{
-            //    // INSERT
-            //}
-            //else
-            //{
-            //    var test = (from b in AllUserBookingsFromSingleton
-            //                 select b).Where(x => x.Room_Id == SelectedBooking.Room_Id && x.Date == tomorrow && SelectedBooking.BookingStart >= x.BookingEnd || SelectedBooking.BookingEnd <= x.BookingStart);
-            //    // check start end time
-
-            //}
-            //PersistancyService.SaveInsertAsJsonAsync(SelectedBooking, "Bookings");
         }
 
+        public async void RefreshList()
+        {
+            AllBookingsList = new ObservableCollection<AllBookingsView>();
+            //var query = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
+            //            select b).ToList();
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
+            foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings)
+            {
+                AllBookingsList.Add(item);
+            }
 
+        }
         /// <summary>
         /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
         /// </summary>
@@ -193,13 +213,12 @@ namespace LokalestyringUWP.ViewModel
                 PersistancyService.DeleteFromDatabaseAsync("Bookings", SelectedBooking.Booking_Id);
 
                 // Deletes the selected object from the singleton observable collection
-                AllBookingsViewCatalogSingleton.Instance.AllBookings.Remove(SelectedBooking);
+                AllUserBookingsFromSingleton.Remove(SelectedBooking);
                 // Update the view
                 ElementIsChosenVisibility = Visibility.Collapsed;
                 NoElementsChosenVisibility = Visibility.Visible;
                 OnPropertyChanged(nameof(ElementIsChosenVisibility));
                 OnPropertyChanged(nameof(NoElementsChosenVisibility));
-
             }            
         }
         /// <summary>
@@ -298,6 +317,8 @@ namespace LokalestyringUWP.ViewModel
             OnPropertyChanged(nameof(BookTavleBtnVisibility));
             OnPropertyChanged(nameof(TavleButtonsEnabled));
         }
+
+
 
         /// <summary>
         /// When the viewmodel (Page) gets loaded or comes into view set default values on visibilities

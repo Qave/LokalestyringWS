@@ -60,7 +60,7 @@ namespace LokalestyringUWP.Service
         /// <typeparam name="T">Type of the object that needs to be saved to the database.</typeparam>
         /// <param name="obj">The object that will get passed through and saved to the database.</param>
         /// <param name="uriIdentifier">The string that represents the table (in plural) that gets called in the URL to call HTTP requests. For exampel: api/Bookings, where "Bookings" needs to be specified in the uriIdentifier.</param>
-        public static async void SaveInsertAsJsonAsync<T>(T obj, string uriIdentifier)
+        public static async Task SaveInsertAsJsonAsync<T>(T obj, string uriIdentifier)
         {
             HttpClientHandler handler = new HttpClientHandler();
             handler.UseDefaultCredentials = true;
