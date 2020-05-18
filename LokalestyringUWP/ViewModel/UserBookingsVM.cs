@@ -142,11 +142,51 @@ namespace LokalestyringUWP.ViewModel
         /// <summary>
         /// This method books the selected booking/room, again tomorrow, is that is possible.
         /// </summary>
-        public async void BookIgenImorgenMethod()
+        public void BookIgenImorgenMethod()
         {
+
+
+
+            //// The copied booking that needs to be inserted into the database with the updated date.
+            //Booking updatedBooking = new Booking()
+            //{
+            //    User_Id = 1,
+            //    Room_Id = SelectedBooking.Room_Id,
+            //    Date = tomorrow,
+            //    Time_start = (TimeSpan)SelectedBooking.BookingStart,
+            //    Time_end = (TimeSpan)SelectedBooking.BookingEnd
+            //};
+
+            //// Checks how many instances there is of this selectedbooking's specific room.
+            //var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
+            //                            select b).Where(x => SelectedBooking.Room_Id == x.Room_Id && x.Date == tomorrow).ToList();
+
+            //if (howManyOfThisRoomTomorrowQuery.Count > 0)
+            //{
+            //    // checks if there is any instances that overlaps the selectedbookings's time
+            //    var checkTime = (from b in howManyOfThisRoomTomorrowQuery
+            //                     select b).Where(x => SelectedBooking.BookingStart > x.BookingStart && SelectedBooking.BookingStart < x.BookingEnd || SelectedBooking.BookingEnd > x.BookingStart && SelectedBooking.BookingEnd < x.BookingEnd).ToList();
+            //    // If 0
+            //    if (checkTime.Count < 1)
+            //    {
+            //        // Inserts the selectedbooking into the database and updates the singleton                  
+            //        PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+            //    }
+            //    else
+            //    {
+            //        // Error message that displays if there already exists a booking in the database that overlaps with the selectedbooking on the day after the selectedbooking date
+            //        DialogHandler.Dialog("Denne booking kan ikke bookes imorgen\nda den overlapper eksisterende bookninger", "Overlappende Bookninger");
+            //    }
+            //}
+            //else
+            //{
+            //    PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+            //    RefreshList();
+            //}
+
             // Retrieves the day after the selectedbooking date.
             DateTime tomorrow = SelectedBooking.Date.AddDays(1);
-            // The copied booking that needs to be inserted into the database with the updated date.
+
             Booking updatedBooking = new Booking()
             {
                 User_Id = 1,
@@ -156,35 +196,37 @@ namespace LokalestyringUWP.ViewModel
                 Time_end = (TimeSpan)SelectedBooking.BookingEnd
             };
 
-            // Checks how many instances there is of this selectedbooking's specific room.
-            var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
-                                        select b).Where(x => SelectedBooking.Room_Id == x.Room_Id && x.Date == tomorrow).ToList();
-
-            if (howManyOfThisRoomTomorrowQuery.Count > 0)
+            Task<Booking> returnedObj = PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+            SelectedBooking.Booking_Id = returnedObj.Result.Booking_Id;
+            AllBookingsView viewToAdd = new AllBookingsView()
             {
-                // checks if there is any instances that overlaps the selectedbookings's time
-                var checkTime = (from b in howManyOfThisRoomTomorrowQuery
-                                 select b).Where(x => SelectedBooking.BookingStart > x.BookingStart && SelectedBooking.BookingStart < x.BookingEnd || SelectedBooking.BookingEnd > x.BookingStart && SelectedBooking.BookingEnd < x.BookingEnd).ToList();
-                // If 0
-                if (checkTime.Count < 1)
-                {
-                    // Inserts the selectedbooking into the database and updates the singleton                  
-                    PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
-                }
-                else
-                {
-                    // Error message that displays if there already exists a booking in the database that overlaps with the selectedbooking on the day after the selectedbooking date
-                    DialogHandler.Dialog("Denne booking kan ikke bookes imorgen\nda den overlapper eksisterende bookninger", "Overlappende Bookninger");
-                }
-            }
-            else
-            {
-                PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
-                RefreshList();
-            }
+                RoomName = SelectedBooking.RoomName,
+                Date = tomorrow,
+                Booking_Id = returnedObj.Result.Booking_Id,
+                BookingStart = SelectedBooking.BookingStart,
+                BookingEnd = SelectedBooking.BookingEnd,
+                Room_Id = SelectedBooking.Room_Id,
+                Floor = SelectedBooking.Floor,
+                No = SelectedBooking.No,
+                Loc_Id = SelectedBooking.Loc_Id,
+                Name = SelectedBooking.Name,
+                City = SelectedBooking.City,
+                Building_Id = SelectedBooking.Building_Id,
+                Building_Letter = SelectedBooking.Building_Letter,
+                Title = SelectedBooking.Title,
+                Type_Id = SelectedBooking.Type_Id,
+                Type = SelectedBooking.Type,
+                Booking_Limit = SelectedBooking.Booking_Limit,
+                User_Id = SelectedBooking.User_Id,
+                User_Name = SelectedBooking.User_Name,
+                User_Email = SelectedBooking.User_Email
+            };
+            AllUserBookingsFromSingleton.Add(viewToAdd);
+            SelectedBooking = AllUserBookingsFromSingleton.Last();
+            //UserBookingsOnId(1);
+            AllUserBookingsFromSingleton.Clear();
         }
-
-        public async void RefreshList()
+        public void RefreshList()
         {
 
             //AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
@@ -194,6 +236,7 @@ namespace LokalestyringUWP.ViewModel
             //{
             //    AllUserBookingsFromSingleton.Add(item);
             //}
+
             UserBookingsOnId(1);
 
 
