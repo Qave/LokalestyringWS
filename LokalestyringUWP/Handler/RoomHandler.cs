@@ -260,6 +260,7 @@ namespace LokalestyringUWP.Handler
                 {
                     BookingReference.Bookings.Add(booking);
                     FilterSearchMethod();
+                    // JEG VED IKKE HVORFOR MEN SelectedRoomsView KAN IKKE TILGÅ RoomName DEN GIVER EN NULL REFERENCE EXCEPTION PLEASE SEND HELP
                     MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket ... " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
                         $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.");
