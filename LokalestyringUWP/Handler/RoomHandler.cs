@@ -124,18 +124,31 @@ namespace LokalestyringUWP.Handler
 
                 foreach (var klasseLokaler in query)
                 {
-                    if (klasseLokaler.Count >= 2)
+                    var query1 = (from r in RoomReference.RoomList
+                                  where r.Room_Id.Equals(klasseLokaler.LimitKey)
+                                  select r).ToList();
+                    foreach (var variable in query1)
                     {
-                        var query1 = (from r in RoomReference.RoomList
-                                      where r.Room_Id.Equals(klasseLokaler.LimitKey)
-                                      select r).ToList();
-                        foreach (var variable in query1)
+                        if (klasseLokaler.Count >= 2)
                         {
                             RoomReference.RoomList.Remove(variable);
                         }
+                        if (klasseLokaler.Count == 1)
+                        {
+                            foreach (var item in RoomReference.RoomList)
+                            {
+                                if (variable.Room_Id == item.Room_Id)
+                                {
+                                    item.Booking_Limit = 1;
+                                }
+                                else
+                                {
+                                    item.Booking_Limit = 0;
+                                }
+                            }
+                        }
                     }
                 }
-
             }
         }
         /// <summary>
@@ -226,7 +239,7 @@ namespace LokalestyringUWP.Handler
             {
                 if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date == RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd)
                 {
-                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "LUDERSVIN");
+                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "Søde ven");
                     variable = false;
                     break;
                 }
@@ -247,6 +260,7 @@ namespace LokalestyringUWP.Handler
                 {
                     BookingReference.Bookings.Add(booking);
                     FilterSearchMethod();
+                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket ... d. {RoomReference.Date.ToString("dd/MM/yyyy")} mellem {RoomReference.TimeStart.TotalHours}:{RoomReference.TimeStart.TotalMinutes} og {RoomReference.TimeEnd}");
                     RoomReference.SelectedRoomsView = null;
                     PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
