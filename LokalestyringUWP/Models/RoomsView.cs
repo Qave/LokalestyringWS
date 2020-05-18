@@ -8,6 +8,21 @@ namespace LokalestyringUWP.Models
 {
     public class RoomsView
     {
+        public int MaxBookings 
+        {
+            get
+            {
+                if (Type == "Klasselokale")
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+
+        }
 
         public string RoomName { get; set; }
 
@@ -26,6 +41,11 @@ namespace LokalestyringUWP.Models
         public string City { get; set; }
 
         public string Building_Letter { get; set; }
+
+        public string Booking_LimitString 
+        {
+            get { return $"Aktive bookinger: {Booking_Limit}/{MaxBookings}"; }  
+        }
 
         public string FloorString 
         { 

@@ -33,7 +33,7 @@ namespace LokalestyringUWP.Handler
 
         #region FILTER LOGIC
         /// <summary>
-        /// Filters rooms by location, building, roomtype, date and time. If the chosen time is not valid, a dialog message is shown, asking the user to pick a valid time.
+        /// Filters rooms by location, building, roomtype, date and time. If the chosen time or date is not valid, a dialog message is shown, asking the user to pick a valid time or date.
         /// </summary>
         public void FilterSearchMethod()
         {
@@ -106,7 +106,8 @@ namespace LokalestyringUWP.Handler
         }
 
         /// <summary>
-        /// Filters booked class rooms by grouping the room id's in the booking table. If the room id has a count of 2, it is then removed from RoomList.
+        /// Filters booked class rooms by grouping the room id's in the booking table. If the room id has a count of 2, it is then removed from RoomList. 
+        /// If the count has 1 or 0, the Booking_Limit property is updated respectively. 
         /// </summary>
         public void CheckBookingLimit()
         {
@@ -124,23 +125,36 @@ namespace LokalestyringUWP.Handler
 
                 foreach (var klasseLokaler in query)
                 {
-                    if (klasseLokaler.Count >= 2)
+                    var query1 = (from r in RoomReference.RoomList
+                                  where r.Room_Id.Equals(klasseLokaler.LimitKey)
+                                  select r).ToList();
+                    foreach (var variable in query1)
                     {
-                        var query1 = (from r in RoomReference.RoomList
-                                      where r.Room_Id.Equals(klasseLokaler.LimitKey)
-                                      select r).ToList();
-                        foreach (var variable in query1)
+                        if (klasseLokaler.Count >= 2)
                         {
                             RoomReference.RoomList.Remove(variable);
                         }
+                        if (klasseLokaler.Count == 1)
+                        {
+                            foreach (var item in RoomReference.RoomList)
+                            {
+                                if (variable.Room_Id == item.Room_Id)
+                                {
+                                    item.Booking_Limit = 1;
+                                }
+                                else
+                                {
+                                    item.Booking_Limit = 0;
+                                }
+                            }
+                        }
                     }
                 }
-
             }
         }
         /// <summary>
-        /// Filters by date and time. With LINQ we join the tables from the RoomsView table and the booking table, so we're able to use the date and time properties.
-        /// The date and time properties are compared with the selected date and time properties. If the comparison is true (meaning the room is booked), it gets added to the query.
+        /// Filters by date and time. With LINQ the tables from the RoomsView table and the booking table are joined, so the date and time properties are accessible.
+        /// The date and time properties are compared with the selected date and time properties. If the comparison is true (room is booked), it gets added to the query.
         /// Afterwards the items in the query is removed from the original roomlist in the view, meaning it has removed all booked rooms from the list. 
         /// </summary>
         public void CheckDateAndTime()
@@ -219,6 +233,10 @@ namespace LokalestyringUWP.Handler
             LocationsVM.SelectedLocation = null;
         }
 
+        /// <summary>
+        /// Creates new booking object and sends an email with confirmation of the booking. 
+        /// If the user already has booked a room with the same date and time interval, a pop-up will apear telling the user he needs to switch date or time.
+        /// </summary>
         public async void CreateBooking()
         {
             bool variable = true;
@@ -226,13 +244,15 @@ namespace LokalestyringUWP.Handler
             {
                 if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date == RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd)
                 {
-                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "LUDERSVIN");
+                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "Skift tid eller dato");
                     variable = false;
                     break;
                 }
             }
             if (variable)
             {
+                // I don't know why, but we need this reference to get the RoomName property in the RoomsView model.
+                RoomsView selectedRoomsViewRef = RoomReference.SelectedRoomsView;
                 var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke dette lokale?", "Book lokale?", "Ja, tak", "Nej, tak");
                 Booking booking = new Booking()
                 {
@@ -247,6 +267,9 @@ namespace LokalestyringUWP.Handler
                 {
                     BookingReference.Bookings.Add(booking);
                     FilterSearchMethod();
+                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
+                        $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
+                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.");
                     RoomReference.SelectedRoomsView = null;
                     PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
