@@ -245,7 +245,7 @@ namespace LokalestyringUWP.Handler
             {
                 if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date == RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd)
                 {
-                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "Skift tid eller dato");
+                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "Overlappende booking");
                     variable = false;
                     break;
                 }
