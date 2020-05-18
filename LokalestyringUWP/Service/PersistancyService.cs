@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using LokalestyringUWP.Models.Singletons;
+using Newtonsoft.Json;
 
 namespace LokalestyringUWP.Service
 {
@@ -60,7 +61,7 @@ namespace LokalestyringUWP.Service
         /// <typeparam name="T">Type of the object that needs to be saved to the database.</typeparam>
         /// <param name="obj">The object that will get passed through and saved to the database.</param>
         /// <param name="uriIdentifier">The string that represents the table (in plural) that gets called in the URL to call HTTP requests. For exampel: api/Bookings, where "Bookings" needs to be specified in the uriIdentifier.</param>
-        public static async void SaveInsertAsJsonAsync<T>(T obj, string uriIdentifier)
+        public static async Task<T> SaveInsertAsJsonAsync<T>(T obj, string uriIdentifier)
         {
             HttpClientHandler handler = new HttpClientHandler();
             handler.UseDefaultCredentials = true;
@@ -71,7 +72,9 @@ namespace LokalestyringUWP.Service
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 try
                 {
-                    var response = await client.PostAsJsonAsync("api/"+ uriIdentifier, obj);
+                    var response = client.PostAsJsonAsync("api/"+ uriIdentifier, obj).Result;
+                    var result = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<T>(result);
                 }
                 catch (Exception)
                 {
