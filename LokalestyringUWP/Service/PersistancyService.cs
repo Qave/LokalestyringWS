@@ -72,8 +72,8 @@ namespace LokalestyringUWP.Service
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 try
                 {
-                    var response = await client.PostAsJsonAsync("api/"+ uriIdentifier, obj);
-                    var result = response.Content.ReadAsStringAsync().Result;
+                    var response = client.PostAsJsonAsync("api/"+ uriIdentifier, obj).Result;
+                    var result = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<T>(result);
                 }
                 catch (Exception)
