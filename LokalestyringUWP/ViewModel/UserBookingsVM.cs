@@ -53,7 +53,7 @@ namespace LokalestyringUWP.ViewModel
             OnPageLoadVisibilities();
 
             // Filters the bookings to only show bookings for the selected user. HARD CODED USER ID, for use on the page, as a logged in user.
-            UserBookingsOnId(1);
+            RefreshList();
         }
         /// <summary>
         /// Returns the selected Booking as type: AllBookingsView
@@ -230,13 +230,13 @@ namespace LokalestyringUWP.ViewModel
         public void RefreshList()
         {
 
-            //AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
-            //AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
-            //AllUserBookingsFromSingleton.Clear();
-            //foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings.ToList())
-            //{
-            //    AllUserBookingsFromSingleton.Add(item);
-            //}
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
+            AllUserBookingsFromSingleton.Clear();
+            foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings.ToList())
+            {
+                AllUserBookingsFromSingleton.Add(item);
+            }
 
             UserBookingsOnId(1);
 
@@ -313,6 +313,7 @@ namespace LokalestyringUWP.ViewModel
             var query = (from c in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          select c).Where(c => c.User_Id == userid).ToList();
             // Adds the queried result to the ObservableCollection
+            AllUserBookingsFromSingleton.Clear();
             foreach (var item in query)
             {
                 AllUserBookingsFromSingleton.Add(item);
