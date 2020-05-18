@@ -17,7 +17,7 @@ using LokalestyringUWP.Annotations;
 
 namespace LokalestyringUWP.Handler
 {
-    public class RoomHandler : INotifyPropertyChanged
+    public class RoomHandler
     {
         public static BookRoomsVM RoomReference { get; set; }
         public BookingCatalogSingleton BookingReference { get; set; }
@@ -33,8 +33,7 @@ namespace LokalestyringUWP.Handler
 
         #region FILTER LOGIC
         /// <summary>
-        /// Filters rooms by building, roomtype and date and time. If the chosen time is not valid, a dialog message is shown, asking the user to pick a valid time.
-        /// 
+        /// Filters rooms by location, building, roomtype, date and time. If the chosen time is not valid, a dialog message is shown, asking the user to pick a valid time.
         /// </summary>
         public void FilterSearchMethod()
         {
@@ -54,13 +53,13 @@ namespace LokalestyringUWP.Handler
                 CheckRoomtype();
                 CheckBookingLimit();
                 CheckDateAndTime();
+                CheckUserDoubleBooking();
             }
         }
         /// <summary>
         /// Filters by selected building. If "Alle" is selected, it doesn't filter. If selected BuildingFilter matches with the building_Letter in RoomList, it is added to the tempList.
         /// RoomList is then cleared and the tempList items is added back to RoomList.
         /// </summary>
-        /// 
         public void CheckBuilding()
         {
             if (RoomReference.SelectedBuildingFilter == "Alle")
@@ -105,6 +104,10 @@ namespace LokalestyringUWP.Handler
                 }
             }
         }
+
+        /// <summary>
+        /// Filters booked class rooms by grouping the room id's in the booking table. If the room id has a count of 2, it is then removed from RoomList.
+        /// </summary>
         public void CheckBookingLimit()
         {
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
@@ -158,11 +161,27 @@ namespace LokalestyringUWP.Handler
             }
         }
 
+        /// <summary>
+        /// Filters rooms that the user already have booked in selected time interval. You are only able to book one room at a specific time and date per user. 
+        /// </summary>
+        public void CheckUserDoubleBooking()
+        {
+            var query = (from r in RoomReference.RoomList
+                         join q in BookingReference.Bookings on r.Room_Id equals q.Room_Id into bookedRooms
+                         from qr in bookedRooms
+                         where qr.User_Id == LoginHandler.SelectedUser.User_Id && qr.Date == RoomReference.Date && qr.Time_end >= RoomReference.TimeStart && qr.Time_start <= RoomReference.TimeEnd
+                         select r).ToList();
+
+            foreach (var item in query)
+            {
+                RoomReference.RoomList.Remove(item);
+            }
+        }
+
         #endregion
 
         /// <summary>
-        /// Resets the list, so every time you want to change filter, you can do it on the fly without having to restart the program. 
-        /// Gets called when a location is selected or the filter button is clicked. 
+        ///  Adds all items from the singleton list to a new list called "ResettedList". Then filters by selected location. 
         /// </summary>
         public static void RestoreList()
         {
@@ -170,15 +189,13 @@ namespace LokalestyringUWP.Handler
             {
                 foreach (var item in RoomsViewCatalogSingleton.Instance.RoomsView)
                 {
-                    RoomReference.ResettedList.Add(item); //Adds all items from the singleton into a new resetted list, that we can use to filter with.
+                    RoomReference.ResettedList.Add(item);
                 }
 
-                //Filters the list by selected location.
                 var query = (from q in RoomReference.ResettedList
                              where RoomReference.selectedLocation == q.City
                              select q).ToList();
 
-                //The resetted list is cleared and is filled with the results from the LINQ statement.
                 RoomReference.ResettedList.Clear();
                 foreach (var item in query)
                 {
@@ -186,7 +203,6 @@ namespace LokalestyringUWP.Handler
                 }
             }
 
-            //The list that gets shown is cleared, and the filtered results gets added to it, so it gets updated in the view.
             RoomReference.RoomList.Clear();
             foreach (var item in RoomReference.ResettedList)
             {
@@ -205,33 +221,36 @@ namespace LokalestyringUWP.Handler
 
         public async void CreateBooking()
         {
-            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke dette lokale?",
-                "Book lokale?", "Ja, tak", "Nej, tak");
-            Booking booking = new Booking()
+            bool variable = true;
+            foreach (var item in BookingReference.Bookings)
             {
-                Date = RoomReference.Date.Date,
-                Room_Id = RoomReference.SelectedRoomsView.Room_Id,
-                Time_end = RoomReference.TimeEnd,
-                Time_start = RoomReference.TimeStart,
-                User_Id = LoginHandler.SelectedUser.User_Id
-            };
-            if (result)
-            {
-                BookingReference.Bookings.Add(booking);
-                FilterSearchMethod();
-                RoomReference.SelectedRoomsView = null;
-                PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
-
+                if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date == RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd)
+                {
+                    DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "LUDERSVIN");
+                    variable = false;
+                    break;
+                }
             }
-        }
+            if (variable)
+            {
+                var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke dette lokale?", "Book lokale?", "Ja, tak", "Nej, tak");
+                Booking booking = new Booking()
+                {
+                    Date = RoomReference.Date.Date,
+                    Room_Id = RoomReference.SelectedRoomsView.Room_Id,
+                    Time_end = RoomReference.TimeEnd,
+                    Time_start = RoomReference.TimeStart,
+                    User_Id = LoginHandler.SelectedUser.User_Id
+                };
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                if (result)
+                {
+                    BookingReference.Bookings.Add(booking);
+                    FilterSearchMethod();
+                    RoomReference.SelectedRoomsView = null;
+                    PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
+                }
+            }
         }
     }
 }
