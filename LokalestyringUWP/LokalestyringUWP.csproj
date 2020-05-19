@@ -158,6 +158,7 @@
     <Compile Include="ViewModel\CreateAccountVM.cs" />
     <Compile Include="ViewModel\LocationsVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
+    <Compile Include="ViewModel\TeacherControlPanelVM.cs" />
     <Compile Include="ViewModel\UserBookingsVM.cs" />
     <Compile Include="View\PageBookRooms.xaml.cs">
       <DependentUpon>PageBookRooms.xaml</DependentUpon>
@@ -170,6 +171,9 @@
     </Compile>
     <Compile Include="View\PageLogin.xaml.cs">
       <DependentUpon>PageLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PageTeacherControlPanel.xaml.cs">
+      <DependentUpon>PageTeacherControlPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PageUserBookings.xaml.cs">
       <DependentUpon>PageUserBookings.xaml</DependentUpon>
@@ -233,11 +237,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PageUserBookings.xaml">
+    <Page Include="View\PageTeacherControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PageTeacherControlPanel.xaml">
+    <Page Include="View\PageUserBookings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
