@@ -213,7 +213,7 @@ namespace LokalestyringUWP.ViewModel
             {
                 AllUserBookingsFromSingleton.Add(item);
             }
-            UserBookingsOnId(1);
+            UserBookingsOnId(SelectedUser.User_Id);
         }
 
         //}

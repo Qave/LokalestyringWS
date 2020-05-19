@@ -28,10 +28,6 @@ namespace LokalestyringUWP.Handler
             BookingReference = new BookingCatalogSingleton();
             RoomReference = r;
         }
-        public static void SaveRoomsAsync(Room obj)
-        {
-            PersistancyService.SaveRoomAsJsonAsync(obj);
-        }
 
         #region FILTER LOGIC
         /// <summary>
