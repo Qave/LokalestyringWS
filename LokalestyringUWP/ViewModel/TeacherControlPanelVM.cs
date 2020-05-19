@@ -11,6 +11,7 @@ using LokalestyringUWP.Annotations;
 using LokalestyringUWP.Common;
 using LokalestyringUWP.Handler;
 using LokalestyringUWP.Models;
+using LokalestyringUWP.Models.Singletons;
 
 namespace LokalestyringUWP.ViewModel
 {
@@ -28,6 +29,7 @@ namespace LokalestyringUWP.ViewModel
         public TeacherControlPanelVM()
         {
             BookingList = new ObservableCollection<AllBookingsView>();
+            BookingList = AllBookingsViewCatalogSingleton.Instance.AllBookings;
             //BookThisRoomCommand = new RelayCommand(RoomHandlerRef.TeacherCancelBookingMethod,null);
         }
 

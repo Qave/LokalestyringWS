@@ -12,42 +12,17 @@
         <viewModel:TeacherControlPanelVM />
     </Page.DataContext>
 
-    <Page.Resources>
-        <DataTemplate x:Key="BookingsTemplate">
-            <Grid>
-                <Border
-                    Width="200"
-                    Height="125"
-                    Background="LightGray" />
-                <StackPanel Margin="5,5,0,0" VerticalAlignment="Top">
-                    <TextBlock Text="{Binding RoomName}" />
-                    <TextBlock Text="Halløjjj" />
-                    <TextBlock Text="{Binding BuildingString}" />
-                    <TextBlock Text="{Binding Booking_LimitString}" />
-                </StackPanel>
-                <StackPanel Margin="0,5,5,0" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding FloorString}" />
-                </StackPanel>
-            </Grid>
-        </DataTemplate>
-    </Page.Resources>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="2*" />
-            <RowDefinition Height="50" />
-        </Grid.RowDefinitions>
-        <Grid>
-            <ScrollViewer
-                Grid.Row="1"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Stretch">
+        <GridView ItemsSource="{Binding BookingList}">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
 
-                <GridView
-                    ItemTemplate="{StaticResource BookingsTemplate}"
-                    ItemsSource="{Binding BookingList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectedItem="{Binding BookingIsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </ScrollViewer>
-        </Grid>
+                        <TextBlock Text="{Binding RoomName}" />
+                        <TextBlock Text="ss" />
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
     </Grid>
 </Page>
