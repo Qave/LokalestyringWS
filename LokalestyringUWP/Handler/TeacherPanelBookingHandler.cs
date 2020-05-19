@@ -18,9 +18,9 @@ namespace LokalestyringUWP.Handler
     /// </summary>
     public class TeacherPanelBookingHandler
     {
-        public UserBookingsVM UserBookingsRef;
         public TeacherControlPanelVM TCPREF { get; set; }
         public UserCatalogSingleton Usersingleton { get; set; }
+        public string MailAddress { get; set; }
 
         /// <summary>
         /// The Constructor of the class TeacherPanelBookingHandler
@@ -51,17 +51,50 @@ namespace LokalestyringUWP.Handler
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageUserBookings));
         }
+        //Easier to just steal the booking instead of deleting the booking and then having to go back and redo the whole booking
+        /// <summary>
+        /// This Method steals a booking if a series of conditions are met
+        /// </summary>
+        public void TeacherStealsBookingMethod()
+        {
+            var result = DialogHandler.GenericYesNoDialog($"Er du sikker på du vil booke dette rum? {TCPREF.BookingIsSelected.RoomName}, ved at booke dette lokale aflyser du en elves booking", "Er du sikker?", "Ja", "Nej").Result;
+            if (result)
+            {
+
+                if (LoginHandler.SelectedUser.Teacher == true)
+                {
+                    if (!IsATeach())
+                    {
+                        if (TCPREF.Date.Date >= DateTime.Now.Date.AddDays(3))
+                        {
+                            GetMailFromUser();
+                            MailService.MailSender(MailAddress, "En lærer aflyste din booking", $"Din booking den {TCPREF.BookingIsSelected.Date} fra {TCPREF.TimeStart} til {TCPREF.TimeEnd} i rum {TCPREF.BookingIsSelected.RoomName} er blevet aflyst {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden, du er selvfølgelig velkommen til at booke et nyt rum op appen", true);
+                            PersistancyService.UpdateAsJsonAsync(new Booking()
+                            {
+                                Date = TCPREF.Date.Date,
+                                TavleBookings = null,
+                                Time_start = TCPREF.TimeStart,
+                                Time_end = TCPREF.TimeEnd,
+                                User_Id = LoginHandler.CurrentUserId
+                            }, "Bookings", TCPREF.BookingIsSelected.Booking_Id);
+                        }
+                    }
+                }
+            }
+        }
         /// <summary>
         /// This Method removes a booking if a series of conditions are met
         /// </summary>
-        public void TeacherCancelBookingMethod()
+        public void TeacherCancelsBookingMethod()
         {
             if (LoginHandler.SelectedUser.Teacher == true)
             {
                 if (!IsATeach())
                 {
-                    if (UserBookingsRef.SelectedBooking.Date.Date >= DateTime.Now.Date.AddDays(3))
+                    if (TCPREF.Date.Date >= DateTime.Now.Date.AddDays(3))
                     {
+                        GetMailFromUser();
+                        MailService.MailSender(MailAddress, "En lærer aflyste din booking", $"Din booking den {TCPREF.BookingIsSelected.Date} fra {TCPREF.TimeStart} til {TCPREF.TimeEnd} i rum {TCPREF.BookingIsSelected.RoomName} er blevet aflyst {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden, du er selvfølgelig velkommen til at booke et nyt rum op appen", true);
                         PersistancyService.DeleteFromDatabaseAsync("Bookings", TCPREF.BookingIsSelected.Booking_Id);
                     }
                 }
@@ -81,6 +114,19 @@ namespace LokalestyringUWP.Handler
                 return true;
             }
             return false;
+        }
+
+        public void GetMailFromUser()
+        {
+            foreach (var user in Usersingleton.Users)
+            {
+                if (user.User_Id == TCPREF.BookingIsSelected.User_Id)
+                {
+                    MailAddress = user.User_Email;
+                    break;
+                }
+                throw new Exception("No Mail Found");
+            }
         }
     }
 }

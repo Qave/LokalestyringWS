@@ -23,6 +23,10 @@ namespace LokalestyringUWP.ViewModel
         public ObservableCollection<AllBookingsView> BookingList { get; set; }
         public Visibility TeacherDeleteBtnVisibility { get; set; } = Visibility.Collapsed;
         public TeacherPanelBookingHandler TeacherHandlerRef { get; set; }
+        public DateTime Date { get; set; }
+        public TimeSpan TimeStart { get; set; }
+        public TimeSpan TimeEnd { get; set; }
+        
 
         public RelayCommand BookThisRoomCommand { get; set; }
 

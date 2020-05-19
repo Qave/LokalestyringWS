@@ -6,20 +6,26 @@
     xmlns:local="using:LokalestyringUWP.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:LokalestyringUWP.ViewModel"
+    xmlns:handler="using:LokalestyringUWP.Handler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewModel:TeacherControlPanelVM />
     </Page.DataContext>
-
+    <Page.Resources>
+        <handler:DateFormatConverter x:Name="DateToStringFormatConverter"/>
+    </Page.Resources>
     <Grid>
         <GridView ItemsSource="{Binding BookingList}">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-
-                        <TextBlock Text="{Binding RoomName}" />
-                        <TextBlock Text="ss" />
+                        <StackPanel Margin="5,5,0,0" VerticalAlignment="Top">
+                            <TextBlock Text="{Binding RoomName}" />
+                            <TextBlock Text="{Binding Type}" />
+                            <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
+                            <TextBlock Text="{Binding Booking_LimitString}" />
+                        </StackPanel>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
