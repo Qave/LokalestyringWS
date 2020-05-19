@@ -44,7 +44,7 @@ namespace LokalestyringWS.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != allBookingsView.Booking_Id)
+            if (id != allBookingsView.Room_Id)
             {
                 return BadRequest();
             }
@@ -87,7 +87,7 @@ namespace LokalestyringWS.Controllers
             }
             catch (DbUpdateException)
             {
-                if (AllBookingsViewExists(allBookingsView.Booking_Id))
+                if (AllBookingsViewExists(allBookingsView.Room_Id))
                 {
                     return Conflict();
                 }
@@ -97,7 +97,7 @@ namespace LokalestyringWS.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = allBookingsView.Booking_Id }, allBookingsView);
+            return CreatedAtRoute("DefaultApi", new { id = allBookingsView.Room_Id }, allBookingsView);
         }
 
         // DELETE: api/AllBookingsViews/5
@@ -127,7 +127,7 @@ namespace LokalestyringWS.Controllers
 
         private bool AllBookingsViewExists(int id)
         {
-            return db.AllBookingsViews.Count(e => e.Booking_Id == id) > 0;
+            return db.AllBookingsViews.Count(e => e.Room_Id == id) > 0;
         }
     }
 }

@@ -25,11 +25,6 @@ namespace LokalestyringWS.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Booking>()
-                .HasMany(e => e.TavleBookings)
-                .WithRequired(e => e.Booking)
-                .WillCascadeOnDelete(false);
-
             modelBuilder.Entity<Building>()
                 .Property(e => e.Building_Letter)
                 .IsFixedLength()
@@ -93,8 +88,8 @@ namespace LokalestyringWS.Models
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<AllBookingsView>()
-                 .Property(e => e.RoomName)
-                 .IsUnicode(false);
+                .Property(e => e.RoomName)
+                .IsUnicode(false);
 
             modelBuilder.Entity<AllBookingsView>()
                 .Property(e => e.No)
@@ -105,28 +100,12 @@ namespace LokalestyringWS.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<AllBookingsView>()
-                .Property(e => e.City)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AllBookingsView>()
                 .Property(e => e.Building_Letter)
                 .IsFixedLength()
                 .IsUnicode(false);
 
             modelBuilder.Entity<AllBookingsView>()
-                .Property(e => e.Title)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AllBookingsView>()
                 .Property(e => e.Type)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AllBookingsView>()
-                .Property(e => e.User_Name)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<AllBookingsView>()
-                .Property(e => e.User_Email)
                 .IsUnicode(false);
 
             modelBuilder.Entity<RoomsView>()
@@ -153,7 +132,6 @@ namespace LokalestyringWS.Models
                 .Property(e => e.Building_Letter)
                 .IsFixedLength()
                 .IsUnicode(false);
-
         }
     }
 }

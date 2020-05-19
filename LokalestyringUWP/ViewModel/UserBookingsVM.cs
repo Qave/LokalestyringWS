@@ -25,12 +25,12 @@ namespace LokalestyringUWP.ViewModel
         // Private variable that references AllBookingsView, used in the property "SelectedBooking" to return the selected booking.
         private AllBookingsView _selectedBooking;
         // Should get all the bookings in the "AllBookingsView", this is ALL the bookings in the database. Instantiated in the constructor
-            // public ObservableCollection<AllBookingsView> AllBookingsList { get; set; }
+        // public ObservableCollection<AllBookingsView> AllBookingsList { get; set; }
         // ObservableCollection of type AllBookingsView that is instantiated in the UserBookingsVM constructor.
         public ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton { get; set; }
         // ObservableCollection of type TavleBooking that is instantiated in the viewmodel constructor
         public ObservableCollection<TavleBooking> Tavlebookings { get; set; }
-    
+
 
         public UserBookingsVM()
         {
@@ -46,7 +46,7 @@ namespace LokalestyringUWP.ViewModel
             AflysBookingCommand = new RelayCommand(AflysBookingMethod, null);
             AflysTavleCommand = new RelayCommand(AflysTavleBookingMethod, null);
             BookTavleCommand = new RelayCommand(BookTavleMethod, null);
-            GoBackCommand = new RelayCommand(GoBackMethod ,null);  // DEN ER NULL; FIX DEN xD
+            GoBackCommand = new RelayCommand(GoBackMethod, null);  // DEN ER NULL; FIX DEN xD
             BookIgenImorgenCommand = new RelayCommand(BookIgenImorgenMethod, null);
 
             // Loads default visibility states
@@ -58,10 +58,10 @@ namespace LokalestyringUWP.ViewModel
         /// <summary>
         /// Returns the selected Booking as type: AllBookingsView
         /// </summary>
-        public AllBookingsView SelectedBooking 
-        { 
-            get 
-            { return _selectedBooking; } 
+        public AllBookingsView SelectedBooking
+        {
+            get
+            { return _selectedBooking; }
             set
             {
                 _selectedBooking = value;
@@ -70,10 +70,10 @@ namespace LokalestyringUWP.ViewModel
                 // Updates the view when a booking is selected
                 NoElementsChosenVisibility = Visibility.Collapsed;
                 ElementIsChosenVisibility = Visibility.Visible;
-                OnPropertyChanged();              
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(NoElementsChosenVisibility));
                 OnPropertyChanged(nameof(ElementIsChosenVisibility));
-            } 
+            }
         }
 
         public User SelectedUser { get { return LoginHandler.SelectedUser; } }
@@ -142,94 +142,70 @@ namespace LokalestyringUWP.ViewModel
         /// <summary>
         /// This method books the selected booking/room, again tomorrow, is that is possible.
         /// </summary>
-        public void BookIgenImorgenMethod()
+        public async void BookIgenImorgenMethod()
         {
-
-
-
-            //// The copied booking that needs to be inserted into the database with the updated date.
-            //Booking updatedBooking = new Booking()
-            //{
-            //    User_Id = 1,
-            //    Room_Id = SelectedBooking.Room_Id,
-            //    Date = tomorrow,
-            //    Time_start = (TimeSpan)SelectedBooking.BookingStart,
-            //    Time_end = (TimeSpan)SelectedBooking.BookingEnd
-            //};
-
-            //// Checks how many instances there is of this selectedbooking's specific room.
-            //var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
-            //                            select b).Where(x => SelectedBooking.Room_Id == x.Room_Id && x.Date == tomorrow).ToList();
-
-            //if (howManyOfThisRoomTomorrowQuery.Count > 0)
-            //{
-            //    // checks if there is any instances that overlaps the selectedbookings's time
-            //    var checkTime = (from b in howManyOfThisRoomTomorrowQuery
-            //                     select b).Where(x => SelectedBooking.BookingStart > x.BookingStart && SelectedBooking.BookingStart < x.BookingEnd || SelectedBooking.BookingEnd > x.BookingStart && SelectedBooking.BookingEnd < x.BookingEnd).ToList();
-            //    // If 0
-            //    if (checkTime.Count < 1)
-            //    {
-            //        // Inserts the selectedbooking into the database and updates the singleton                  
-            //        PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
-            //    }
-            //    else
-            //    {
-            //        // Error message that displays if there already exists a booking in the database that overlaps with the selectedbooking on the day after the selectedbooking date
-            //        DialogHandler.Dialog("Denne booking kan ikke bookes imorgen\nda den overlapper eksisterende bookninger", "Overlappende Bookninger");
-            //    }
-            //}
-            //else
-            //{
-            //    PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
-            //    RefreshList();
-            //}
-
-            // Retrieves the day after the selectedbooking date.
             DateTime tomorrow = SelectedBooking.Date.AddDays(1);
-
+            // The copied booking that needs to be inserted into the database with the updated date.
             Booking updatedBooking = new Booking()
             {
                 User_Id = 1,
                 Room_Id = SelectedBooking.Room_Id,
                 Date = tomorrow,
-                Time_start = (TimeSpan)SelectedBooking.BookingStart,
-                Time_end = (TimeSpan)SelectedBooking.BookingEnd
+                Time_start = SelectedBooking.BookingStart,
+                Time_end = SelectedBooking.BookingEnd
             };
 
-            Task<Booking> returnedObj = PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
-            SelectedBooking.Booking_Id = returnedObj.Result.Booking_Id;
+            Task<Booking> returnedObj = null;
+
+
+            // Checks how many instances there is of this selectedbooking's specific room.
+            var howManyOfThisRoomTomorrowQuery = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
+                                                  select b).Where(x => SelectedBooking.Room_Id == x.Room_Id && x.Date == tomorrow).ToList();
+
+            if (howManyOfThisRoomTomorrowQuery.Count > 0)
+            {
+                // checks if there is any instances that overlaps the selectedbookings's time
+                var checkTime = (from b in howManyOfThisRoomTomorrowQuery
+                                 select b).Where(x => SelectedBooking.BookingStart > x.BookingStart && SelectedBooking.BookingStart < x.BookingEnd || SelectedBooking.BookingEnd > x.BookingStart && SelectedBooking.BookingEnd < x.BookingEnd).ToList();
+                // If 0
+                if (checkTime.Count < 1)
+                {
+                    // Inserts the selectedbooking into the database and updates the singleton                  
+                   returnedObj = PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                }
+                else
+                {
+                    // Error message that displays if there already exists a booking in the database that overlaps with the selectedbooking on the day after the selectedbooking date
+                    DialogHandler.Dialog("Denne booking kan ikke bookes imorgen\nda den overlapper eksisterende bookninger", "Overlappende Bookninger");
+                }
+            }
+            else
+            {
+                returnedObj = PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+            }
             AllBookingsView viewToAdd = new AllBookingsView()
             {
-                //RoomName = SelectedBooking.RoomName,
+                RoomName = SelectedBooking.RoomName,
                 Date = tomorrow,
                 Booking_Id = returnedObj.Result.Booking_Id,
-                //BookingStart = SelectedBooking.BookingStart,
-                //BookingEnd = SelectedBooking.BookingEnd,
-                //Room_Id = SelectedBooking.Room_Id,
-                //Floor = SelectedBooking.Floor,
-                //No = SelectedBooking.No,
-                //Loc_Id = SelectedBooking.Loc_Id,
-                //Name = SelectedBooking.Name,
-                //City = SelectedBooking.City,
-                //Building_Id = SelectedBooking.Building_Id,
-                //Building_Letter = SelectedBooking.Building_Letter,
-                //Title = SelectedBooking.Title,
-                //Type_Id = SelectedBooking.Type_Id,
-                //Type = SelectedBooking.Type,
-                //Booking_Limit = SelectedBooking.Booking_Limit,
-                //User_Id = SelectedBooking.User_Id,
-                //User_Name = SelectedBooking.User_Name,
-                //User_Email = SelectedBooking.User_Email
+                BookingStart = SelectedBooking.BookingStart,
+                BookingEnd = SelectedBooking.BookingEnd,
+                Room_Id = SelectedBooking.Room_Id,
+                Floor = SelectedBooking.Floor,
+                No = SelectedBooking.No,
+                Name = SelectedBooking.Name,
+                Building_Letter = SelectedBooking.Building_Letter,
+                Type = SelectedBooking.Type,
+                User_Id = SelectedBooking.User_Id
             };
+            // Retrieves the day after the selectedbooking date.
 
             AllUserBookingsFromSingleton.Add(viewToAdd);
+            RefreshList();
             SelectedBooking = AllUserBookingsFromSingleton.Last();
-            //UserBookingsOnId(1);
-            //AllUserBookingsFromSingleton.Clear();
         }
         public void RefreshList()
         {
-
             AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
             AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
             AllUserBookingsFromSingleton.Clear();
@@ -237,17 +213,14 @@ namespace LokalestyringUWP.ViewModel
             {
                 AllUserBookingsFromSingleton.Add(item);
             }
-
             UserBookingsOnId(1);
-
-
         }
 
-            //}
-            /// <summary>
-            /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
-            /// </summary>
-            public async void AflysBookingMethod()
+        //}
+        /// <summary>
+        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
+        /// </summary>
+        public async void AflysBookingMethod()
         {
             // Checks if the user wants to delete the booking, or not
             var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
@@ -264,7 +237,7 @@ namespace LokalestyringUWP.ViewModel
                 NoElementsChosenVisibility = Visibility.Visible;
                 OnPropertyChanged(nameof(ElementIsChosenVisibility));
                 OnPropertyChanged(nameof(NoElementsChosenVisibility));
-            }            
+            }
         }
         /// <summary>
         /// Async method that calls the async delete method from the persistancyService that deletes the selected booking's Tavle booking from the database 
@@ -285,8 +258,8 @@ namespace LokalestyringUWP.ViewModel
                     PersistancyService.DeleteFromDatabaseAsync("TavleBookings", _selectedTavleBooking.Tavle_Id);
                     // Deletes the selected object from the singleton observable collection, which in turn updates the view.
                     TavleBookingCatalogSingleton.Instance.TavleBookings.Remove(_selectedTavleBooking);
-                    SelectedBooking.TavleStart = null;
-                    SelectedBooking.TavleEnd = null;
+                    //SelectedBooking.TavleStart = null;
+                    //SelectedBooking.TavleEnd = null;
 
                     //Update the viewpage
                     AflysTavleBtnVisibility = Visibility.Collapsed;
@@ -298,7 +271,7 @@ namespace LokalestyringUWP.ViewModel
                 catch (Exception)
                 {
                     DialogHandler.Dialog("Noget gik galt med aflysning af tavle, kontakt Zealands IT-Helpdesk for mere information.", "Fejl i aflysning");
-                }            
+                }
             }
         }
 
@@ -309,6 +282,50 @@ namespace LokalestyringUWP.ViewModel
         /// <param name="userid">The current user's ID</param>
         public void UserBookingsOnId(int userid)
         {
+            #region FUCK
+
+            //var bookings = BookingCatalogSingleton.Instance.Bookings;
+            //var rooms = RoomCatalogSingleton.Instance.Rooms;
+            //var tavleBookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
+            //var locations = LocationSingleton.Instance.Locations;
+            //var buildings = BuildingSingleton.Instance.Buildings;
+            //var roomTypes = RoomtypeCatalogSingleton.Instance.Roomtypes;
+            //var users = UserCatalogSingleton.Instance.Users;
+            //var allUserBookingsQuery = (from b in bookings
+            //                            join tvl in tavleBookings on b.Booking_Id equals tvl.Booking_Id into tavler
+            //                            from SingleTavle in tavler.DefaultIfEmpty(new TavleBooking { })
+
+            //                            join r in rooms on b.Room_Id equals r.Room_Id
+            //                            join l in locations on r.Loc_Id equals l.Loc_Id
+            //                            join bld in buildings on r.Building_Id equals bld.Building_Id
+            //                            join rt in roomTypes on r.Type_Id equals rt.Type_Id
+            //                            join u in users on b.User_Id equals u.User_Id
+            //                            select new
+            //                            {
+            //                                RoomName = l.Name + "-" + bld.Building_Letter + r.Floor + "." + r.No,
+            //                                BookingStart = b.Time_start,
+            //                                BookindEnd = b.Time_end,
+            //                                TavleId = SingleTavle.Tavle_Id,
+            //                                RoomId = r.Room_Id,
+            //                                LocId = l.Loc_Id,
+            //                                BuildingId = bld.Building_Id,
+            //                                UserId = u.User_Id,
+            //                                TavleStart = SingleTavle.Time_start,
+            //                                TavleEnd = SingleTavle.Time_end,
+            //                                RoomFloor = r.Floor,
+            //                                RoomNo = r.No,
+            //                                LocName = l.Name,
+            //                                LocCity = l.City,
+            //                                BuildingLetter = bld.Building_Letter,
+            //                                BuildingTitle = bld.Title,
+            //                                RoomTypeId = rt.Type_Id,
+            //                                Room_Type = rt.Type,
+            //                                RoomTypeLimit = rt.Booking_Limit,
+            //                                Username = u.User_Name,
+            //                                Useremail = u.User_Email,
+            //                                UserIsTeacher = u.Teacher
+            //                            });
+            #endregion
             // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
             var query = (from c in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          select c).Where(c => c.User_Id == userid).ToList();
