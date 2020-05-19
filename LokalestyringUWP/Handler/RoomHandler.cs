@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using LokalestyringUWP.Annotations;
 using LokalestyringUWP.View;
+using Windows.UI.Xaml.Input;
 
 namespace LokalestyringUWP.Handler
 {
@@ -112,6 +113,10 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public void CheckBookingLimit()
         {
+            foreach (var item in RoomReference.RoomList)
+            {
+                item.Booking_Limit = 0;
+            }
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
             {
                 var query = (from b in BookingReference.Bookings
@@ -123,29 +128,27 @@ namespace LokalestyringUWP.Handler
                                  LimitKey = RoomGroup.Key,
                                  Count = RoomGroup.Count()
                              }).ToList();
-
-                foreach (var klasseLokaler in query)
+                if (BookingReference.Bookings.Count != 0)
                 {
-                    var query1 = (from r in RoomReference.RoomList
-                                  where r.Room_Id.Equals(klasseLokaler.LimitKey)
-                                  select r).ToList();
-                    foreach (var variable in query1)
+                    foreach (var klasseLokaler in query)
                     {
-                        if (klasseLokaler.Count >= 2)
+                        var query1 = (from r in RoomReference.RoomList
+                                      where r.Room_Id.Equals(klasseLokaler.LimitKey)
+                                      select r).ToList();
+                        foreach (var variable in query1)
                         {
-                            RoomReference.RoomList.Remove(variable);
-                        }
-                        if (klasseLokaler.Count == 1)
-                        {
-                            foreach (var item in RoomReference.RoomList)
+                            if (klasseLokaler.Count >= 2)
                             {
-                                if (variable.Room_Id == item.Room_Id)
+                                RoomReference.RoomList.Remove(variable);
+                            }
+                            if (klasseLokaler.Count == 1)
+                            {
+                                foreach (var item in RoomReference.RoomList)
                                 {
-                                    item.Booking_Limit = 1;
-                                }
-                                else
-                                {
-                                    item.Booking_Limit = 0;
+                                    if (variable.Room_Id == item.Room_Id)
+                                    {
+                                        item.Booking_Limit = 1;
+                                    }
                                 }
                             }
                         }
@@ -276,5 +279,35 @@ namespace LokalestyringUWP.Handler
                 }
             }
         }
+
+
+        //a reference to the UserBookingsVM to get the selected booking WE NEED ANOTHER REFERENCE FROM A LISTVIEW IN A NEW PAGE!!
+        public UserBookingsVM UserBookingsRef;
+        public Visibility TeacherDeleteBtnVisibility { get; set; } = Visibility.Collapsed;
+        public void TeacherCancelBookingBtnVisibility()
+        {
+            if (LoginHandler.SelectedUser.Teacher == true)
+            {
+                TeacherDeleteBtnVisibility = Visibility.Visible;
+            }
+        }
+        //this method navigates to the TeacherControlPanel
+        public void TeacherControlPanelRedirect()
+        {
+            ((Frame) Window.Current.Content).Navigate(typeof(PageUserBookings));
+        }
+
+        public void TeacherCancelBookingMethod()
+        {
+            if (LoginHandler.SelectedUser.Teacher == true)
+            {
+                if (UserBookingsRef.SelectedBooking.Date.Date >= DateTime.Now.Date.AddDays(3))
+                {
+                    PersistancyService.DeleteFromDatabaseAsync("Bookings",UserBookingsRef.SelectedBooking.Booking_Id);
+                }
+            }
+        }
+
+
     }
 }

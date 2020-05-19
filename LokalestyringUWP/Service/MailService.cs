@@ -10,12 +10,12 @@ namespace LokalestyringUWP.Service
 {
     public class MailService
     {
-        public static async void MailSender(string userMail, string subject, string body)
+        public static async void MailSender(string userMail, string subject, string body, bool isBodyHtml)
         {
-            await SendMail(userMail, subject, body);
+            await SendMail(userMail, subject, body, isBodyHtml);
         }
 
-        private static async Task SendMail(string userMail, string subject, string body)
+        private static async Task SendMail(string userMail, string subject, string body, bool isBodyHtml)
         {
             try
             {
@@ -24,6 +24,8 @@ namespace LokalestyringUWP.Service
 
                 mail.From = new MailAddress("derp43434@gmail.com");
                 mail.To.Add(userMail);
+                mail.IsBodyHtml = isBodyHtml;
+                mail.Headers.Add("Importance", "high");
                 mail.Subject = subject;
                 mail.Body = body;
 
@@ -33,9 +35,8 @@ namespace LokalestyringUWP.Service
 
                 await smtpServer.SendMailAsync(mail);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                DialogHandler.Dialog(ex.Message, "Mail fejlet");
             }
         }
     }
