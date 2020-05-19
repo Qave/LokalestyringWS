@@ -113,6 +113,10 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public void CheckBookingLimit()
         {
+            foreach (var item in RoomReference.RoomList)
+            {
+                item.Booking_Limit = 0;
+            }
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
             {
                 var query = (from b in BookingReference.Bookings
@@ -148,13 +152,6 @@ namespace LokalestyringUWP.Handler
                                 }
                             }
                         }
-                    }
-                }
-                else
-                {
-                    foreach (var item in RoomReference.RoomList)
-                    {
-                        item.Booking_Limit = 0;
                     }
                 }
             }
