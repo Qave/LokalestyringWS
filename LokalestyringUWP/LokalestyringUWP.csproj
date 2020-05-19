@@ -120,7 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\RelayCommand.cs" />
-    <Compile Include="Handler\BookingHandler.cs" />
+    <Compile Include="Handler\TeacherPanelBookingHandler.cs" />
     <Compile Include="Handler\CommandHandler.cs" />
     <Compile Include="Handler\DateFormatConverter.cs" />
     <Compile Include="Handler\DialogHandler.cs" />

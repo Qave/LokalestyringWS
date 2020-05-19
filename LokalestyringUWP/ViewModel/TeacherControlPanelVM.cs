@@ -17,23 +17,30 @@ namespace LokalestyringUWP.ViewModel
 {
     public class TeacherControlPanelVM : INotifyPropertyChanged
     {
+        #region Properties + Instance + Commands
+
+        private AllBookingsView _bookingIsSelect;
         public ObservableCollection<AllBookingsView> BookingList { get; set; }
         public Visibility TeacherDeleteBtnVisibility { get; set; } = Visibility.Collapsed;
-        public RoomHandler RoomHandlerRef { get; set; }
-        private AllBookingsView _bookingIsSelect;
+        public TeacherPanelBookingHandler TeacherHandlerRef { get; set; }
 
         public RelayCommand BookThisRoomCommand { get; set; }
 
-       
+
+        #endregion
+
+
 
         public TeacherControlPanelVM()
         {
+            TeacherHandlerRef = new TeacherPanelBookingHandler(this);
             BookingList = new ObservableCollection<AllBookingsView>();
-            BookingList = AllBookingsViewCatalogSingleton.Instance.AllBookings;
+            TeacherHandlerRef.ResetList();
             //BookThisRoomCommand = new RelayCommand(RoomHandlerRef.TeacherCancelBookingMethod,null);
         }
 
 
+        #region SelectedBooking
         public AllBookingsView BookingIsSelected
         {
             get { return _bookingIsSelect; }
@@ -44,12 +51,27 @@ namespace LokalestyringUWP.ViewModel
                 BookThisRoomCommand.RaiseCanExecuteChanged();
             }
         }
+
         public bool BookingIsSelectedCheck()
         {
             return (_bookingIsSelect != null);
         }
+        #endregion
+
+        public void TeacherCancelBookingBtnVisibility()
+        {
+            if (LoginHandler.SelectedUser.Teacher == true)
+            {
+                TeacherDeleteBtnVisibility = Visibility.Visible;
+            }
+        }
 
 
+
+
+
+
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
@@ -57,5 +79,6 @@ namespace LokalestyringUWP.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

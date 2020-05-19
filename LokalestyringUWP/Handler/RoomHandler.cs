@@ -275,36 +275,5 @@ namespace LokalestyringUWP.Handler
                 }
             }
         }
-
-        //a reference to the UserBookingsVM to get the selected booking WE NEED ANOTHER REFERENCE FROM A LISTVIEW IN A NEW PAGE!!
-        public UserBookingsVM UserBookingsRef;
-        public TeacherControlPanelVM TeacherRef;
-        public void TeacherCancelBookingBtnVisibility()
-        {
-            if (LoginHandler.SelectedUser.Teacher == true)
-            {
-                TeacherRef.TeacherDeleteBtnVisibility = Visibility.Visible;
-            }
-        }
-        //this method navigates to the TeacherControlPanel
-        public void TeacherControlPanelRedirect()
-        {
-            ((Frame)Window.Current.Content).Navigate(typeof(PageUserBookings));
-        }
-
-        public void TeacherCancelBookingMethod()
-        {
-            if (LoginHandler.SelectedUser.Teacher == true)
-            {
-                //if (//selectedBooking.user != teacher)
-                {
-                    if (UserBookingsRef.SelectedBooking.Date.Date >= DateTime.Now.Date.AddDays(3))
-                    {
-                        PersistancyService.DeleteFromDatabaseAsync("Bookings", UserBookingsRef.SelectedBooking.Booking_Id);
-
-                    }
-                }
-            }
-        }
     }
 }
