@@ -200,26 +200,26 @@ namespace LokalestyringUWP.ViewModel
             SelectedBooking.Booking_Id = returnedObj.Result.Booking_Id;
             AllBookingsView viewToAdd = new AllBookingsView()
             {
-                RoomName = SelectedBooking.RoomName,
+                //RoomName = SelectedBooking.RoomName,
                 Date = tomorrow,
                 Booking_Id = returnedObj.Result.Booking_Id,
-                BookingStart = SelectedBooking.BookingStart,
-                BookingEnd = SelectedBooking.BookingEnd,
-                Room_Id = SelectedBooking.Room_Id,
-                Floor = SelectedBooking.Floor,
-                No = SelectedBooking.No,
-                Loc_Id = SelectedBooking.Loc_Id,
-                Name = SelectedBooking.Name,
-                City = SelectedBooking.City,
-                Building_Id = SelectedBooking.Building_Id,
-                Building_Letter = SelectedBooking.Building_Letter,
-                Title = SelectedBooking.Title,
-                Type_Id = SelectedBooking.Type_Id,
-                Type = SelectedBooking.Type,
-                Booking_Limit = SelectedBooking.Booking_Limit,
-                User_Id = SelectedBooking.User_Id,
-                User_Name = SelectedBooking.User_Name,
-                User_Email = SelectedBooking.User_Email
+                //BookingStart = SelectedBooking.BookingStart,
+                //BookingEnd = SelectedBooking.BookingEnd,
+                //Room_Id = SelectedBooking.Room_Id,
+                //Floor = SelectedBooking.Floor,
+                //No = SelectedBooking.No,
+                //Loc_Id = SelectedBooking.Loc_Id,
+                //Name = SelectedBooking.Name,
+                //City = SelectedBooking.City,
+                //Building_Id = SelectedBooking.Building_Id,
+                //Building_Letter = SelectedBooking.Building_Letter,
+                //Title = SelectedBooking.Title,
+                //Type_Id = SelectedBooking.Type_Id,
+                //Type = SelectedBooking.Type,
+                //Booking_Limit = SelectedBooking.Booking_Limit,
+                //User_Id = SelectedBooking.User_Id,
+                //User_Name = SelectedBooking.User_Name,
+                //User_Email = SelectedBooking.User_Email
             };
 
             AllUserBookingsFromSingleton.Add(viewToAdd);
