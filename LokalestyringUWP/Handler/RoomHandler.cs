@@ -15,6 +15,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using LokalestyringUWP.Annotations;
 using LokalestyringUWP.View;
+using Windows.UI.Xaml.Input;
 
 namespace LokalestyringUWP.Handler
 {
@@ -123,32 +124,37 @@ namespace LokalestyringUWP.Handler
                                  LimitKey = RoomGroup.Key,
                                  Count = RoomGroup.Count()
                              }).ToList();
-
-                foreach (var klasseLokaler in query)
+                if (BookingReference.Bookings.Count != 0)
                 {
-                    var query1 = (from r in RoomReference.RoomList
-                                  where r.Room_Id.Equals(klasseLokaler.LimitKey)
-                                  select r).ToList();
-                    foreach (var variable in query1)
+                    foreach (var klasseLokaler in query)
                     {
-                        if (klasseLokaler.Count >= 2)
+                        var query1 = (from r in RoomReference.RoomList
+                                      where r.Room_Id.Equals(klasseLokaler.LimitKey)
+                                      select r).ToList();
+                        foreach (var variable in query1)
                         {
-                            RoomReference.RoomList.Remove(variable);
-                        }
-                        if (klasseLokaler.Count == 1)
-                        {
-                            foreach (var item in RoomReference.RoomList)
+                            if (klasseLokaler.Count >= 2)
                             {
-                                if (variable.Room_Id == item.Room_Id)
+                                RoomReference.RoomList.Remove(variable);
+                            }
+                            if (klasseLokaler.Count == 1)
+                            {
+                                foreach (var item in RoomReference.RoomList)
                                 {
-                                    item.Booking_Limit = 1;
-                                }
-                                else
-                                {
-                                    item.Booking_Limit = 0;
+                                    if (variable.Room_Id == item.Room_Id)
+                                    {
+                                        item.Booking_Limit = 1;
+                                    }
                                 }
                             }
                         }
+                    }
+                }
+                else
+                {
+                    foreach (var item in RoomReference.RoomList)
+                    {
+                        item.Booking_Limit = 0;
                     }
                 }
             }
