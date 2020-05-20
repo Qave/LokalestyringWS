@@ -30,7 +30,7 @@
             BorderThickness="0,0,0,2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
@@ -46,8 +46,8 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="17">
-                    <Run Text="Bookings for"/>
-                    <Run Text="{Binding SelectedUser.User_Name}"/>
+                    <Run Text="Bookings for" />
+                    <Run Text="{Binding SelectedUser.User_Name}" />
                 </TextBlock>
             </Grid>
 
@@ -147,8 +147,8 @@
                             Background="#B2FFA9"
                             BorderBrush="#2FAB21"
                             BorderThickness="1"
-                            Content="Book igen imorgen" 
-                            Command="{Binding BookIgenImorgenCommand}"/>
+                            Command="{Binding BookIgenImorgenCommand}"
+                            Content="Book igen imorgen" />
                     </StackPanel>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <Button
@@ -160,10 +160,20 @@
                             Content="Aflys Booking" />
                     </Grid>
                 </Grid>
-                <Grid Grid.Row="1" Margin="10,5,10,10" Visibility="{Binding TavleInkluderetVisibility}">
-                    <TextBlock Text="Tavlen er inkluderet i dette rum!" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <Grid
+                    Grid.Row="1"
+                    Margin="10,5,10,10"
+                    Visibility="{Binding TavleInkluderetVisibility}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Text="Tavlen er inkluderet i dette rum!" />
                 </Grid>
-                <Grid Grid.Row="1" Margin="10,5,10,10" Visibility="{Binding TavleCanBeBookedVisibility}">
+                <Grid
+                    Grid.Row="1"
+                    Margin="10,5,10,10"
+                    Visibility="{Binding TavleCanBeBookedVisibility}">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -186,8 +196,8 @@
                         <TimePicker
                             Background="white"
                             Foreground="Black"
-                            IsEnabled="{Binding TavleButtonsEnabled}" 
-                            SelectedTime="{Binding SelectedTavleStartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            IsEnabled="{Binding TavleButtonsEnabled}"
+                            SelectedTime="{Binding SelectedTavleStartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                     <Grid
                         Grid.Row="0"
@@ -226,11 +236,9 @@
                             Background="white"
                             BorderThickness="1"
                             IsEnabled="{Binding TavleButtonsEnabled}"
-                            PlaceholderText="Varighed"
                             ItemsSource="{Binding PossibleDurations}"
-                            
-                            SelectedItem="{Binding SelectedDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        </ComboBox>
+                            PlaceholderText="Varighed"
+                            SelectedItem="{Binding SelectedDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </Grid>
             </Grid>

@@ -2,25 +2,25 @@
     x:Class="LokalestyringUWP.View.PageTeacherControlPanel"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:LokalestyringUWP.View"
     xmlns:Include="using:LokalestyringUWP.Include"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:handler="using:LokalestyringUWP.Handler"
+    xmlns:local="using:LokalestyringUWP.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:LokalestyringUWP.ViewModel"
-    xmlns:handler="using:LokalestyringUWP.Handler"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     <Page.DataContext>
         <viewModel:TeacherControlPanelVM />
     </Page.DataContext>
     <Page.Resources>
-        <handler:DateFormatConverter x:Name="DateToStringFormatConverter"/>
+        <handler:DateFormatConverter x:Name="DateToStringFormatConverter" />
     </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
-            <RowDefinition Height="0.8*"/>
-            <RowDefinition Height="1.50*"/>
+            <RowDefinition Height="0.8*" />
+            <RowDefinition Height="1.50*" />
         </Grid.RowDefinitions>
         <!--  HEADER  -->
         <Grid
@@ -31,7 +31,7 @@
             BorderThickness="0,0,0,2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="5*" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
@@ -47,8 +47,8 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="17">
-                    <Run Text="Lærer Panel for"/>
-                    <Run Text="{Binding SelectedUser.User_Name}"/>
+                    <Run Text="Lærer Panel for" />
+                    <Run Text="{Binding SelectedUser.User_Name}" />
                 </TextBlock>
             </Grid>
             <Grid
@@ -60,11 +60,10 @@
             </Grid>
         </Grid>
         <!--  HEADER END  -->
-        <Grid
-            Grid.Row="1">
+        <Grid Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.3*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="0.3*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <DatePicker
                 Grid.Row="0"
@@ -85,40 +84,35 @@
                     ClockIdentifier="24HourClock"
                     Header="Sluttid"
                     SelectedTime="{Binding InputTimeEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-            <StackPanel
-                Grid.Row="1"
-                Margin="5">
-            <Button
-                Margin="0,0,0,4"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Gold"
-                Command="{Binding ShowAllBookingCommand}"
-                Content="Vis alle bookinger" />
-            <Button
-                Margin="0,0,0,4"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Gold"
-                Command="{Binding FilterCommand}"
-                Content="Vis alle bookinger på valgte dato" />
+            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="5">
+                <Button
+                    Margin="0,0,0,4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="Gold"
+                    Command="{Binding ShowAllBookingCommand}"
+                    Content="Vis alle bookinger" />
+                <Button
+                    Margin="0,0,0,4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="Gold"
+                    Command="{Binding FilterCommand}"
+                    Content="Vis alle bookinger på valgte dato" />
                 <Button
                     Margin="0,60,0,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Gold"
-                Command="{Binding StealThisRoomCommand}"
-                Content="Book det valgte lokale" />
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Background="Gold"
+                    Command="{Binding StealThisRoomCommand}"
+                    Content="Book det valgte lokale" />
             </StackPanel>
-            </Grid>
-        <Grid
-            HorizontalAlignment="Center"
-            Grid.Row="2">
-            <GridView
-                ItemsSource="{Binding BookingList}" SelectedItem="{Binding BookingIsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
+        </Grid>
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
+            <GridView ItemsSource="{Binding BookingList}" SelectedItem="{Binding BookingIsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
                         <StackPanel>
                             <Border
                                 Width="230"
@@ -130,17 +124,17 @@
                                     <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock>
-                                            <Run Text="{Binding BookingStart, Converter={StaticResource DateToStringFormatConverter}}"/>
-                                            <Run Text="-"/>
-                                            <Run Text="{Binding BookingEnd, Converter={StaticResource DateToStringFormatConverter}}"/>
-                                            </TextBlock>
+                                            <Run Text="{Binding BookingStart, Converter={StaticResource DateToStringFormatConverter}}" />
+                                            <Run Text="-" />
+                                            <Run Text="{Binding BookingEnd, Converter={StaticResource DateToStringFormatConverter}}" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </StackPanel>
-                                </Border>
-                            </StackPanel>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
-            </Grid>
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Grid>
     </Grid>
 </Page>
