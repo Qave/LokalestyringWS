@@ -47,7 +47,7 @@ namespace LokalestyringUWP.ViewModel
             {
                 if (EmailAvailability(Email))
                 {
-                    DialogHandler.Dialog("Den email er allerede brugt", "Fejlet oprettelse");
+                    DialogHandler.Dialog("Den email er allerede brugt", "Oprettelse fejlet");
                 }
                 else
                 {
