@@ -193,11 +193,11 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         VerticalAlignment="Stretch">
-                        <!--<TextBlock VerticalAlignment="Bottom" FontSize="20">
-                            <Run Text="{Binding SelectedBooking.TavleStart, Converter={StaticResource DateToStringFormatConverter}}" />
+                        <TextBlock VerticalAlignment="Bottom" FontSize="20">
+                            <Run Text="{Binding SelectedTavleBooking.Time_start, Converter={StaticResource DateToStringFormatConverter}}" />
                             <Run Text="-" />
-                            <Run Text="{Binding SelectedBooking.TavleEnd, Converter={StaticResource DateToStringFormatConverter}}" />
-                        </TextBlock>-->
+                            <Run Text="{Binding SelectedTavleBooking.Time_end, Converter={StaticResource DateToStringFormatConverter}}" />
+                        </TextBlock>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
                         <Button
