@@ -29,7 +29,9 @@ namespace LokalestyringUWP.ViewModel
         public DateTime InputDate { get; set; } = DateTime.Now.AddDays(5);
         public TimeSpan InuputTimeStart { get; set; } = TimeSpan.Parse("12:00:00");
         public TimeSpan InputTimeEnd { get; set; } = TimeSpan.Parse("18:00:00");
-        
+        public User SelectedUser { get { return LoginHandler.SelectedUser; } }
+
+        public ICommand GoBackCommand { get; set; }
         public ICommand NavigateCommand { get; set; }
         public RelayCommand StealThisRoomCommand { get; set; }
 
@@ -45,6 +47,7 @@ namespace LokalestyringUWP.ViewModel
             TeacherHandlerRef.ResetList();
             StealThisRoomCommand = new RelayCommand(RoomSnatch, null);
             NavigateCommand = new RelayCommand(ChangePage, null);
+            GoBackCommand = new RelayCommand(GoBackMethod, null);
 
         }
 
@@ -85,7 +88,10 @@ namespace LokalestyringUWP.ViewModel
             ((Frame) Window.Current.Content).Navigate(typeof(PageTeacherControlPanel));
         }
 
-
+        public void GoBackMethod()
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(PageLocations));
+        }
 
 
         #region INotifyPropertyChanged

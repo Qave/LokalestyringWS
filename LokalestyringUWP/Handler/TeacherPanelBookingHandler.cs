@@ -70,11 +70,11 @@ namespace LokalestyringUWP.Handler
         public async Task TeacherStealsBookingMethod()
         {
             var result = await DialogHandler.GenericYesNoDialog(
-                $"Er du sikker på du vil booke dette rum? {TCPREF.BookingIsSelected.RoomName}, ved at booke dette lokale aflyser du en elves booking",
+                $"Er du sikker på du vil booke dette lokale? {TCPREF.BookingIsSelected.RoomName}, ved at booke dette lokale aflyser du en elves booking",
                 "Er du sikker?", "Ja", "Nej");
             if (result)
             {
-                if (LoginHandler.SelectedUser.Teacher == true)
+                if (LoginHandler.SelectedUser.Teacher)
                 {
                     if (IsNotATeach())
                     {
@@ -96,10 +96,13 @@ namespace LokalestyringUWP.Handler
             {
                 if (IsNotATeach())
                 {
-                    if (TCPREF.InputDate.Date >= DateTime.Now.Date.AddDays(3))
+                    if (TCPREF.BookingIsSelected.Date.Date >= DateTime.Now.Date.AddDays(3))
                     {
-                        //await GetMailToUser("En lærer aflyste din booking", $"Din booking den {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra {TCPREF.BookingIsSelected.BookingStart} til {TCPREF.BookingIsSelected.BookingEnd} i rum {TCPREF.BookingIsSelected.RoomName} er blevet aflyst {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden, du er selvfølgelig velkommen til at booke et nyt rum på appen", true);
                         PersistancyService.DeleteFromDatabaseAsync("Bookings", TCPREF.BookingIsSelected.Booking_Id);
+                    }
+                    else
+                    {
+                        DialogHandler.Dialog($"Der skal minimum være 3 dages varsel, der er mindre end tre dage til {TCPREF.BookingIsSelected.Date.Date.ToString("dd/MM/yyyy")}", "For kort varsel!");
                     }
                 }
             }
@@ -114,19 +117,15 @@ namespace LokalestyringUWP.Handler
 
             //skal tjekke hele den nye bookings tidsintervaller for om der er en lærer der har booket på samme tid 
 
-            //var query = (from b in BookingSingleton.Bookings
-            //where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.Time_end >= TCPREF.InuputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
-            //select b).ToList();
             var query = from t in UserCatalogSingleton.Instance.Users
                 join b in BookingCatalogSingleton.Instance.Bookings on t.User_Id equals b.User_Id
-                        where b.User_Id == t.User_Id
+                        where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.Time_end >= TCPREF.InuputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
                         select t;
-            if (query.Any(l => l.User_Id == TCPREF.BookingIsSelected.User_Id))
+            if (query.Any(l => l.Teacher))
             {
                 DialogHandler.Dialog("Din valgte booking indeholder en lærer-booking, det er desværre ikke muligt at slette en anden lærers booking", "lærer-booking fejl");
                 return false;
             }
-
             return true;
         }
         /// <summary>
