@@ -258,8 +258,8 @@ namespace LokalestyringUWP.Handler
                 {
                     Date = RoomReference.Date.Date,
                     Room_Id = RoomReference.SelectedRoomsView.Room_Id,
-                    Time_end = RoomReference.TimeEnd,
-                    Time_start = RoomReference.TimeStart,
+                    Time_start = new TimeSpan(RoomReference.TimeStart.Hours, RoomReference.TimeStart.Minutes, 0),
+                    Time_end = new TimeSpan(RoomReference.TimeEnd.Hours, RoomReference.TimeEnd.Minutes, 0),
                     User_Id = LoginHandler.SelectedUser.User_Id
                 };
 
