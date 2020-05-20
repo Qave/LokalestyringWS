@@ -120,7 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\RelayCommand.cs" />
-    <Compile Include="Handler\BookingHandler.cs" />
+    <Compile Include="Handler\TeacherPanelBookingHandler.cs" />
     <Compile Include="Handler\CommandHandler.cs" />
     <Compile Include="Handler\DateFormatConverter.cs" />
     <Compile Include="Handler\DialogHandler.cs" />
@@ -138,12 +138,9 @@
     <Compile Include="Models\Building.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Room.cs" />
-    <Compile Include="Models\Singletons\BuildingCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\LocationCatalogSingleton.cs" />
-    <Compile Include="Models\Singletons\RoomCatalogSingleton.cs" />
     <Compile Include="Models\Roomtype.cs" />
     <Compile Include="Models\Singletons\RoomsViewCatalogSingleton.cs" />
-    <Compile Include="Models\Singletons\RoomtypeCatalogSingleton.cs" />
     <Compile Include="Models\Singletons\TavleBookingCatalogSingleton.cs" />
     <Compile Include="Models\TavleBooking.cs" />
     <Compile Include="Models\User.cs" />
@@ -158,6 +155,7 @@
     <Compile Include="ViewModel\CreateAccountVM.cs" />
     <Compile Include="ViewModel\LocationsVM.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
+    <Compile Include="ViewModel\TeacherControlPanelVM.cs" />
     <Compile Include="ViewModel\UserBookingsVM.cs" />
     <Compile Include="View\PageBookRooms.xaml.cs">
       <DependentUpon>PageBookRooms.xaml</DependentUpon>
@@ -170,6 +168,9 @@
     </Compile>
     <Compile Include="View\PageLogin.xaml.cs">
       <DependentUpon>PageLogin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PageTeacherControlPanel.xaml.cs">
+      <DependentUpon>PageTeacherControlPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PageUserBookings.xaml.cs">
       <DependentUpon>PageUserBookings.xaml</DependentUpon>
@@ -233,11 +234,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PageUserBookings.xaml">
+    <Page Include="View\PageTeacherControlPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\PageTeacherControlPanel.xaml">
+    <Page Include="View\PageUserBookings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

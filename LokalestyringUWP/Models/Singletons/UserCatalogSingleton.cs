@@ -18,7 +18,7 @@ namespace LokalestyringUWP.Models.Singletons
 
             public async void LoadUsersAsync()
             {
-                ObservableCollection<User> users = await PersistancyService.LoadUsersFromJsonAsync();
+                ObservableCollection<User> users = await PersistancyService.LoadTableFromJsonAsync<User>("Users");
 
                 foreach (var item in users)
                 {

@@ -28,10 +28,6 @@ namespace LokalestyringUWP.Handler
             BookingReference = new BookingCatalogSingleton();
             RoomReference = r;
         }
-        public static void SaveRoomsAsync(Room obj)
-        {
-            PersistancyService.SaveRoomAsJsonAsync(obj);
-        }
 
         #region FILTER LOGIC
         /// <summary>
@@ -273,41 +269,11 @@ namespace LokalestyringUWP.Handler
                     FilterSearchMethod();
                     MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
-                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.");
+                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.",true);
                     RoomReference.SelectedRoomsView = null;
                     PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
             }
         }
-
-
-        //a reference to the UserBookingsVM to get the selected booking WE NEED ANOTHER REFERENCE FROM A LISTVIEW IN A NEW PAGE!!
-        public UserBookingsVM UserBookingsRef;
-        public Visibility TeacherDeleteBtnVisibility { get; set; } = Visibility.Collapsed;
-        public void TeacherCancelBookingBtnVisibility()
-        {
-            if (LoginHandler.SelectedUser.Teacher == true)
-            {
-                TeacherDeleteBtnVisibility = Visibility.Visible;
-            }
-        }
-        //this method navigates to the TeacherControlPanel
-        public void TeacherControlPanelRedirect()
-        {
-            ((Frame) Window.Current.Content).Navigate(typeof(PageUserBookings));
-        }
-
-        public void TeacherCancelBookingMethod()
-        {
-            if (LoginHandler.SelectedUser.Teacher == true)
-            {
-                if (UserBookingsRef.SelectedBooking.Date.Date >= DateTime.Now.Date.AddDays(3))
-                {
-                    PersistancyService.DeleteFromDatabaseAsync("Bookings",UserBookingsRef.SelectedBooking.Booking_Id);
-                }
-            }
-        }
-
-
     }
 }
