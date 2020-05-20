@@ -30,7 +30,7 @@
             BorderThickness="0,0,0,2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
@@ -40,15 +40,13 @@
                     Command="{Binding GoBackCommand}"
                     Icon="Back" />
             </Grid>
-            <Grid Grid.Column="1"> 
+            <Grid Grid.Column="1">
                 <TextBlock
                     Margin="5,0,0,0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontSize="17">
-                    <Run Text="Bookings for"/>
-                    <Run Text="{Binding SelectedUser.User_Name}"/>
-                </TextBlock>
+                    FontSize="17"
+                    Text="{Binding SelectedUser.User_Name}" />
             </Grid>
 
 
@@ -58,6 +56,50 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center">
                 <Include:BurgerMenu Width="50" Height="40" />
+            </Grid>
+
+            <Grid
+                Grid.Row="0"
+                Grid.ColumnSpan="3"
+                Margin="10,10,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                Background="gray"
+                BorderBrush="#81a6c7"
+                BorderThickness="0,0,0,0.5"
+                Visibility="Collapsed">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <TextBlock
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="Bookings" />
+                </StackPanel>
+                <StackPanel>
+
+                    <AppBarButton
+                        Width="30"
+                        Height="40"
+                        Icon="Back" />
+                </StackPanel>
+                <StackPanel>
+                    <StackPanel
+                        Grid.Column="3"
+                        Margin="0,10,10,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center">
+                        <AppBarButton
+                            Width="50"
+                            Height="40"
+                            Icon="GlobalNavigationButton" />
+                    </StackPanel>
+                </StackPanel>
             </Grid>
         </Grid>
         <!--  HEADER SLUT  -->
@@ -160,10 +202,8 @@
                             Content="Aflys Booking" />
                     </Grid>
                 </Grid>
-                <Grid Grid.Row="1" Margin="10,5,10,10" Visibility="{Binding TavleInkluderetVisibility}">
-                    <TextBlock Text="Tavlen er inkluderet i dette rum!" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                </Grid>
-                <Grid Grid.Row="1" Margin="10,5,10,10" Visibility="{Binding TavleCanBeBookedVisibility}">
+
+                <Grid Grid.Row="1" Margin="10,5,10,10">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -186,18 +226,17 @@
                         <TimePicker
                             Background="white"
                             Foreground="Black"
-                            IsEnabled="{Binding TavleButtonsEnabled}" 
-                            SelectedTime="{Binding SelectedTavleStartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            IsEnabled="{Binding TavleButtonsEnabled}" />
                     </Grid>
                     <Grid
                         Grid.Row="0"
                         Grid.Column="1"
                         VerticalAlignment="Stretch">
-                        <!--<TextBlock VerticalAlignment="Bottom" FontSize="20">
+                        <TextBlock VerticalAlignment="Bottom" FontSize="20">
                             <Run Text="{Binding SelectedBooking.TavleStart, Converter={StaticResource DateToStringFormatConverter}}" />
                             <Run Text="-" />
                             <Run Text="{Binding SelectedBooking.TavleEnd, Converter={StaticResource DateToStringFormatConverter}}" />
-                        </TextBlock>-->
+                        </TextBlock>
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
                         <Button
@@ -227,9 +266,11 @@
                             BorderThickness="1"
                             IsEnabled="{Binding TavleButtonsEnabled}"
                             PlaceholderText="Varighed"
-                            ItemsSource="{Binding PossibleDurations}"
-                            
-                            SelectedItem="{Binding SelectedDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            SelectedValue="{Binding SelectedTavleStartTime}">
+                            <ComboBoxItem>00:30</ComboBoxItem>
+                            <ComboBoxItem>01:00</ComboBoxItem>
+                            <ComboBoxItem>01:30</ComboBoxItem>
+                            <ComboBoxItem>02:00</ComboBoxItem>
                         </ComboBox>
                     </Grid>
                 </Grid>

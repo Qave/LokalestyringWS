@@ -273,7 +273,7 @@ namespace LokalestyringUWP.Handler
                     FilterSearchMethod();
                     MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
-                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.", true);
+                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.");
                     RoomReference.SelectedRoomsView = null;
                     PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
