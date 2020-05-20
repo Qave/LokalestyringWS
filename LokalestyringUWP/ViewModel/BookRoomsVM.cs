@@ -29,24 +29,20 @@ namespace LokalestyringUWP.ViewModel
         public BookRoomsVM()
         {
             RoomHandler = new RoomHandler(this); //SKAL INITIALISERES FØRST
-            Date = DateTimeOffset.Now;
-            Date = Date.Date;
+            Date = DateTimeOffset.Now.Date;
             TimeStart = DateTime.Now.TimeOfDay;
-            TimeEnd = DateTime.Now.TimeOfDay + TimeSpan.FromHours(4);
+            TimeEnd = TimeStart + TimeSpan.FromHours(4);
             BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomIsSelectedCheck);
             CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
             CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
             RoomList = new ObservableCollection<RoomsView>();
-            OnPropertyChanged(nameof(RoomList));
-            ResettedList = new ObservableCollection<RoomsView>();
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.FilterSearchMethod();
 
         }
 
-        public ObservableCollection<RoomsView> ResettedList { get; set; }
         public ObservableCollection<RoomsView> RoomList { get; set; }
 
         public RoomHandler RoomHandler { get; set; }
