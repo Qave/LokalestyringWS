@@ -41,17 +41,17 @@ namespace LokalestyringUWP.ViewModel
         /// and sends it to PersistancyService.SaveInsertAsJsonAsync then refreshes the UserCatalogSingleton
         /// and then navigates to PageLogin so the user can login.
         /// </summary>
-        private void CreateAccount()
+        private async void CreateAccount()
         {
             if (UserName != null && Email != null && Password != null)
             {
                 if (EmailAvailability(Email))
                 {
-                    DialogHandler.Dialog("Brugernavnet findes allerede", "Fejlet oprettelse");
+                    DialogHandler.Dialog("Den email er allerede brugt", "Fejlet oprettelse");
                 }
                 else
                 {
-                    PersistancyService.SaveInsertAsJsonAsync(new User() {User_Name = UserName, User_Email = Email, Password = Password, Teacher = IsTeacher}, "Users");
+                    await PersistancyService.SaveInsertAsJsonAsync(new User() {User_Name = UserName, User_Email = Email, Password = Password, Teacher = IsTeacher}, "Users");
                     UserCatalogSingleton.Instance.LoadUsersAsync();
                     ((Frame)Window.Current.Content).Navigate(typeof(PageLogin));
                 }
@@ -63,7 +63,7 @@ namespace LokalestyringUWP.ViewModel
         }
 
         /// <summary>
-        /// Checks if the username already exists and returns true or false.
+        /// Checks if the mail is used and returns true or false.
         /// </summary>
         /// <param name="mail"></param>
         /// <returns>true or false</returns>
