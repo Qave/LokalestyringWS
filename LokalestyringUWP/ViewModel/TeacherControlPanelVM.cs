@@ -6,12 +6,15 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using LokalestyringUWP.Annotations;
 using LokalestyringUWP.Common;
 using LokalestyringUWP.Handler;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
+using LokalestyringUWP.View;
 
 namespace LokalestyringUWP.ViewModel
 {
@@ -23,12 +26,12 @@ namespace LokalestyringUWP.ViewModel
         public ObservableCollection<AllBookingsView> BookingList { get; set; }
         public Visibility TeacherDeleteBtnVisibility { get; set; } = Visibility.Collapsed;
         public TeacherPanelBookingHandler TeacherHandlerRef { get; set; }
-        public DateTime Date { get; set; }
-        public TimeSpan TimeStart { get; set; }
-        public TimeSpan TimeEnd { get; set; }
+        public DateTime InputDate { get; set; } = DateTime.Now.AddDays(5);
+        public TimeSpan InuputTimeStart { get; set; } = TimeSpan.Parse("12:00:00");
+        public TimeSpan InputTimeEnd { get; set; } = TimeSpan.Parse("18:00:00");
         
-
-        public RelayCommand BookThisRoomCommand { get; set; }
+        public ICommand NavigateCommand { get; set; }
+        public RelayCommand StealThisRoomCommand { get; set; }
 
 
         #endregion
@@ -40,7 +43,9 @@ namespace LokalestyringUWP.ViewModel
             TeacherHandlerRef = new TeacherPanelBookingHandler(this);
             BookingList = new ObservableCollection<AllBookingsView>();
             TeacherHandlerRef.ResetList();
-            //BookThisRoomCommand = new RelayCommand(RoomHandlerRef.TeacherCancelBookingMethod,null);
+            StealThisRoomCommand = new RelayCommand(RoomSnatch, null);
+            NavigateCommand = new RelayCommand(ChangePage, null);
+
         }
 
 
@@ -52,8 +57,13 @@ namespace LokalestyringUWP.ViewModel
             {
                 _bookingIsSelect = value;
                 OnPropertyChanged(nameof(BookingIsSelectedCheck));
-                BookThisRoomCommand.RaiseCanExecuteChanged();
+                StealThisRoomCommand.RaiseCanExecuteChanged();
             }
+        }
+
+        public void RoomSnatch()
+        {
+            TeacherHandlerRef.TeacherStealsBookingMethod();
         }
 
         public bool BookingIsSelectedCheck()
@@ -70,7 +80,10 @@ namespace LokalestyringUWP.ViewModel
             }
         }
 
-
+        public void ChangePage()
+        {
+            ((Frame) Window.Current.Content).Navigate(typeof(PageTeacherControlPanel));
+        }
 
 
 

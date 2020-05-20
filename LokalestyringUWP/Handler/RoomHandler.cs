@@ -22,10 +22,8 @@ namespace LokalestyringUWP.Handler
     public class RoomHandler
     {
         public static BookRoomsVM RoomReference { get; set; }
-        public BookingCatalogSingleton BookingReference { get; set; }
         public RoomHandler(BookRoomsVM r)
         {
-            BookingReference = new BookingCatalogSingleton();
             RoomReference = r;
         }
 
@@ -115,7 +113,7 @@ namespace LokalestyringUWP.Handler
             }
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
             {
-                var query = (from b in BookingReference.Bookings
+                var query = (from b in BookingCatalogSingleton.Instance.Bookings
                              join r in RoomReference.RoomList on b.Room_Id equals r.Room_Id
                              where b.Date.Equals(RoomReference.Date.DateTime) && b.Time_end >= RoomReference.TimeStart && b.Time_start <= RoomReference.TimeEnd && r.Type == "Klasselokale"
                              group b by b.Room_Id into RoomGroup
@@ -124,7 +122,7 @@ namespace LokalestyringUWP.Handler
                                  LimitKey = RoomGroup.Key,
                                  Count = RoomGroup.Count()
                              }).ToList();
-                if (BookingReference.Bookings.Count != 0)
+                if (BookingCatalogSingleton.Instance.Bookings.Count != 0)
                 {
                     foreach (var klasseLokaler in query)
                     {
@@ -163,7 +161,7 @@ namespace LokalestyringUWP.Handler
             {
 
                 var query = (from r in RoomReference.RoomList
-                             join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id into temp
+                             join b in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals b.Room_Id into temp
                              from t in temp
                              where t.Date.Equals(RoomReference.Date.DateTime) && t.Time_end >= RoomReference.TimeStart && t.Time_start <= RoomReference.TimeEnd && r.Type != "Klasselokale"
                              select r).ToList();
@@ -181,7 +179,7 @@ namespace LokalestyringUWP.Handler
         public void CheckUserDoubleBooking()
         {
             var query = (from r in RoomReference.RoomList
-                         join q in BookingReference.Bookings on r.Room_Id equals q.Room_Id into bookedRooms
+                         join q in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals q.Room_Id into bookedRooms
                          from qr in bookedRooms
                          where qr.User_Id == LoginHandler.SelectedUser.User_Id && qr.Date == RoomReference.Date && qr.Time_end >= RoomReference.TimeStart && qr.Time_start <= RoomReference.TimeEnd
                          select r).ToList();
@@ -240,7 +238,7 @@ namespace LokalestyringUWP.Handler
         public async void CreateBooking()
         {
             bool variable = true;
-            foreach (var item in BookingReference.Bookings)
+            foreach (var item in BookingCatalogSingleton.Instance.Bookings)
             {
                 if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date == RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd)
                 {
@@ -258,14 +256,14 @@ namespace LokalestyringUWP.Handler
                 {
                     Date = RoomReference.Date.Date,
                     Room_Id = RoomReference.SelectedRoomsView.Room_Id,
-                    Time_end = RoomReference.TimeEnd,
-                    Time_start = RoomReference.TimeStart,
+                    Time_start = new TimeSpan(RoomReference.TimeStart.Hours, RoomReference.TimeStart.Minutes, 0),
+                    Time_end = new TimeSpan(RoomReference.TimeEnd.Hours, RoomReference.TimeEnd.Minutes, 0),
                     User_Id = LoginHandler.SelectedUser.User_Id
                 };
 
                 if (result)
                 {
-                    BookingReference.Bookings.Add(booking);
+                    BookingCatalogSingleton.Instance.Bookings.Add(booking);
                     FilterSearchMethod();
                     MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +

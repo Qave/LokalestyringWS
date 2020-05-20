@@ -19,16 +19,13 @@ namespace LokalestyringUWP.ViewModel
 {
     public class BookRoomsVM : INotifyPropertyChanged
     {
-        private DateTimeOffset _selectedDate;
-        private TimeSpan _timeStart;
-        private TimeSpan _timeEnd;
         private RoomsView _selectedRoomsView;
 
         public RelayCommand BookSelectedRoomCommand { get; set; }
         public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
         public ICommand GoBackCommand => CommandHandler.GoBackCommand;
         public string selectedLocation => LocationsVM.SelectedLocation.City;
-        
+
         public BookRoomsVM()
         {
             RoomHandler = new RoomHandler(this); //SKAL INITIALISERES FØRST
@@ -46,7 +43,7 @@ namespace LokalestyringUWP.ViewModel
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.FilterSearchMethod();
-            
+
         }
 
         public ObservableCollection<RoomsView> ResettedList { get; set; }
@@ -65,44 +62,16 @@ namespace LokalestyringUWP.ViewModel
         }
 
         public bool RoomIsSelectedCheck()
-        { 
+        {
             return (SelectedRoomsView != null);
         }
 
-        public TimeSpan TimeStart 
-        {
-            get
-            {
-                return _timeStart;
-            }
-            set
-            {
-                _timeStart = value;
-            } 
-        }
-        public TimeSpan TimeEnd 
-        { 
-            get
-            {
-                return _timeEnd;
-            }
-            set
-            {
-                _timeEnd = value;
-            }
-        }
-        public DateTimeOffset Date 
-        {
-            get
-            {
-                return _selectedDate;
-            }
-            set
-            {
-                _selectedDate = value;
-                OnPropertyChanged();
-            }
-        }
+        public TimeSpan TimeStart { get; set; }
+
+        public TimeSpan TimeEnd { get; set; }
+
+        public DateTimeOffset Date { get; set; }
+
         public string SelectedBuildingFilter { get; set; }
         public string SelectedRoomtypeFilter { get; set; }
 

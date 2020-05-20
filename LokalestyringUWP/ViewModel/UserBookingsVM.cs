@@ -36,15 +36,14 @@ namespace LokalestyringUWP.ViewModel
         // ObservableCollection of type TavleBooking that is instantiated in the viewmodel constructor
         public ObservableCollection<TavleBooking> Tavlebookings { get; set; }
 
-
+        /// <summary>
+        /// The UserBookingsVM ViewModel, instantiates the ICommand properties, it also refreshes the view, and reloads the lists to use in the view.
+        /// </summary>
         public UserBookingsVM()
         {
             // Gets filled with the bookings from the selected user on the UserBookingsOnId Method.
             AllUserBookingsFromSingleton = new ObservableCollection<AllBookingsView>();
             Tavlebookings = new ObservableCollection<TavleBooking>();
-
-            // Refreshes the AllBookingsList with the list from the singleton
-            //RefreshList();
             Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
 
             // Instantiates the ICommands properties with a relaycommand
@@ -53,13 +52,37 @@ namespace LokalestyringUWP.ViewModel
             BookTavleCommand = new RelayCommand(async () => await BookTavleMethod(), null);
             GoBackCommand = new RelayCommand(GoBackMethod, null);  // DEN ER NULL; FIX DEN xD
             BookIgenImorgenCommand = new RelayCommand(async () => await BookIgenImorgenMethod(), null);
-
             // Loads default visibility states
             OnPageLoadVisibilities();
-
             // Filters the bookings to only show bookings for the selected user. HARD CODED USER ID, for use on the page, as a logged in user.
-            RefreshList();
+            RefreshLists();
         }
+
+        // ICommands that gets bound to XAML-Controllers
+
+        // Properties that is bound to the pageview. When a value is chosen on the page, that value gets put into these properties respectively
+        #region Binding Properties
+
+        public TimeSpan SelectedTavleStartTime { get { return _selectedTavleStartTime; } set { _selectedTavleStartTime = value; OnPropertyChanged(); } }
+        public string SelectedDuration { get { return _selectedDuration; } set { _selectedDuration = value; OnPropertyChanged(); } }
+        public List<string> PossibleDurations
+        {
+            get
+            {
+                return new List<string>
+                {
+                   "00:30:00",
+                   "01:00:00",
+                   "01:30:00",
+                   "02:00:00"
+                };
+            }
+            set
+            {
+                OnPropertyChanged();
+            }
+        }
+        public bool TavleButtonsEnabled { get; set; }
         /// <summary>
         /// Returns the selected Booking as type: AllBookingsView
         /// </summary>
@@ -80,96 +103,107 @@ namespace LokalestyringUWP.ViewModel
                 OnPropertyChanged(nameof(ElementIsChosenVisibility));
             }
         }
-
+        /// <summary>
+        /// Returns the user that is logged ind as an User object.
+        /// </summary>
         public User SelectedUser { get { return LoginHandler.SelectedUser; } }
+        //public TavleBooking SelectedTavleBooking
+        //{
+        //    get
+        //    {
+        //        if (true)
+        //        {
 
-        // ICommands that gets bound to XAML-Controllers
+        //        }
+        //    }
+        //    set;
+        //}
+
+        #endregion
+
         #region Command Properties
+
         public ICommand BookIgenImorgenCommand { get; set; }
         public ICommand BookTavleCommand { get; set; }
         public ICommand AflysBookingCommand { get; set; }
         public ICommand AflysTavleCommand { get; set; }
         public ICommand GoBackCommand { get; set; }
-        #endregion
 
-        // Properties that is bound to the pageview. When a value is chosen on the page, that value gets put into these properties respectively
-        #region Binding Properties
-        public TimeSpan SelectedTavleStartTime { get { return _selectedTavleStartTime; } set { _selectedTavleStartTime = value; OnPropertyChanged(); } }
-        public string SelectedDuration { get { return _selectedDuration; } set { _selectedDuration = value; OnPropertyChanged(); } }
-        public List<string> PossibleDurations
-        {
-            get
-            {
-                return new List<string>
-                {
-                   "00:30:00",
-                   "01:00:00",
-                   "01:30:00",
-                   "02:00:00"
-                };
-            }
-            set
-            {
-                OnPropertyChanged();
-            }
-        }
         #endregion
         // Visibility Properties that is bound to elements that needs to show and hide on the page view
         #region Visibility Properties
+
         public Visibility AflysTavleBtnVisibility { get; set; }
         public Visibility BookTavleBtnVisibility { get; set; }
         public Visibility NoElementsChosenVisibility { get; set; }
         public Visibility ElementIsChosenVisibility { get; set; }
         public Visibility TavleInkluderetVisibility { get; set; }
-        public Visibility TavleCanBeBookedVisibility { get; set; }
+        public Visibility TavleCanBeBookedVisibility { get; set; }   
 
-        public bool TavleButtonsEnabled { get; set; }
         #endregion
-
-
+        // Methods for binding the corresponding ICommand property.
         #region Button Command Methods
 
-        public void GoBackMethod()
+        /// <summary>
+        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
+        /// </summary>
+        public async void AflysBookingMethod()
         {
-            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
+            // Checks if the user wants to delete the booking, or not
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
+            // If user wants to delete the booking.
+            if (result)
+            {
+                // The async delete method from PersistancyService.
+                PersistancyService.DeleteFromDatabaseAsync("Bookings", SelectedBooking.Booking_Id);
+
+                // Deletes the selected object from the singleton observable collection
+                AllUserBookingsFromSingleton.Remove(SelectedBooking);
+                // Update the view
+                ElementIsChosenVisibility = Visibility.Collapsed;
+                NoElementsChosenVisibility = Visibility.Visible;
+                OnPropertyChanged(nameof(ElementIsChosenVisibility));
+                OnPropertyChanged(nameof(NoElementsChosenVisibility));
+            }
         }
 
         /// <summary>
-        /// Method for inserting a booking into the database.
+        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking's Tavle booking from the database 
         /// </summary>
-        public async Task BookTavleMethod()
+        public async void AflysTavleBookingMethod()
         {
-            TavleBooking myTavleBooking = null;
-            if (SelectedTavleStartTime != TimeSpan.Zero)
+            // Checks if the user wants to delete the TavleBooking, or not
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse tavlen for denne bookning?\nDin Booking på rummet vil ikke blive slettet", "Aflys Tavle?", "Ja, Aflys Tavle", "Fortryd");
+            // If user wants to delete the booking.
+            if (result)
             {
-                // does selected duration exceed bookingEnd?
-                TimeSpan tavleEndTime = SelectedTavleStartTime.Add(TimeSpan.Parse(SelectedDuration));
-                if (tavleEndTime > SelectedBooking.BookingEnd)
+                // Try and run the code, if the code cant run, catch the exception and notify the user that something went wrong.
+                try
                 {
-                    var endTimeExceedsBookingEnd = await DialogHandler.GenericYesNoDialog("Tiden kan ikke overstige sluttiden for denne booking.\nEr du sikker på du vil forsætte?\nDin tavletid vil blive begrænset!", "Begrænset Tavletid!", "Acceptér", "Fortryd");
-                    if (endTimeExceedsBookingEnd)
-                    {
-                        tavleEndTime = SelectedBooking.BookingEnd;
-                        myTavleBooking = new TavleBooking() { Booking_Id = SelectedBooking.Booking_Id, };
-                        await bookTavleFilter(tavleEndTime, myTavleBooking);
-                    }
-                    else
-                    {
-                        return;
-                    }
+                    // Gets the selected booking's tavlebooking as an object.
+                    TavleBooking _selectedTavleBooking = TavleBookingCatalogSingleton.Instance.TavleBookings.Single(t => t.Booking_Id == SelectedBooking.Booking_Id);
+                    // The async delete method from PersistancyService.
+                    PersistancyService.DeleteFromDatabaseAsync("TavleBookings", _selectedTavleBooking.Tavle_Id);
+                    // Deletes the selected object from the singleton observable collection, which in turn updates the view.
+                    TavleBookingCatalogSingleton.Instance.TavleBookings.Remove(_selectedTavleBooking);
+                    //SelectedBooking.TavleStart = null;
+                    //SelectedBooking.TavleEnd = null;
+
+                    //Update the viewpage
+                    AflysTavleBtnVisibility = Visibility.Collapsed;
+                    BookTavleBtnVisibility = Visibility.Visible;
+                    OnPropertyChanged(nameof(AflysTavleBtnVisibility));
+                    OnPropertyChanged(nameof(BookTavleBtnVisibility));
+                    OnPropertyChanged(nameof(SelectedBooking));
                 }
-                else
+                catch (Exception)
                 {
-                    myTavleBooking = new TavleBooking() { Booking_Id = SelectedBooking.Booking_Id, };
-                    await bookTavleFilter(tavleEndTime, myTavleBooking);
+                    // Informs the user that something went wrong with the deletion of a tavle booking
+                    DialogHandler.Dialog("Noget gik galt med aflysning af tavle, kontakt Zealands IT-Helpdesk for mere information.", "Fejl i aflysning");
                 }
             }
-            else
-            {
-                DialogHandler.Dialog("Vælg venligt en anden starttid\nStarttiden kan ikke være kl 00:00", "Ugyldig tid");
-            }
-            //PersistancyService.SaveInsertAsJsonAsync(new TavleBooking() {Booking_Id = SelectedBooking.Booking_Id, Time_start = SelectedTavleStartTime, Time_end }, "TavleBookings");
         }
+
         /// <summary>
         /// This method books the selected booking/room, again tomorrow, is that is possible.
         /// </summary>
@@ -235,128 +269,117 @@ namespace LokalestyringUWP.ViewModel
                 // Adds the viewToAdd object, to the singleton
                 AllUserBookingsFromSingleton.Add(viewToAdd);
                 // Refreshes the singleton, and re-queries the bookings for the selected user
-                RefreshList();
+                RefreshLists();
                 // sets the selected booking to the newly added booking
                 SelectedBooking = AllUserBookingsFromSingleton.Last();
             }
         }
 
-
-        public void RefreshList()
-        {
-            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
-            AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
-            AllUserBookingsFromSingleton.Clear();
-            foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings.ToList())
-            {
-                AllUserBookingsFromSingleton.Add(item);
-            }
-            UserBookingsOnId(1);
-        }
-
-        //}
         /// <summary>
-        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
+        /// Method that is bound to the BookTavleCommand property, that checks for preconditions, before calling the BookTavle Method.
         /// </summary>
-        public async void AflysBookingMethod()
+        public async Task BookTavleMethod()
         {
-            // Checks if the user wants to delete the booking, or not
-            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
-            // If user wants to delete the booking.
-            if (result)
+            TavleBooking myTavleBooking = null;
+            if (SelectedTavleStartTime != TimeSpan.Zero)
             {
-                // The async delete method from PersistancyService.
-                PersistancyService.DeleteFromDatabaseAsync("Bookings", SelectedBooking.Booking_Id);
-
-                // Deletes the selected object from the singleton observable collection
-                AllUserBookingsFromSingleton.Remove(SelectedBooking);
-                // Update the view
-                ElementIsChosenVisibility = Visibility.Collapsed;
-                NoElementsChosenVisibility = Visibility.Visible;
-                OnPropertyChanged(nameof(ElementIsChosenVisibility));
-                OnPropertyChanged(nameof(NoElementsChosenVisibility));
-            }
-        }
-        /// <summary>
-        /// Async method that calls the async delete method from the persistancyService that deletes the selected booking's Tavle booking from the database 
-        /// </summary>
-        public async void AflysTavleBookingMethod()
-        {
-            // Checks if the user wants to delete the TavleBooking, or not
-            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse tavlen for denne bookning?\nDin Booking på rummet vil ikke blive slettet", "Aflys Tavle?", "Ja, Aflys Tavle", "Fortryd");
-            // If user wants to delete the booking.
-            if (result)
-            {
-                // Try and run the code, if the code cant run, catch the exception and notify the user that something went wrong.
-                try
+                // does selected duration exceed bookingEnd?
+                TimeSpan tavleEndTime = SelectedTavleStartTime.Add(TimeSpan.Parse(SelectedDuration));
+                if (tavleEndTime > SelectedBooking.BookingEnd)
                 {
-                    // Gets the selected booking's tavlebooking as an object.
-                    TavleBooking _selectedTavleBooking = TavleBookingCatalogSingleton.Instance.TavleBookings.Single(t => t.Booking_Id == SelectedBooking.Booking_Id);
-                    // The async delete method from PersistancyService.
-                    PersistancyService.DeleteFromDatabaseAsync("TavleBookings", _selectedTavleBooking.Tavle_Id);
-                    // Deletes the selected object from the singleton observable collection, which in turn updates the view.
-                    TavleBookingCatalogSingleton.Instance.TavleBookings.Remove(_selectedTavleBooking);
-                    //SelectedBooking.TavleStart = null;
-                    //SelectedBooking.TavleEnd = null;
-
-                    //Update the viewpage
-                    AflysTavleBtnVisibility = Visibility.Collapsed;
-                    BookTavleBtnVisibility = Visibility.Visible;
-                    OnPropertyChanged(nameof(AflysTavleBtnVisibility));
-                    OnPropertyChanged(nameof(BookTavleBtnVisibility));
-                    OnPropertyChanged(nameof(SelectedBooking));
+                    var endTimeExceedsBookingEnd = await DialogHandler.GenericYesNoDialog("Tiden kan ikke overstige sluttiden for denne booking.\nEr du sikker på du vil forsætte?\nDin tavletid vil blive begrænset!", "Begrænset Tavletid!", "Acceptér", "Fortryd");
+                    if (endTimeExceedsBookingEnd)
+                    {
+                        tavleEndTime = SelectedBooking.BookingEnd;
+                        myTavleBooking = new TavleBooking() { Booking_Id = SelectedBooking.Booking_Id, };
+                        await BookTavle(tavleEndTime, myTavleBooking);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                catch (Exception)
+                else
                 {
-                    // Informs the user that something went wrong with the deletion of a tavle booking
-                    DialogHandler.Dialog("Noget gik galt med aflysning af tavle, kontakt Zealands IT-Helpdesk for mere information.", "Fejl i aflysning");
+                    myTavleBooking = new TavleBooking() { Booking_Id = SelectedBooking.Booking_Id, };
+                    await BookTavle(tavleEndTime, myTavleBooking);
                 }
             }
+            else
+            {
+                DialogHandler.Dialog("Vælg venligt en anden starttid\nStarttiden kan ikke være kl 00:00", "Ugyldig tid");
+            }    
         }
 
-        public async Task bookTavleFilter(TimeSpan tavleEndTime, TavleBooking myTavleBooking)
+        #endregion
+        // Methods for refreshing lists and visibility properties based on userId, the bookfilter method checks if its possible to book a tavle
+        #region Refresh and filter methods
+
+        /// <summary>
+        /// Method that posts the tavlebooking to the database, after it has checked if its possible in the chosen timespan.
+        /// </summary>
+        /// <param name="tavleEndTime">The total time for the selected tavlebooking (Comes from the Booktavle Method)</param>
+        /// <param name="myTavleBooking">The chosen tavlebooking. This value comes from the SelectedDuration, and SelectedTavleStartTime properties</param>
+        /// <returns></returns>
+        public async Task BookTavle(TimeSpan tavleEndTime, TavleBooking myTavleBooking)
         {
+            AllBookingsView tempSelectedBooking = SelectedBooking;
             if (SelectedBooking.Type == "Klasselokale")
             {
-                var numberTavleBookingsForThisRoom = (from t in Tavlebookings
-                                                      join b in AllBookingsViewCatalogSingleton.Instance.AllBookings on t.Booking_Id equals b.Booking_Id
-                                                      select new
-                                                      {
-                                                          BookingId = t.Booking_Id,
-                                                          UserId = b.User_Id,
-                                                          RoomId = b.Room_Id,
-                                                          BookingDate = b.Date,
-                                                          BookingStart = b.BookingStart,
-                                                          BookingEnd = b.BookingEnd,
-                                                          TavleId = t.Tavle_Id,
-                                                          TavleStart = t.Time_start,
-                                                          TavleEnd = t.Time_end
+                var numberOfTavleBookingsForThisRoomOnThatDay = (from t in Tavlebookings
+                                                                 join b in AllBookingsViewCatalogSingleton.Instance.AllBookings on t.Booking_Id equals b.Booking_Id
+                                                                 select new
+                                                                 {
+                                                                     BookingId = t.Booking_Id,
+                                                                     UserId = b.User_Id,
+                                                                     RoomId = b.Room_Id,
+                                                                     BookingDate = b.Date,
+                                                                     BookingStart = b.BookingStart,
+                                                                     BookingEnd = b.BookingEnd,
+                                                                     TavleId = t.Tavle_Id,
+                                                                     TavleStart = t.Time_start,
+                                                                     TavleEnd = t.Time_end
 
-                                                      }).Where(x => SelectedBooking.Room_Id == x.RoomId).ToList();
-                if (numberTavleBookingsForThisRoom.Count > 0 && numberTavleBookingsForThisRoom.Count <= 2)
+                                                                 }).Where(x => SelectedBooking.Room_Id == x.RoomId && SelectedBooking.Date == x.BookingDate).ToList();
+                if (numberOfTavleBookingsForThisRoomOnThatDay.Count > 0 && numberOfTavleBookingsForThisRoomOnThatDay.Count <= 2)
                 {
-                    var checkTavleTime = (from t in numberTavleBookingsForThisRoom
+                    var checkTavleTime = (from t in numberOfTavleBookingsForThisRoomOnThatDay
                                           select t).Where(x => (SelectedTavleStartTime + TimeSpan.FromSeconds(1)) <= x.TavleEnd && (tavleEndTime - TimeSpan.FromSeconds(1)) >= x.TavleStart).ToList();
                     if (checkTavleTime.Count == 0)
                     {
                         // INSERT 
-                        await PersistancyService.SaveInsertAsJsonAsync(myTavleBooking, "TavleBookings");
+                        if (await DialogHandler.GenericYesNoDialog("Vil du booke tavlen i dette rum", "Book Tavle?", "Ja", "Fortryd"))
+                        {
+                            await PersistancyService.SaveInsertAsJsonAsync(myTavleBooking, "TavleBookings");
+                        }
+                        else
+                        {
+                            return;
+                        }
                     }
                     else
                     {
                         DialogHandler.Dialog("Denne tid modstrider en anden tavle booking\nVælg venligst en tidligere eller senere tid", "Modstridende tider");
                     }
-
                 }
                 else
                 {
                     //INSERT
-                    await PersistancyService.SaveInsertAsJsonAsync(myTavleBooking, "TavleBookings");
+
+                    if (await DialogHandler.GenericYesNoDialog("Vil du booke tavlen i dette rum", "Book Tavle?", "Ja", "Fortryd"))
+                    {
+                        await PersistancyService.SaveInsertAsJsonAsync(myTavleBooking, "TavleBookings");
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
-            RefreshList();
+            RefreshLists();
+            SelectedBooking = tempSelectedBooking;
         }
-        #endregion
+
         /// <summary>
         /// Find and add the bookings for the user that is logged in to ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton
         /// </summary>
@@ -365,9 +388,8 @@ namespace LokalestyringUWP.ViewModel
         {
             // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
             var query = (from c in AllBookingsViewCatalogSingleton.Instance.AllBookings
-                         where c.User_Id == userid
-                         orderby c.Date descending
-                         select c).ToList();
+                         select c).Where(c => c.User_Id == userid).ToList();
+
             // Adds the queried result to the ObservableCollection
             AllUserBookingsFromSingleton.Clear();
             foreach (var item in query)
@@ -400,21 +422,19 @@ namespace LokalestyringUWP.ViewModel
                 {
                     TavleInkluderetVisibility = Visibility.Collapsed;
                     TavleCanBeBookedVisibility = Visibility.Visible;
-                    var query = (from t in Tavlebookings
+                    var query = (from t in TavleBookingCatalogSingleton.Instance.TavleBookings
                                  select t).Where(x => x.Booking_Id == SelectedBooking.Booking_Id).ToList();
                     if (query.Count < 1)
                     {
                         AflysTavleBtnVisibility = Visibility.Collapsed;
                         BookTavleBtnVisibility = Visibility.Visible;
                         TavleButtonsEnabled = true;
-
                     }
                     else
                     {
                         AflysTavleBtnVisibility = Visibility.Visible;
                         BookTavleBtnVisibility = Visibility.Collapsed;
                         TavleButtonsEnabled = false;
-
                     }
                 }
                 else
@@ -432,6 +452,28 @@ namespace LokalestyringUWP.ViewModel
         }
 
         /// <summary>
+        /// Refreshes lists, and reloads the singletons for Bookings, and for tavlebookings.
+        /// </summary>
+        public void RefreshLists()
+        {
+            // Bookings singleton
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
+            AllUserBookingsFromSingleton.Clear();
+            foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings.ToList())
+            {
+                AllUserBookingsFromSingleton.Add(item);
+            }
+
+            // Refresh TavleBookings singleton
+            TavleBookingCatalogSingleton.Instance.TavleBookings.Clear();
+            TavleBookingCatalogSingleton.Instance.LoadTavleBookingsAsync();
+
+            // Sets the bookings for the selected user
+            UserBookingsOnId(SelectedUser.User_Id);
+        }
+
+        /// <summary>
         /// When the viewmodel (Page) gets loaded or comes into view set default values on visibilities
         /// </summary>
         public void OnPageLoadVisibilities()
@@ -441,6 +483,15 @@ namespace LokalestyringUWP.ViewModel
             NoElementsChosenVisibility = Visibility.Visible;
         }
 
+        #endregion
+
+        /// <summary>
+        /// Steps back to the previous page.
+        /// </summary>
+        public void GoBackMethod()
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
+        }
         #region INotifyPropertyChanged interface implementation
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>

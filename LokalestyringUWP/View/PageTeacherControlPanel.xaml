@@ -16,7 +16,7 @@
         <handler:DateFormatConverter x:Name="DateToStringFormatConverter"/>
     </Page.Resources>
     <Grid>
-        <GridView ItemsSource="{Binding BookingList}">
+        <GridView ItemsSource="{Binding BookingList}" SelectedItem="{Binding BookingIsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
             <GridView.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
@@ -30,5 +30,12 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+        <Button
+            Grid.Row="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="Gold"
+            Command="{Binding StealThisRoomCommand}"
+            Content="Book valgt lokale" />
     </Grid>
 </Page>
