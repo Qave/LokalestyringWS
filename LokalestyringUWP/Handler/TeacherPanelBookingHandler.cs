@@ -70,10 +70,17 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public void ResetList()
         {
+            StartingList();
+        }
+
+        public async Task StartingList()
+        {
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
             TCPREF.BookingList.Clear();
             var query = (from r in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          join l in RoomsViewCatalogSingleton.Instance.RoomsView on r.Room_Id equals l.Room_Id
-                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City && r.Date.Date == TCPREF.InputDate.Date
+                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City
                          select r).ToList();
 
             foreach (var item in query)

@@ -46,11 +46,11 @@ namespace LokalestyringUWP.ViewModel
             NavigateCommand = new RelayCommand(ChangePage, null);
             GoBackCommand = new RelayCommand(GoBackMethod, null);
             FilterCommand = new RelayCommand(TeacherHandlerRef.FilterMethod,null);
-            ShowAllBookingCommand = new RelayCommand(TeacherHandlerRef.ShowAllBookingList,null);
+            ShowAllBookingCommand = new RelayCommand(TeacherHandlerRef.ShowAllBookingList, null);
             InputDate = DateTimeOffset.Now.Date;
             InputTimeStart = DateTime.Now.TimeOfDay;
             InputTimeEnd = InputTimeStart + TimeSpan.FromHours(2);
-            TeacherHandlerRef.ShowAllBookingList();
+            TeacherHandlerRef.StartingList();
 
         }
         /// <summary>
