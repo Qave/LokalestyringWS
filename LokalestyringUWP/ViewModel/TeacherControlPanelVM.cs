@@ -50,7 +50,7 @@ namespace LokalestyringUWP.ViewModel
             InputDate = DateTimeOffset.Now.Date;
             InputTimeStart = DateTime.Now.TimeOfDay;
             InputTimeEnd = InputTimeStart + TimeSpan.FromHours(2);
-            TeacherHandlerRef.StartingList();
+            TeacherHandlerRef.ShowAllBookingList();
 
         }
         /// <summary>

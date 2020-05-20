@@ -68,19 +68,14 @@ namespace LokalestyringUWP.Handler
         /// <summary>
         /// This method clears the BookingList, which is a list of AllBookings and refills it with all the classrooms from the AllBookingsView singleton where the Date of the booking matches the selected date
         /// </summary>
-        public void ResetList()
-        {
-            StartingList();
-        }
-
-        public async Task StartingList()
+        public async void ResetList()
         {
             AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
             await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
             TCPREF.BookingList.Clear();
             var query = (from r in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          join l in RoomsViewCatalogSingleton.Instance.RoomsView on r.Room_Id equals l.Room_Id
-                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City
+                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City && r.Date.Date == TCPREF.InputDate.Date
                          select r).ToList();
 
             foreach (var item in query)
@@ -91,8 +86,10 @@ namespace LokalestyringUWP.Handler
         /// <summary>
         /// The start list shows all the bookings
         /// </summary>
-        public void ShowAllBookingList()
+        public async void ShowAllBookingList()
         {
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
             TCPREF.BookingList.Clear();
             var query = (from r in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          join l in RoomsViewCatalogSingleton.Instance.RoomsView on r.Room_Id equals l.Room_Id
@@ -191,7 +188,7 @@ namespace LokalestyringUWP.Handler
         public async Task TeacherSnatchRoom()
         {
             var query = (from b in BookingCatalogSingleton.Instance.Bookings
-                         where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
+                         where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == b.Date && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
                          select b).ToList();
 
             foreach (var item in query)
