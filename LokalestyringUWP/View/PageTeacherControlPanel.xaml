@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:LokalestyringUWP.View"
+    xmlns:Include="using:LokalestyringUWP.Include"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="using:LokalestyringUWP.ViewModel"
     xmlns:handler="using:LokalestyringUWP.Handler"
@@ -16,26 +17,76 @@
         <handler:DateFormatConverter x:Name="DateToStringFormatConverter"/>
     </Page.Resources>
     <Grid>
-        <GridView ItemsSource="{Binding BookingList}" SelectedItem="{Binding BookingIsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                        <StackPanel Margin="5,5,0,0" VerticalAlignment="Top">
-                            <TextBlock Text="{Binding RoomName}" />
-                            <TextBlock Text="{Binding Type}" />
-                            <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
-                            <TextBlock Text="{Binding Booking_LimitString}" />
-                        </StackPanel>
-                    </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
-        <Button
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--  HEADER  -->
+        <Grid
+            Grid.Row="0"
+            Height="70"
+            VerticalAlignment="Center"
+            BorderBrush="LightGray"
+            BorderThickness="0,0,0,2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <AppBarButton
+                    Margin="20,15,0,0"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding GoBackCommand}"
+                    Icon="Back" />
+            </Grid>
+            <Grid Grid.Column="1">
+                <TextBlock
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="17">
+                    <Run Text="Bookings for"/>
+                    <Run Text="{Binding SelectedUser.User_Name}"/>
+                </TextBlock>
+            </Grid>
+
+
+            <Grid
+                Grid.Column="3"
+                Margin="0,10,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                <Include:BurgerMenu Width="50" Height="40" />
+            </Grid>
+        </Grid>
+        <!--  HEADER SLUT  -->
+
+
+        <Grid>
+            <Grid>
+                <GridView ItemsSource="{Binding BookingList}" SelectedItem="{Binding BookingIsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <StackPanel Margin="5,5,0,0" VerticalAlignment="Top">
+                                    <TextBlock Text="{Binding RoomName}" />
+                                    <TextBlock Text="{Binding Type}" />
+                                    <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
+                                    <TextBlock Text="{Binding Booking_LimitString}" />
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+                <Button
             Grid.Row="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="Gold"
             Command="{Binding StealThisRoomCommand}"
             Content="Book valgt lokale" />
+            </Grid>
+        </Grid>
     </Grid>
 </Page>
