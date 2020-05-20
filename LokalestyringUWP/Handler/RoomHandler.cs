@@ -22,10 +22,8 @@ namespace LokalestyringUWP.Handler
     public class RoomHandler
     {
         public static BookRoomsVM RoomReference { get; set; }
-        public BookingCatalogSingleton BookingReference { get; set; }
         public RoomHandler(BookRoomsVM r)
         {
-            BookingReference = new BookingCatalogSingleton();
             RoomReference = r;
         }
 
@@ -54,6 +52,22 @@ namespace LokalestyringUWP.Handler
                 CheckUserDoubleBooking();
             }
         }
+
+        /// <summary>
+        ///  Adds all items from the singleton list to a new list called "ResettedList". Then filters by selected location. 
+        /// </summary>
+        public static void RestoreList()
+        {
+            var query = (from q in RoomsViewCatalogSingleton.Instance.RoomsView
+                         where RoomReference.selectedLocation == q.City
+                         select q).ToList();
+            RoomReference.RoomList.Clear();
+            foreach (var item in query)
+            {
+                RoomReference.RoomList.Add(item);
+            }
+        }
+
         /// <summary>
         /// Filters by selected building. If "Alle" is selected, it doesn't filter. If selected BuildingFilter matches with the building_Letter in RoomList, it is added to the tempList.
         /// RoomList is then cleared and the tempList items is added back to RoomList.
@@ -113,9 +127,10 @@ namespace LokalestyringUWP.Handler
             {
                 item.Booking_Limit = 0;
             }
+
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
             {
-                var query = (from b in BookingReference.Bookings
+                var query = (from b in BookingCatalogSingleton.Instance.Bookings
                              join r in RoomReference.RoomList on b.Room_Id equals r.Room_Id
                              where b.Date.Equals(RoomReference.Date.DateTime) && b.Time_end >= RoomReference.TimeStart && b.Time_start <= RoomReference.TimeEnd && r.Type == "Klasselokale"
                              group b by b.Room_Id into RoomGroup
@@ -124,27 +139,25 @@ namespace LokalestyringUWP.Handler
                                  LimitKey = RoomGroup.Key,
                                  Count = RoomGroup.Count()
                              }).ToList();
-                if (BookingReference.Bookings.Count != 0)
+
+                foreach (var klasseLokaler in query)
                 {
-                    foreach (var klasseLokaler in query)
+                    var query1 = (from r in RoomReference.RoomList
+                                  where r.Room_Id.Equals(klasseLokaler.LimitKey)
+                                  select r).ToList();
+                    foreach (var variable in query1)
                     {
-                        var query1 = (from r in RoomReference.RoomList
-                                      where r.Room_Id.Equals(klasseLokaler.LimitKey)
-                                      select r).ToList();
-                        foreach (var variable in query1)
+                        if (klasseLokaler.Count >= 2)
                         {
-                            if (klasseLokaler.Count >= 2)
+                            RoomReference.RoomList.Remove(variable);
+                        }
+                        if (klasseLokaler.Count == 1)
+                        {
+                            foreach (var item in RoomReference.RoomList)
                             {
-                                RoomReference.RoomList.Remove(variable);
-                            }
-                            if (klasseLokaler.Count == 1)
-                            {
-                                foreach (var item in RoomReference.RoomList)
+                                if (variable.Room_Id == item.Room_Id)
                                 {
-                                    if (variable.Room_Id == item.Room_Id)
-                                    {
-                                        item.Booking_Limit = 1;
-                                    }
+                                    item.Booking_Limit = 1;
                                 }
                             }
                         }
@@ -163,7 +176,7 @@ namespace LokalestyringUWP.Handler
             {
 
                 var query = (from r in RoomReference.RoomList
-                             join b in BookingReference.Bookings on r.Room_Id equals b.Room_Id into temp
+                             join b in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals b.Room_Id into temp
                              from t in temp
                              where t.Date.Equals(RoomReference.Date.DateTime) && t.Time_end >= RoomReference.TimeStart && t.Time_start <= RoomReference.TimeEnd && r.Type != "Klasselokale"
                              select r).ToList();
@@ -181,7 +194,7 @@ namespace LokalestyringUWP.Handler
         public void CheckUserDoubleBooking()
         {
             var query = (from r in RoomReference.RoomList
-                         join q in BookingReference.Bookings on r.Room_Id equals q.Room_Id into bookedRooms
+                         join q in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals q.Room_Id into bookedRooms
                          from qr in bookedRooms
                          where qr.User_Id == LoginHandler.SelectedUser.User_Id && qr.Date == RoomReference.Date && qr.Time_end >= RoomReference.TimeStart && qr.Time_start <= RoomReference.TimeEnd
                          select r).ToList();
@@ -193,36 +206,6 @@ namespace LokalestyringUWP.Handler
         }
 
         #endregion
-
-        /// <summary>
-        ///  Adds all items from the singleton list to a new list called "ResettedList". Then filters by selected location. 
-        /// </summary>
-        public static void RestoreList()
-        {
-            if (RoomReference.ResettedList.Count == 0)
-            {
-                foreach (var item in RoomsViewCatalogSingleton.Instance.RoomsView)
-                {
-                    RoomReference.ResettedList.Add(item);
-                }
-
-                var query = (from q in RoomReference.ResettedList
-                             where RoomReference.selectedLocation == q.City
-                             select q).ToList();
-
-                RoomReference.ResettedList.Clear();
-                foreach (var item in query)
-                {
-                    RoomReference.ResettedList.Add(item);
-                }
-            }
-
-            RoomReference.RoomList.Clear();
-            foreach (var item in RoomReference.ResettedList)
-            {
-                RoomReference.RoomList.Add(item);
-            }
-        }
 
         /// <summary>
         /// When called, it sends the user back to the previous page. It also deselects the selected location, so you're able to pick a new or the same location again.
@@ -240,7 +223,7 @@ namespace LokalestyringUWP.Handler
         public async void CreateBooking()
         {
             bool variable = true;
-            foreach (var item in BookingReference.Bookings)
+            foreach (var item in BookingCatalogSingleton.Instance.Bookings)
             {
                 if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date == RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd)
                 {
@@ -265,13 +248,13 @@ namespace LokalestyringUWP.Handler
 
                 if (result)
                 {
-                    BookingReference.Bookings.Add(booking);
+                    BookingCatalogSingleton.Instance.Bookings.Add(booking);
                     FilterSearchMethod();
-                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
+                    await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
-                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.",true);
+                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.", true);
                     RoomReference.SelectedRoomsView = null;
-                    PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
+                    await PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
             }
         }

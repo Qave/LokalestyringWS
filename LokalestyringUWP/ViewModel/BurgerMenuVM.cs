@@ -16,16 +16,37 @@ namespace LokalestyringUWP.ViewModel
     {
         public ICommand LogOutCommand => CommandHandler.LogOutCommand;
         public ICommand GoToUserBookingsCommand { get; set; }
+        public ICommand GoToTecherControlPanel { get; set; }
 
         public BurgerMenuVM()
         {
             CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
             GoToUserBookingsCommand = new RelayCommand(GoToUserBookingsMethod, null);
+            GoToTecherControlPanel = new RelayCommand(GoToTecherControlPanelMethod, null);
         }
         public void GoToUserBookingsMethod()
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageUserBookings));
         }
+        public void GoToTecherControlPanelMethod()
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(PageTeacherControlPanel));
+        }
         public Visibility HideGoToUserBookingsBtn { get; set; }
+
+        public Visibility HideGoToTecherControlPanelBtn
+        {
+            get
+            {
+                if (UserHandler.CurrentUserTeacher)
+                {
+                    return Visibility.Visible;
+                }
+                else
+                {
+                    return Visibility.Collapsed;
+                }
+            }
+        }
     }
 }
