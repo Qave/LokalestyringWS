@@ -253,13 +253,14 @@ namespace LokalestyringUWP.Handler
 
                 if (result)
                 {
-                    BookingCatalogSingleton.Instance.Bookings.Add(booking);
+                    await PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
+                    BookingCatalogSingleton.Instance.Bookings.Clear();
+                    await BookingCatalogSingleton.Instance.LoadbookingsAsync();
                     FilterSearchMethod();
                     await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
                         $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.", true);
                     RoomReference.SelectedRoomsView = null;
-                    await PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
             }
         }

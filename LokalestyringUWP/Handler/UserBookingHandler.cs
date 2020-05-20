@@ -31,6 +31,14 @@ namespace LokalestyringUWP.Handler
             // If user wants to delete the booking.
             if (result)
             {
+                var query = (from q in BookingCatalogSingleton.Instance.Bookings
+                            where q.Booking_Id == Reference.SelectedBooking.Booking_Id
+                            select q).ToList();
+                foreach (var item in query)
+                {
+                        BookingCatalogSingleton.Instance.Bookings.Remove(item);
+                }
+
                 // The async delete method from PersistancyService.
                 PersistancyService.DeleteFromDatabaseAsync("Bookings", Reference.SelectedBooking.Booking_Id);
 

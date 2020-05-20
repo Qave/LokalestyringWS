@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using LokalestyringUWP.Service;
 
 namespace LokalestyringUWP.Models.Singletons
@@ -14,7 +15,7 @@ namespace LokalestyringUWP.Models.Singletons
             LoadbookingsAsync();
         }
 
-        public async void LoadbookingsAsync()
+        public async Task LoadbookingsAsync()
         {
             ObservableCollection<Booking> bookings = await PersistancyService.LoadTableFromJsonAsync<Booking>("Bookings");
 
