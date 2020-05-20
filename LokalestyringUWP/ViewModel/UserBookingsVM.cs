@@ -277,7 +277,7 @@ namespace LokalestyringUWP.ViewModel
             // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
             var query = (from c in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          where c.User_Id == userid
-                         orderby c.Date ascending
+                         orderby c.Date descending
                          select c).ToList();
 
             // Adds the queried result to the ObservableCollection
