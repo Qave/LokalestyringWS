@@ -88,7 +88,7 @@ namespace LokalestyringUWP.Handler
             // The copied booking that needs to be inserted into the database with the updated date.
             Booking updatedBooking = new Booking()
             {
-                User_Id = 1,
+                User_Id = Reference.SelectedUser.User_Id,
                 Room_Id = Reference.SelectedBooking.Room_Id,
                 Date = tomorrow,
                 Time_start = Reference.SelectedBooking.BookingStart,
