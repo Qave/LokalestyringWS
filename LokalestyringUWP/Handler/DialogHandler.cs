@@ -68,6 +68,8 @@ namespace LokalestyringUWP.Handler
             {
                 ((Frame)Window.Current.Content).Navigate(typeof(PageLogin));
                 LocationsVM.SelectedLocation = null;
+                LoginHandler.UserName = String.Empty;
+                LoginHandler.Password = String.Empty;
             }
             else
             {

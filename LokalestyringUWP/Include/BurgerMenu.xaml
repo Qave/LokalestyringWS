@@ -29,6 +29,13 @@
                                 Width="200"
                                 Margin="0,5"
                                 HorizontalAlignment="Center"
+                                Command="{Binding GoToTecherControlPanel}"
+                                Content="Gå til lærer kontrol panel"
+                                Visibility="{Binding HideGoToTecherControlPanelBtn}" />
+                            <Button
+                                Width="200"
+                                Margin="0,5"
+                                HorizontalAlignment="Center"
                                 Command="{Binding LogOutCommand}"
                                 Content="Log ud" />
                         </StackPanel>
