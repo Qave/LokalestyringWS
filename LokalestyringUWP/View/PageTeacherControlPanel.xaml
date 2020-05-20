@@ -19,7 +19,8 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
-            <RowDefinition />
+            <RowDefinition Height="0.8*"/>
+            <RowDefinition Height="1.50*"/>
         </Grid.RowDefinitions>
         <!--  HEADER  -->
         <Grid
@@ -46,12 +47,10 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="17">
-                    <Run Text="Bookings for"/>
+                    <Run Text="Lærer Panel for"/>
                     <Run Text="{Binding SelectedUser.User_Name}"/>
                 </TextBlock>
             </Grid>
-
-
             <Grid
                 Grid.Column="3"
                 Margin="0,10,20,0"
@@ -60,33 +59,88 @@
                 <Include:BurgerMenu Width="50" Height="40" />
             </Grid>
         </Grid>
-        <!--  HEADER SLUT  -->
-
-
-        <Grid>
-            <Grid>
-                <GridView ItemsSource="{Binding BookingList}" SelectedItem="{Binding BookingIsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+        <!--  HEADER END  -->
+        <Grid
+            Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <DatePicker
+                Grid.Row="0"
+                Margin="10,0,0,0"
+                Date="{Binding InputDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Header="Dato:"
+                YearVisible="False" />
+            <StackPanel
+                Grid.Row="1"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top">
+                <TimePicker
+                    ClockIdentifier="24HourClock"
+                    Header="Starttid:"
+                    SelectedTime="{Binding InputTimeStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <TimePicker
+                    ClockIdentifier="24HourClock"
+                    Header="Sluttid"
+                    SelectedTime="{Binding InputTimeEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            <StackPanel
+                Grid.Row="1"
+                Margin="5">
+            <Button
+                Margin="0,0,0,4"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Background="Gold"
+                Command="{Binding ShowAllBookingCommand}"
+                Content="Vis alle bookinger" />
+            <Button
+                Margin="0,0,0,4"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Background="Gold"
+                Command="{Binding FilterCommand}"
+                Content="Vis alle bookinger på valgte dato" />
+                <Button
+                    Margin="0,60,0,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Background="Gold"
+                Command="{Binding StealThisRoomCommand}"
+                Content="Book det valgte lokale" />
+            </StackPanel>
+            </Grid>
+        <Grid
+            HorizontalAlignment="Center"
+            Grid.Row="2">
+            <GridView
+                ItemsSource="{Binding BookingList}" SelectedItem="{Binding BookingIsSelected, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                     <GridView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
+                        <StackPanel>
+                            <Border
+                                Width="230"
+                                Height="125"
+                                Background="LightGray">
                                 <StackPanel Margin="5,5,0,0" VerticalAlignment="Top">
                                     <TextBlock Text="{Binding RoomName}" />
                                     <TextBlock Text="{Binding Type}" />
                                     <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
-                                    <TextBlock Text="{Binding Booking_LimitString}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>
+                                            <Run Text="{Binding BookingStart, Converter={StaticResource DateToStringFormatConverter}}"/>
+                                            <Run Text="-"/>
+                                            <Run Text="{Binding BookingEnd, Converter={StaticResource DateToStringFormatConverter}}"/>
+                                            </TextBlock>
+                                    </StackPanel>
                                 </StackPanel>
+                                </Border>
                             </StackPanel>
                         </DataTemplate>
                     </GridView.ItemTemplate>
                 </GridView>
-                <Button
-            Grid.Row="2"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Background="Gold"
-            Command="{Binding StealThisRoomCommand}"
-            Content="Book valgt lokale" />
             </Grid>
-        </Grid>
     </Grid>
 </Page>
