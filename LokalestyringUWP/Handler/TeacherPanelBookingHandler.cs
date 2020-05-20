@@ -207,8 +207,8 @@ namespace LokalestyringUWP.Handler
                 Date = TCPREF.InputDate.Date,
                 Room_Id = TCPREF.BookingIsSelected.Room_Id,
                 TavleBookings = null,
-                Time_start = TCPREF.InputTimeStart,
-                Time_end = TCPREF.InputTimeEnd,
+                Time_start = new TimeSpan(TCPREF.InputTimeStart.Hours, TCPREF.InputTimeStart.Minutes, 0),
+                Time_end = new TimeSpan(TCPREF.InputTimeEnd.Hours, TCPREF.InputTimeEnd.Minutes, 0),
                 User_Id = LoginHandler.CurrentUserId
             }, "Bookings");
             ResetList();
