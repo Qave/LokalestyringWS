@@ -50,11 +50,11 @@ namespace LokalestyringUWP.ViewModel
             Tavlebookings = TavleBookingCatalogSingleton.Instance.TavleBookings;
 
             // Instantiates the ICommands properties with a relaycommand
-            AflysBookingCommand = new RelayCommand(async () => await AflysBookingMethodAsync(), null);
-            AflysTavleCommand = new RelayCommand(async () => await CancelTavleBookingMethodAsync(), null);
-            BookTavleCommand = new RelayCommand(async () => await BookTavleMethodAsync(), null);
-            BookIgenImorgenCommand = new RelayCommand(async () => await BookAgainTomorrowMethodAsync(), null);
-            GoBackCommand = new RelayCommand(GoBackMethod, null);  // DEN ER NULL; FIX DEN xD
+            AflysBookingCommand = new RelayCommand(async () => await UserBookingHandler.AflysBookingMethodAsync(), null);
+            AflysTavleCommand = new RelayCommand(async () => await UserBookingHandler.CancelTavleBookingMethodAsync(), null);
+            BookTavleCommand = new RelayCommand(async () => await UserBookingHandler.BookTavleMethodAsync(), null);
+            BookIgenImorgenCommand = new RelayCommand(async () => await UserBookingHandler.BookAgainTomorrowMethodAsync(), null);
+            GoBackCommand = new RelayCommand(UserBookingHandler.GoBackMethod, null);  // DEN ER NULL; FIX DEN xD
             // Loads default visibility states
             OnPageLoadVisibilities();
             // Filters the bookings to only show bookings for the selected user. HARD CODED USER ID, for use on the page, as a logged in user.
@@ -149,43 +149,43 @@ namespace LokalestyringUWP.ViewModel
         // Methods for binding the corresponding ICommand property.
         #region Button Command Methods
 
-        /// <summary>
-        /// Async method that references the UserBookinghandler and calls the cancelBookingMethod and updates the view
-        /// </summary>
-        public async Task AflysBookingMethodAsync()
-        {
-            await UserBookingHandler.AflysBookingMethodAsync();
-            OnPropertyChanged(nameof(ElementIsChosenVisibility));
-            OnPropertyChanged(nameof(NoElementsChosenVisibility));
-        }
+        ///// <summary>
+        ///// Async method that references the UserBookinghandler and calls the cancelBookingMethod and updates the view
+        ///// </summary>
+        //public async Task AflysBookingMethodAsync()
+        //{
+        //    await UserBookingHandler.AflysBookingMethodAsync();
+        //    OnPropertyChanged(nameof(ElementIsChosenVisibility));
+        //    OnPropertyChanged(nameof(NoElementsChosenVisibility));
+        //}
 
-        /// <summary>
-        /// Async method that references the UserBookinghandler and calls the CancelTavleBookingAsync method and updates the view 
-        /// </summary>
-        public async Task CancelTavleBookingMethodAsync()
-        {
-            await UserBookingHandler.CancelTavleBookingAsync();
-            OnPropertyChanged(nameof(AflysTavleBtnVisibility));
-            OnPropertyChanged(nameof(BookTavleBtnVisibility));
-            OnPropertyChanged(nameof(SelectedBooking));
-            OnPropertyChanged(nameof(SelectedTavleBooking));
-        }
+        ///// <summary>
+        ///// Async method that references the UserBookinghandler and calls the CancelTavleBookingAsync method and updates the view 
+        ///// </summary>
+        //public async Task CancelTavleBookingMethodAsync()
+        //{
+        //    await UserBookingHandler.CancelTavleBookingAsync();
+        //    OnPropertyChanged(nameof(AflysTavleBtnVisibility));
+        //    OnPropertyChanged(nameof(BookTavleBtnVisibility));
+        //    OnPropertyChanged(nameof(SelectedBooking));
+        //    OnPropertyChanged(nameof(SelectedTavleBooking));
+        //}
 
-        /// <summary>
-        /// Async method that references the UserBookinghandler and calls the BookAgainTomorrowMethod and inserts the current selected booking into the database the day after.
-        /// </summary>
-        public async Task BookAgainTomorrowMethodAsync()
-        {
-            await UserBookingHandler.BookAgainTomorrowMethodAsync();
-        }
+        ///// <summary>
+        ///// Async method that references the UserBookinghandler and calls the BookAgainTomorrowMethod and inserts the current selected booking into the database the day after.
+        ///// </summary>
+        //public async Task BookAgainTomorrowMethodAsync()
+        //{
+        //    await UserBookingHandler.BookAgainTomorrowMethodAsync();
+        //}
 
-        /// <summary>
-        /// Async method that references the UserBookinghandler and calls the BookAgainTomorrowMethod and inserts the chosen tavle start and end time and then books the tavle
-        /// </summary>
-        public async Task BookTavleMethodAsync()
-        {
-            await UserBookingHandler.BookTavleMethodAsync();
-        }
+        ///// <summary>
+        ///// Async method that references the UserBookinghandler and calls the BookAgainTomorrowMethod and inserts the chosen tavle start and end time and then books the tavle
+        ///// </summary>
+        //public async Task BookTavleMethodAsync()
+        //{
+        //    await UserBookingHandler.BookTavleMethodAsync();
+        //}
 
         #endregion
         // Methods for refreshing lists and visibility properties based on userId, the bookfilter method checks if its possible to book a tavle
@@ -269,80 +269,11 @@ namespace LokalestyringUWP.ViewModel
         }
 
         /// <summary>
-        /// Find and add the bookings for the user that is logged in to ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton
+        /// Method that calls the UserBookingHandler and calls the corresponding methodname, and updates the view after the call
         /// </summary>
-        /// <param name="userid">The current user's ID</param>
-        public void UserBookingsOnId(int userid)
-        {
-            // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
-            var query = (from c in AllBookingsViewCatalogSingleton.Instance.AllBookings
-                         where c.User_Id == userid
-                         orderby c.Date descending
-                         select c).ToList();
-
-            // Adds the queried result to the ObservableCollection
-            AllUserBookingsFromSingleton.Clear();
-            foreach (var item in query)
-            {
-                AllUserBookingsFromSingleton.Add(item);
-            }
-        }
-
-        /// <summary>
-        /// Checks if there is any "tavle" bookings for the selected booking. if there is, change the "BookTavleBtnVisibility" to Visible or Collasped respectively
-        /// </summary>
-        /// <returns>Visiblity</returns>
         public void CheckIfTavleBookingExists()
         {
-            //// Checks if the selected booking is NULL, if not jump to else
-            //if (SelectedBooking == null)
-            //{
-            //    TavleButtonsEnabled = false;
-            //    AflysTavleBtnVisibility = Visibility.Collapsed;
-            //    BookTavleBtnVisibility = Visibility.Collapsed;
-            //}
-            //else
-            //{
-            //    /* 
-            //     * Queries the ObservableCollection TavleBookings (Which is a copy from the tavlebookings singleton)
-            //     * and checks if TavleBookings contains a booking id that matches that of the selected booking.
-            //     * if not, update the visibilities for the buttons "Aflys Tavle" and "Book Tavle" respectively
-            //    */
-            //    if (SelectedBooking.Type == "Klasselokale")
-            //    {
-            //        TavleInkluderetVisibility = Visibility.Collapsed;
-            //        TavleCanBeBookedVisibility = Visibility.Visible;
-            //        var doesUserHaveBookedTavler = (from t in TavleBookingCatalogSingleton.Instance.TavleBookings
-            //                                        select t).Where(x => x.Booking_Id == SelectedBooking.Booking_Id).ToList();
-            //        if (doesUserHaveBookedTavler.Count < 1)
-            //        {
-            //            AflysTavleBtnVisibility = Visibility.Collapsed;
-            //            BookTavleBtnVisibility = Visibility.Visible;
-            //            TavleButtonsEnabled = true;
-            //            _selectedTavleBooking = null;
-            //        }
-            //        else
-            //        {
-            //            // Sets the queried tavlebooking to be the selectedtavlebooking, for binding in the view
-            //            foreach (var item in doesUserHaveBookedTavler)
-            //            {
-            //                if (_selectedTavleBooking == null)
-            //                {
-            //                    _selectedTavleBooking = item;
-            //                }
-            //            }
-            //            AflysTavleBtnVisibility = Visibility.Visible;
-            //            BookTavleBtnVisibility = Visibility.Collapsed;
-            //            TavleButtonsEnabled = false;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        TavleCanBeBookedVisibility = Visibility.Collapsed;
-            //        TavleInkluderetVisibility = Visibility.Visible;
-            //    }
-            //}
-
+            UserBookingHandler.CheckIfTavleBookingExists();
             // Refreshes the visibility properties
             OnPropertyChanged(nameof(AflysTavleBtnVisibility));
             OnPropertyChanged(nameof(BookTavleBtnVisibility));
@@ -353,25 +284,22 @@ namespace LokalestyringUWP.ViewModel
         }
 
         /// <summary>
-        /// Refreshes lists, and reloads the singletons for Bookings, and for tavlebookings.
+        /// Method that calls the UserBookingHandler that Finds and adds the bookings for the user that is logged in to ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton
+        /// </summary>
+        /// <param name="userid">The current user's ID</param>
+        public void FindUserBookingsOnId(int userid)
+        {
+            UserBookingHandler.FindUserBookingsOnId(userid);
+        }
+
+        /// <summary>
+        /// Method that calls the corresponding method in the UserBookingHandler, that reloads the singletons for bookings and tavle bookings for the user that is logged in
         /// </summary>
         public void RefreshLists()
         {
-            // Bookings singleton
-            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
-            AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
-            AllUserBookingsFromSingleton.Clear();
-            foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings.ToList())
-            {
-                AllUserBookingsFromSingleton.Add(item);
-            }
-
-            // Refresh TavleBookings singleton
-            TavleBookingCatalogSingleton.Instance.TavleBookings.Clear();
-            TavleBookingCatalogSingleton.Instance.LoadTavleBookingsAsync();
-
             // Sets the bookings for the selected user
-            UserBookingsOnId(SelectedUser.User_Id);
+            UserBookingHandler.RefreshLists();
+            UserBookingHandler.FindUserBookingsOnId(SelectedUser.User_Id);
         }
 
         /// <summary>
@@ -379,29 +307,18 @@ namespace LokalestyringUWP.ViewModel
         /// </summary>
         public void OnPageLoadVisibilities()
         {
-            AflysTavleBtnVisibility = Visibility.Collapsed;
-            ElementIsChosenVisibility = Visibility.Collapsed;
-            NoElementsChosenVisibility = Visibility.Visible;
+            UserBookingHandler.OnPageLoadVisibilities();
         }
 
         #endregion
         /// <summary>
-        /// Resets the comboxes, and timepicker for tavle booking
+        /// Resets the comboxes, and timepicker for tavle booking and updates the viewbound properties
         /// </summary>
         public void ResetSelectedTavleProperties()
         {
-            SelectedTavleStartTime = new TimeSpan(0,0,0);
-            SelectedDuration = null;
+            UserBookingHandler.ResetSelectedTavleProperties();
             OnPropertyChanged(nameof(SelectedTavleStartTime));
             OnPropertyChanged(nameof(SelectedDuration));
-        }
-
-        /// <summary>
-        /// Steps back to the previous page.
-        /// </summary>
-        public void GoBackMethod()
-        {
-            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
         }
 
         #region INotifyPropertyChanged interface implementation

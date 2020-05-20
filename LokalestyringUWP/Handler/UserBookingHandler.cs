@@ -1,6 +1,7 @@
 ﻿using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
+using LokalestyringUWP.View;
 using LokalestyringUWP.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace LokalestyringUWP.Handler
 {
@@ -42,7 +44,7 @@ namespace LokalestyringUWP.Handler
         /// <summary>
         /// Async method that calls the async delete method from the persistancyService that deletes the selected booking's Tavle booking from the database 
         /// </summary>
-        public static async Task CancelTavleBookingAsync()
+        public static async Task CancelTavleBookingMethodAsync()
         {
             // Checks if the user wants to delete the TavleBooking, or not
             var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse tavlen for denne bookning?\nDin Booking på rummet vil ikke blive slettet", "Aflys Tavle?", "Ja, Aflys Tavle", "Fortryd");
@@ -188,6 +190,9 @@ namespace LokalestyringUWP.Handler
             }
         }
 
+        /// <summary>
+        /// Checks if there is any "tavle" bookings for the selected booking. if there is, change the "BookTavleBtnVisibility" to Visible or Collasped respectively
+        /// </summary>
         public static void CheckIfTavleBookingExists()
         {
             // Checks if the selected booking is NULL, if not jump to else
@@ -238,6 +243,72 @@ namespace LokalestyringUWP.Handler
                     Reference.TavleInkluderetVisibility = Visibility.Visible;
                 }
             }
+        }
+
+        /// <summary>
+        /// Finds and adds the bookings for the user that is logged in to ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton
+        /// </summary>
+        /// <param name="userid">The current user's ID</param>
+        public static void FindUserBookingsOnId(int userid)
+        {
+            // Queries the ObservableCollection (Which comes from the singleton that gets ALL the bookings) for the Bookings that is tied to the userid
+            var query = (from c in AllBookingsViewCatalogSingleton.Instance.AllBookings
+                         where c.User_Id == userid
+                         orderby c.Date descending
+                         select c).ToList();
+
+            // Adds the queried result to the ObservableCollection
+            Reference.AllUserBookingsFromSingleton.Clear();
+            foreach (var item in query)
+            {
+                Reference.AllUserBookingsFromSingleton.Add(item);
+            }
+        }
+
+        /// <summary>
+        /// Refreshes lists, and reloads the singletons for Bookings, and for tavlebookings.
+        /// </summary>
+        public static void RefreshLists()
+        {
+            // Bookings singleton
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
+            Reference.AllUserBookingsFromSingleton.Clear();
+            foreach (var item in AllBookingsViewCatalogSingleton.Instance.AllBookings.ToList())
+            {
+                Reference.AllUserBookingsFromSingleton.Add(item);
+            }
+
+            // Refresh TavleBookings singleton
+            TavleBookingCatalogSingleton.Instance.TavleBookings.Clear();
+            TavleBookingCatalogSingleton.Instance.LoadTavleBookingsAsync();
+        }
+
+        /// <summary>
+        /// When the viewmodel (Page) gets loaded or comes into view set default values on visibilities
+        /// </summary>
+        public static void OnPageLoadVisibilities()
+        {
+            Reference.AflysTavleBtnVisibility = Visibility.Collapsed;
+            Reference.ElementIsChosenVisibility = Visibility.Collapsed;
+            Reference.NoElementsChosenVisibility = Visibility.Visible;
+        }
+
+        /// <summary>
+        /// Resets the comboxes, and timepicker for tavle booking
+        /// </summary>
+        public static void ResetSelectedTavleProperties()
+        {
+            Reference.SelectedTavleStartTime = new TimeSpan(0, 0, 0);
+            Reference.SelectedDuration = null;          
+        }
+
+        /// <summary>
+        /// Steps back to the previous page.
+        /// </summary>
+        public static void GoBackMethod()
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
         }
     }
 }
