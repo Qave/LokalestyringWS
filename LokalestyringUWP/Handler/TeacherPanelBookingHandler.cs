@@ -98,7 +98,7 @@ namespace LokalestyringUWP.Handler
                 {
                     if (TCPREF.InputDate.Date >= DateTime.Now.Date.AddDays(3))
                     {
-                        //await GetMailToUser("En lærer aflyste din booking", $"Din booking den {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra {TCPREF.BookingIsSelected.BookingStart} til {TCPREF.BookingIsSelected.BookingEnd} i rum {TCPREF.BookingIsSelected.RoomName} er blevet aflyst {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden, du er selvfølgelig velkommen til at booke et nyt rum op appen", true);
+                        //await GetMailToUser("En lærer aflyste din booking", $"Din booking den {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra {TCPREF.BookingIsSelected.BookingStart} til {TCPREF.BookingIsSelected.BookingEnd} i rum {TCPREF.BookingIsSelected.RoomName} er blevet aflyst {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden, du er selvfølgelig velkommen til at booke et nyt rum på appen", true);
                         PersistancyService.DeleteFromDatabaseAsync("Bookings", TCPREF.BookingIsSelected.Booking_Id);
                     }
                 }
@@ -123,6 +123,7 @@ namespace LokalestyringUWP.Handler
                         select t;
             if (query.Any(l => l.User_Id == TCPREF.BookingIsSelected.User_Id))
             {
+                DialogHandler.Dialog("Din valgte booking indeholder en lærer-booking, det er desværre ikke muligt at slette en anden lærers booking", "lærer-booking fejl");
                 return false;
             }
 
