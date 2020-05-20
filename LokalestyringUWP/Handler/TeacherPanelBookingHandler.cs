@@ -171,7 +171,12 @@ namespace LokalestyringUWP.Handler
             foreach (var item in query)
             {
                 PersistancyService.DeleteFromDatabaseAsync("Bookings",item.Booking_Id);
-                await GetMailToUser(item.User_Id,"En lærer aflyste din booking", $"Din booking den {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra {new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} til {new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")} i rum {TCPREF.BookingIsSelected.RoomName} er blevet aflyst af {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden, du er selvfølgelig velkommen til at booke et nyt rum på appen", true);
+                await GetMailToUser(item.User_Id,"En lærer aflyste din booking", $"Din booking den " +
+                    $"{TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra " +
+                    $"{new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} til " +
+                    $"{new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")} i rum {TCPREF.BookingIsSelected.RoomName} " +
+                    $"er blevet aflyst af {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden. " +
+                    $"Du er selvfølgelig velkommen til at booke et nyt rum i appen.", true);
             }
 
             await PersistancyService.SaveInsertAsJsonAsync(new Booking
