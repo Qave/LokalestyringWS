@@ -104,6 +104,7 @@ namespace LokalestyringUWP.Handler
         #endregion
 
         #region Main Method
+
         /// <summary>
         /// This Method calls TeacherSnatchRoom if a series of conditions are met
         /// </summary>
@@ -122,10 +123,16 @@ namespace LokalestyringUWP.Handler
                         {
                             TeacherSnatchRoom();
                         }
+                        else
+                        {
+                            DialogHandler.Dialog("Der skal være minimum tre dages varsel før du kan booket et lokale",
+                                "3-dages varsel-fejl!");
+                        }
                     }
                 }
             }
         }
+
         #endregion
 
         #region Teacher-Check Method
@@ -212,6 +219,7 @@ namespace LokalestyringUWP.Handler
                 User_Id = LoginHandler.CurrentUserId
             }, "Bookings");
             ResetList();
+            DialogHandler.Dialog("Din booking er nu oprettet. God dag!", "Booking Oprettet!");
         }
         #endregion 
         #endregion
