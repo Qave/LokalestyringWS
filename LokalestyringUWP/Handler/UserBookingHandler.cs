@@ -20,10 +20,11 @@ namespace LokalestyringUWP.Handler
         {
             Reference = r;
         }
+
         /// <summary>
         /// Async method that calls the async delete method from the persistancyService that deletes the selected booking from the database
         /// </summary>
-        public static async Task AflysBookingMethodAsync()
+        public static async Task CancelBookingMethodAsync()
         {
             // Checks if the user wants to delete the booking, or not
             var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
