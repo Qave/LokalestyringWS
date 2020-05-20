@@ -52,6 +52,22 @@ namespace LokalestyringUWP.Handler
                 CheckUserDoubleBooking();
             }
         }
+
+        /// <summary>
+        ///  Adds all items from the singleton list to a new list called "ResettedList". Then filters by selected location. 
+        /// </summary>
+        public static void RestoreList()
+        {
+            var query = (from q in RoomsViewCatalogSingleton.Instance.RoomsView
+                         where RoomReference.selectedLocation == q.City
+                         select q).ToList();
+            RoomReference.RoomList.Clear();
+            foreach (var item in query)
+            {
+                RoomReference.RoomList.Add(item);
+            }
+        }
+
         /// <summary>
         /// Filters by selected building. If "Alle" is selected, it doesn't filter. If selected BuildingFilter matches with the building_Letter in RoomList, it is added to the tempList.
         /// RoomList is then cleared and the tempList items is added back to RoomList.
@@ -111,6 +127,7 @@ namespace LokalestyringUWP.Handler
             {
                 item.Booking_Limit = 0;
             }
+
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
             {
                 var query = (from b in BookingCatalogSingleton.Instance.Bookings
@@ -122,27 +139,25 @@ namespace LokalestyringUWP.Handler
                                  LimitKey = RoomGroup.Key,
                                  Count = RoomGroup.Count()
                              }).ToList();
-                if (BookingCatalogSingleton.Instance.Bookings.Count != 0)
+
+                foreach (var klasseLokaler in query)
                 {
-                    foreach (var klasseLokaler in query)
+                    var query1 = (from r in RoomReference.RoomList
+                                  where r.Room_Id.Equals(klasseLokaler.LimitKey)
+                                  select r).ToList();
+                    foreach (var variable in query1)
                     {
-                        var query1 = (from r in RoomReference.RoomList
-                                      where r.Room_Id.Equals(klasseLokaler.LimitKey)
-                                      select r).ToList();
-                        foreach (var variable in query1)
+                        if (klasseLokaler.Count >= 2)
                         {
-                            if (klasseLokaler.Count >= 2)
+                            RoomReference.RoomList.Remove(variable);
+                        }
+                        if (klasseLokaler.Count == 1)
+                        {
+                            foreach (var item in RoomReference.RoomList)
                             {
-                                RoomReference.RoomList.Remove(variable);
-                            }
-                            if (klasseLokaler.Count == 1)
-                            {
-                                foreach (var item in RoomReference.RoomList)
+                                if (variable.Room_Id == item.Room_Id)
                                 {
-                                    if (variable.Room_Id == item.Room_Id)
-                                    {
-                                        item.Booking_Limit = 1;
-                                    }
+                                    item.Booking_Limit = 1;
                                 }
                             }
                         }
@@ -191,21 +206,6 @@ namespace LokalestyringUWP.Handler
         }
 
         #endregion
-
-        /// <summary>
-        ///  Adds all items from the singleton list to a new list called "ResettedList". Then filters by selected location. 
-        /// </summary>
-        public static void RestoreList()
-        {
-            var query = (from q in RoomsViewCatalogSingleton.Instance.RoomsView
-                         where RoomReference.selectedLocation == q.City
-                         select q).ToList();
-            RoomReference.RoomList.Clear();
-            foreach (var item in query)
-            {
-                RoomReference.RoomList.Add(item);
-            }
-        }
 
         /// <summary>
         /// When called, it sends the user back to the previous page. It also deselects the selected location, so you're able to pick a new or the same location again.

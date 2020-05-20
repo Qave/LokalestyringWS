@@ -67,10 +67,6 @@
                         Height="40"
                         Command="{Binding GoBackCommand}"
                         Icon="Back" />
-                    <TextBlock
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Center"
-                        Text="HEJ KASPER" />
                 </StackPanel>
             </Border>
             <TextBlock
