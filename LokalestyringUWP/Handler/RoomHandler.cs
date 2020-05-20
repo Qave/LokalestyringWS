@@ -197,26 +197,11 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public static void RestoreList()
         {
-            if (RoomReference.ResettedList.Count == 0)
-            {
-                foreach (var item in RoomsViewCatalogSingleton.Instance.RoomsView)
-                {
-                    RoomReference.ResettedList.Add(item);
-                }
-
-                var query = (from q in RoomReference.ResettedList
-                             where RoomReference.selectedLocation == q.City
-                             select q).ToList();
-
-                RoomReference.ResettedList.Clear();
-                foreach (var item in query)
-                {
-                    RoomReference.ResettedList.Add(item);
-                }
-            }
-
+            var query = (from q in RoomsViewCatalogSingleton.Instance.RoomsView
+                         where RoomReference.selectedLocation == q.City
+                         select q).ToList();
             RoomReference.RoomList.Clear();
-            foreach (var item in RoomReference.ResettedList)
+            foreach (var item in query)
             {
                 RoomReference.RoomList.Add(item);
             }
@@ -265,11 +250,11 @@ namespace LokalestyringUWP.Handler
                 {
                     BookingCatalogSingleton.Instance.Bookings.Add(booking);
                     FilterSearchMethod();
-                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
+                    await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
-                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.",true);
+                        $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.", true);
                     RoomReference.SelectedRoomsView = null;
-                    PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
+                    await PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                 }
             }
         }
