@@ -207,6 +207,11 @@ namespace LokalestyringUWP.Handler
 
         #endregion
 
+        public bool RoomIsSelectedCheck()
+        {
+            return (RoomReference.SelectedRoomsView != null);
+        }
+
         /// <summary>
         /// When called, it sends the user back to the previous page. It also deselects the selected location, so you're able to pick a new or the same location again.
         /// </summary>

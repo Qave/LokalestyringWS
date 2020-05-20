@@ -32,7 +32,7 @@ namespace LokalestyringUWP.ViewModel
             Date = DateTimeOffset.Now.Date;
             TimeStart = DateTime.Now.TimeOfDay;
             TimeEnd = TimeStart + TimeSpan.FromHours(4);
-            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomIsSelectedCheck);
+            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomHandler.RoomIsSelectedCheck);
             CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
             CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
@@ -52,15 +52,12 @@ namespace LokalestyringUWP.ViewModel
             set
             {
                 _selectedRoomsView = value;
-                OnPropertyChanged(nameof(RoomIsSelectedCheck));
+                OnPropertyChanged(nameof(RoomHandler.RoomIsSelectedCheck));
                 BookSelectedRoomCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public bool RoomIsSelectedCheck()
-        {
-            return (SelectedRoomsView != null);
-        }
+
 
         public TimeSpan TimeStart { get; set; }
 
