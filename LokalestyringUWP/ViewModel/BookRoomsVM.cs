@@ -43,7 +43,7 @@ namespace LokalestyringUWP.ViewModel
 
         }
 
-        public ObservableCollection<RoomsView> RoomList { get; set; }
+        public ObservableCollection<RoomsView> RoomList { get; }
 
         public RoomHandler RoomHandler { get; set; }
         public RoomsView SelectedRoomsView
