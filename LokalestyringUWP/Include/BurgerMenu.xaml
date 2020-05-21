@@ -14,7 +14,27 @@
     </UserControl.DataContext>
     <Grid>
         <Button Background="Transparent">
-            <Image Source="/Assets/Images/BurgermenuIcon.png" />
+            <Button.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.ThemeDictionaries>
+                        <ResourceDictionary x:Key="Light">
+                            <SolidColorBrush x:Key="ButtonBackground" Color="Transparent" />
+                            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource SystemListLowColor}" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource SystemListMediumColor}" />
+                        </ResourceDictionary>
+                        <ResourceDictionary x:Key="Dark">
+                            <SolidColorBrush x:Key="ButtonBackground" Color="Transparent" />
+                            <SolidColorBrush x:Key="ButtonBorderBrushPointerOver" Color="Transparent" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="{StaticResource SystemListLowColor}" />
+                            <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="{StaticResource SystemListMediumColor}" />
+                        </ResourceDictionary>
+                    </ResourceDictionary.ThemeDictionaries>
+                </ResourceDictionary>
+            </Button.Resources>
+            <Viewbox Height="25">
+                <SymbolIcon Symbol="GlobalNavigationButton" />
+            </Viewbox>
             <Button.Flyout>
                 <Flyout>
                     <StackPanel>
