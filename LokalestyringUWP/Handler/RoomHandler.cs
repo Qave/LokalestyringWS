@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media.Animation;
 using LokalestyringUWP.Annotations;
 using LokalestyringUWP.View;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Data;
 
 namespace LokalestyringUWP.Handler
 {
@@ -27,6 +28,7 @@ namespace LokalestyringUWP.Handler
             RoomReference = r;
         }
 
+
         #region FILTER LOGIC
         /// <summary>
         /// Filters rooms by location, building, roomtype, date and time. If the chosen time or date is not valid, a dialog message is shown, asking the user to pick a valid time or date.
@@ -34,9 +36,9 @@ namespace LokalestyringUWP.Handler
         public void FilterSearchMethod()
         {
             DateTime currentDate = DateTime.Now;
-            if (RoomReference.TimeStart >= RoomReference.TimeEnd)
+            if (RoomReference.TimeStart >= RoomReference.TimeEnd || RoomReference.TimeStart == TimeSpan.Zero || RoomReference.TimeEnd == TimeSpan.Zero)
             {
-                DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid.", "Ugyldigt tidspunkt");
+                DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid. Starttid eller sluttid kan ikke være 00.", "Ugyldigt tidspunkt");
             }
             else if (RoomReference.Date.DateTime < currentDate.Date)
             {
@@ -45,9 +47,9 @@ namespace LokalestyringUWP.Handler
             else
             {
                 RestoreList();
+                CheckBookingLimit();
                 CheckBuilding();
                 CheckRoomtype();
-                CheckBookingLimit();
                 CheckDateAndTime();
                 CheckUserDoubleBooking();
             }
@@ -93,6 +95,11 @@ namespace LokalestyringUWP.Handler
             }
         }
 
+        public void Test()
+        {
+
+        }
+
         /// <summary>
         /// Filters by selected roomtype. If "Alle" is selected, it doesn't filter. If selected RoomtypeFilter matches with the roomtype in RoomList, it is added to the tempList.
         /// RoomList is then cleared and the tempList items is added back to RoomList.
@@ -106,16 +113,16 @@ namespace LokalestyringUWP.Handler
             else
             {
                 var tempList = (from tl in RoomReference.RoomList
-                                where tl.Type == RoomReference.SelectedRoomtypeFilter
+                                where tl.Type != RoomReference.SelectedRoomtypeFilter
                                 select tl).ToList();
 
-                RoomReference.RoomList.Clear();
                 foreach (var item in tempList)
                 {
-                    RoomReference.RoomList.Add(item);
+                    RoomReference.RoomList.Remove(item);
                 }
             }
         }
+
 
         /// <summary>
         /// Filters booked class rooms by grouping the room id's in the booking table. If the room id has a count of 2, it is then removed from RoomList. 
@@ -123,21 +130,27 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public void CheckBookingLimit()
         {
-            foreach (var item in RoomReference.RoomList)
+            foreach (var item in RoomReference.RoomList.ToList())
             {
-                item.Booking_Limit = 0;
+                // Workaround to make the Booking_Limit value update.
+                if (item.Booking_Limit != 0)
+                {
+                    RoomReference.RoomList.Remove(item);
+                    RoomReference.RoomList.Add(item);
+                }
+                    item.Booking_Limit = 0;
             }
 
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
             {
                 var query = (from b in BookingCatalogSingleton.Instance.Bookings
-                             join r in RoomReference.RoomList on b.Room_Id equals r.Room_Id
-                             where b.Date.Equals(RoomReference.Date.DateTime) && b.Time_end >= RoomReference.TimeStart && b.Time_start <= RoomReference.TimeEnd && r.Type == "Klasselokale"
+                             where b.Date == RoomReference.Date.DateTime && b.Time_end >= RoomReference.TimeStart && 
+                             b.Time_start <= RoomReference.TimeEnd
                              group b by b.Room_Id into RoomGroup
                              select new
                              {
                                  LimitKey = RoomGroup.Key,
-                                 Count = RoomGroup.Count()
+                                 Count = RoomGroup.Count(),
                              }).ToList();
 
                 foreach (var klasseLokaler in query)
@@ -153,11 +166,14 @@ namespace LokalestyringUWP.Handler
                         }
                         if (klasseLokaler.Count == 1)
                         {
-                            foreach (var item in RoomReference.RoomList)
+                            foreach (var item in RoomReference.RoomList.ToList())
                             {
                                 if (variable.Room_Id == item.Room_Id)
                                 {
                                     item.Booking_Limit = 1;
+                                    // Workaround to make the Booking_Limit value update.
+                                    RoomReference.RoomList.Remove(item);
+                                    RoomReference.RoomList.Add(item);
                                 }
                             }
                         }
@@ -174,7 +190,6 @@ namespace LokalestyringUWP.Handler
         {
             if (RoomReference.SelectedRoomtypeFilter != "Klasselokale")
             {
-
                 var query = (from r in RoomReference.RoomList
                              join b in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals b.Room_Id into temp
                              from t in temp
@@ -196,7 +211,8 @@ namespace LokalestyringUWP.Handler
             var query = (from r in RoomReference.RoomList
                          join q in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals q.Room_Id into bookedRooms
                          from qr in bookedRooms
-                         where qr.User_Id == LoginHandler.SelectedUser.User_Id && qr.Date == RoomReference.Date && qr.Time_end >= RoomReference.TimeStart && qr.Time_start <= RoomReference.TimeEnd
+                         where qr.User_Id == LoginHandler.SelectedUser.User_Id && qr.Date == RoomReference.Date && qr.Time_end >= RoomReference.TimeStart 
+                         && qr.Time_start <= RoomReference.TimeEnd
                          select r).ToList();
 
             foreach (var item in query)
@@ -204,6 +220,18 @@ namespace LokalestyringUWP.Handler
                 RoomReference.RoomList.Remove(item);
             }
         }
+
+        //public void OrderListByRoomName()
+        //{
+        //    var query = (from r in RoomReference.RoomList
+        //                 orderby r.RoomName
+        //                 select r).ToList();
+        //    RoomReference.RoomList.Clear();
+        //    foreach (var item in query)
+        //    {
+        //        RoomReference.RoomList.Add(item);
+        //    }
+        //}
 
         #endregion
 
