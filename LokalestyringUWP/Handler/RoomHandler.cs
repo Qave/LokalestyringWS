@@ -30,21 +30,31 @@ namespace LokalestyringUWP.Handler
 
 
         #region FILTER LOGIC
+        DateTime currentDate = DateTime.Now.Date;
+
+        public bool CompareDatesAndTime()
+        {
+            if (RoomReference.TimeStart >= RoomReference.TimeEnd || RoomReference.TimeStart == TimeSpan.Zero || RoomReference.TimeEnd == TimeSpan.Zero)
+            {
+                DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid. Starttid eller sluttid kan ikke være 00.", "Ugyldigt tidspunkt");
+                return false;
+            }
+            else if (RoomReference.Date.DateTime < currentDate)
+            {
+                DialogHandler.Dialog("Vælg venligst en gyldig dato fra denne måned eller frem", "Ugyldig dato");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         /// <summary>
         /// Filters rooms by location, building, roomtype, date and time. If the chosen time or date is not valid, a dialog message is shown, asking the user to pick a valid time or date.
         /// </summary>
         public void FilterSearchMethod()
         {
-            DateTime currentDate = DateTime.Now;
-            if (RoomReference.TimeStart >= RoomReference.TimeEnd || RoomReference.TimeStart == TimeSpan.Zero || RoomReference.TimeEnd == TimeSpan.Zero)
-            {
-                DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid. Starttid eller sluttid kan ikke være 00.", "Ugyldigt tidspunkt");
-            }
-            else if (RoomReference.Date.DateTime < currentDate.Date)
-            {
-                DialogHandler.Dialog("Vælg venligst en gyldig dato fra denne måned eller frem", "Ugyldig dato");
-            }
-            else
+            if (CompareDatesAndTime())
             {
                 RestoreList();
                 CheckBookingLimit();
@@ -95,11 +105,6 @@ namespace LokalestyringUWP.Handler
             }
         }
 
-        public void Test()
-        {
-
-        }
-
         /// <summary>
         /// Filters by selected roomtype. If "Alle" is selected, it doesn't filter. If selected RoomtypeFilter matches with the roomtype in RoomList, it is added to the tempList.
         /// RoomList is then cleared and the tempList items is added back to RoomList.
@@ -138,13 +143,13 @@ namespace LokalestyringUWP.Handler
                     RoomReference.RoomList.Remove(item);
                     RoomReference.RoomList.Add(item);
                 }
-                    item.Booking_Limit = 0;
+                item.Booking_Limit = 0;
             }
 
             if (RoomReference.SelectedRoomtypeFilter == "Klasselokale" || RoomReference.SelectedRoomtypeFilter == "Alle")
             {
                 var query = (from b in BookingCatalogSingleton.Instance.Bookings
-                             where b.Date == RoomReference.Date.DateTime && b.Time_end >= RoomReference.TimeStart && 
+                             where b.Date == RoomReference.Date.DateTime && b.Time_end >= RoomReference.TimeStart &&
                              b.Time_start <= RoomReference.TimeEnd
                              group b by b.Room_Id into RoomGroup
                              select new
@@ -211,7 +216,7 @@ namespace LokalestyringUWP.Handler
             var query = (from r in RoomReference.RoomList
                          join q in BookingCatalogSingleton.Instance.Bookings on r.Room_Id equals q.Room_Id into bookedRooms
                          from qr in bookedRooms
-                         where qr.User_Id == LoginHandler.SelectedUser.User_Id && qr.Date == RoomReference.Date && qr.Time_end >= RoomReference.TimeStart 
+                         where qr.User_Id == LoginHandler.SelectedUser.User_Id && qr.Date == RoomReference.Date && qr.Time_end >= RoomReference.TimeStart
                          && qr.Time_start <= RoomReference.TimeEnd
                          select r).ToList();
 
@@ -220,18 +225,6 @@ namespace LokalestyringUWP.Handler
                 RoomReference.RoomList.Remove(item);
             }
         }
-
-        //public void OrderListByRoomName()
-        //{
-        //    var query = (from r in RoomReference.RoomList
-        //                 orderby r.RoomName
-        //                 select r).ToList();
-        //    RoomReference.RoomList.Clear();
-        //    foreach (var item in query)
-        //    {
-        //        RoomReference.RoomList.Add(item);
-        //    }
-        //}
 
         #endregion
 
@@ -270,17 +263,17 @@ namespace LokalestyringUWP.Handler
                 // I don't know why, but we need this reference to get the RoomName property in the RoomsView model.
                 RoomsView selectedRoomsViewRef = RoomReference.SelectedRoomsView;
                 var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke dette lokale?", "Book lokale?", "Ja, tak", "Nej, tak");
-                Booking booking = new Booking()
+                if (CompareDatesAndTime() && result)
                 {
-                    Date = RoomReference.Date.Date,
-                    Room_Id = RoomReference.SelectedRoomsView.Room_Id,
-                    Time_start = new TimeSpan(RoomReference.TimeStart.Hours, RoomReference.TimeStart.Minutes, 0),
-                    Time_end = new TimeSpan(RoomReference.TimeEnd.Hours, RoomReference.TimeEnd.Minutes, 0),
-                    User_Id = LoginHandler.SelectedUser.User_Id
-                };
+                    Booking booking = new Booking()
+                    {
+                        Date = RoomReference.Date.Date,
+                        Room_Id = RoomReference.SelectedRoomsView.Room_Id,
+                        Time_start = new TimeSpan(RoomReference.TimeStart.Hours, RoomReference.TimeStart.Minutes, 0),
+                        Time_end = new TimeSpan(RoomReference.TimeEnd.Hours, RoomReference.TimeEnd.Minutes, 0),
+                        User_Id = LoginHandler.SelectedUser.User_Id
+                    };
 
-                if (result)
-                {
                     await PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                     BookingCatalogSingleton.Instance.Bookings.Clear();
                     await BookingCatalogSingleton.Instance.LoadbookingsAsync();
