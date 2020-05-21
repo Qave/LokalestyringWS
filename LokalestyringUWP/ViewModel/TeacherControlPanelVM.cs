@@ -35,7 +35,6 @@ namespace LokalestyringUWP.ViewModel
         public ICommand NavigateCommand { get; set; }
         public RelayCommand StealThisRoomCommand { get; set; }
         public ICommand FilterCommand { get; set; }
-        public ICommand ShowAllBookingCommand { get; set; }
         #endregion
 
         public TeacherControlPanelVM()
@@ -46,11 +45,10 @@ namespace LokalestyringUWP.ViewModel
             NavigateCommand = new RelayCommand(ChangePage, null);
             GoBackCommand = new RelayCommand(GoBackMethod, null);
             FilterCommand = new RelayCommand(TeacherHandlerRef.FilterMethod,null);
-            ShowAllBookingCommand = new RelayCommand(TeacherHandlerRef.ShowAllBookingList, null);
             InputDate = DateTimeOffset.Now.Date;
             InputTimeStart = DateTime.Now.TimeOfDay;
             InputTimeEnd = InputTimeStart + TimeSpan.FromHours(2);
-            TeacherHandlerRef.ShowAllBookingList();
+            TeacherHandlerRef.ResetList();
 
         }
         /// <summary>
@@ -81,16 +79,6 @@ namespace LokalestyringUWP.ViewModel
         {
             return (_bookingIsSelect != null);
         }
-        #endregion
-
-        #region Visibility Methods
-        public void TeacherCancelBookingBtnVisibility()
-        {
-            if (LoginHandler.SelectedUser.Teacher == true)
-            {
-                TeacherDeleteBtnVisibility = Visibility.Visible;
-            }
-        } 
         #endregion
 
         #region Redirect Methods

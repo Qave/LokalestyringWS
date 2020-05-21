@@ -91,13 +91,6 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Background="Gold"
-                    Command="{Binding ShowAllBookingCommand}"
-                    Content="Vis alle bookinger" />
-                <Button
-                    Margin="0,0,0,4"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Center"
-                    Background="Gold"
                     Command="{Binding FilterCommand}"
                     Content="Vis alle bookinger på valgte dato" />
                 <Button
@@ -122,6 +115,7 @@
                                     <TextBlock Text="{Binding RoomName}" />
                                     <TextBlock Text="{Binding Type}" />
                                     <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
+                                    <TextBlock Text="{Binding User_Id}" />
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock>
                                             <Run Text="{Binding BookingStart, Converter={StaticResource DateToStringFormatConverter}}" />
