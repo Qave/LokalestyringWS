@@ -83,24 +83,6 @@ namespace LokalestyringUWP.Handler
                 TCPREF.BookingList.Add(item);
             }
         }
-        /// <summary>
-        /// The start list shows all the bookings
-        /// </summary>
-        public async void ShowAllBookingList()
-        {
-            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
-            await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
-            TCPREF.BookingList.Clear();
-            var query = (from r in AllBookingsViewCatalogSingleton.Instance.AllBookings
-                         join l in RoomsViewCatalogSingleton.Instance.RoomsView on r.Room_Id equals l.Room_Id
-                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City
-                         select r).ToList();
-
-            foreach (var item in query)
-            {
-                TCPREF.BookingList.Add(item);
-            }
-        }
         #endregion
 
         #region Main Method
@@ -111,7 +93,7 @@ namespace LokalestyringUWP.Handler
         public async Task TeacherStealsBookingMethod()
         {
             var result = await DialogHandler.GenericYesNoDialog(
-                $"Er du sikker på du vil booke dette lokale? {TCPREF.BookingIsSelected.RoomName}, ved at booke dette lokale aflyser du en elves booking",
+                $"Er du sikker på du vil booke dette lokale? {TCPREF.BookingIsSelected.RoomName}, ved at booke dette lokale aflyser du en eleves booking",
                 "Er du sikker?", "Ja", "Nej");
             if (result)
             {
@@ -121,13 +103,26 @@ namespace LokalestyringUWP.Handler
                     {
                         if (TCPREF.BookingIsSelected.Date.Date >= DateTime.Now.Date.AddDays(3))
                         {
-                            TeacherSnatchRoom();
+                            if (ThreeRoomsBookingLimit())
+                            {
+                                TeacherSnatchRoom();
+                            }
+                            else
+                            {
+                                DialogHandler.Dialog(
+                                    "Du kan ikke have mere end tre bookinger af gangen, hvis du vil booke dette rum må du slette en anden booking",
+                                    "Kun tre bookinger");
+                            }
                         }
                         else
                         {
-                            DialogHandler.Dialog("Der skal være minimum tre dages varsel før du kan booket et lokale",
+                            DialogHandler.Dialog("Der skal være minimum tre dages varsel før du kan booke et lokale",
                                 "3-dages varsel-fejl!");
                         }
+                    }
+                    else
+                    {
+                        DialogHandler.Dialog("Den valgte booking indeholder en lærer-booking, det er desværre ikke muligt at slette en anden lærers booking", "lærer-booking fejl");
                     }
                 }
             }
@@ -137,7 +132,7 @@ namespace LokalestyringUWP.Handler
 
         #region Teacher-Check Method
         /// <summary>
-        /// Bool method that decides if a booking within the specified timeinterval contains a teacher booking
+        /// Bool method that decides if a booking within the specified timeinterval contains a teacher booking Returns false if it doesn't
         /// </summary>
         /// <returns></returns>
         public bool IsNotATeach()
@@ -148,11 +143,53 @@ namespace LokalestyringUWP.Handler
                         select t;
             if (query.Any(l => l.Teacher))
             {
-                DialogHandler.Dialog("Den valgte booking indeholder en lærer-booking, det er desværre ikke muligt at slette en anden lærers booking", "lærer-booking fejl");
+
                 return false;
             }
             return true;
         }
+        /// <summary>
+        /// A method making sure a teacher has no more than three booking on a inputted timeinterval
+        /// </summary>
+        /// <returns>Returns true if a teacher can book another room, and false if he has more than three booking</returns>
+        public bool ThreeRoomsBookingLimit()
+        {
+            var query = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
+                         where b.User_Id == LoginHandler.CurrentUserId &&
+                               b.Date.Date == TCPREF.BookingIsSelected.Date.Date
+                               && b.BookingEnd >= TCPREF.InputTimeStart && b.BookingStart <= TCPREF.InputTimeEnd
+                         group b by b.User_Id
+                into RoomGroup
+                         select new
+                         {
+                             LimitKey = RoomGroup.Key,
+                             Count = RoomGroup.Count()
+                         }).ToList();
+
+
+
+            //var query = (from b in BookingCatalogSingleton.Instance.Bookings
+            //             where b.User_Id == LoginHandler.CurrentUserId &&
+            //                   b.Date.Date == TCPREF.BookingIsSelected.Date.Date
+            //                  && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
+            //             group b by b.User_Id
+            //    into RoomGroup
+            //             select new
+            //             {
+            //                 LimitKey = RoomGroup.Key,
+            //                 Count = RoomGroup.Count()
+            //             }).ToList();
+
+            foreach (var item in query)
+            {
+                if (item.Count >= 3)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         #endregion
 
         #region Mail-Service Method
@@ -195,31 +232,53 @@ namespace LokalestyringUWP.Handler
         public async Task TeacherSnatchRoom()
         {
             var query = (from b in BookingCatalogSingleton.Instance.Bookings
-                         where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == b.Date && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
+                         where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.BookingIsSelected.Date.Date == b.Date.Date && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
                          select b).ToList();
 
-            foreach (var item in query)
+            if (query.Count > 0)
             {
-                PersistancyService.DeleteFromDatabaseAsync("Bookings", item.Booking_Id);
-                await GetMailToUser(item.User_Id, "En lærer aflyste din booking", $"Din booking den " +
-                    $"{TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra " +
-                    $"{new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} til " +
-                    $"{new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")} i rum {TCPREF.BookingIsSelected.RoomName} " +
-                    $"er blevet aflyst af {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden. " +
-                    $"Du er selvfølgelig velkommen til at booke et nyt rum i appen.", true);
+                foreach (var item in query)
+                {
+                    PersistancyService.DeleteFromDatabaseAsync("Bookings", item.Booking_Id);
+
+                    await GetMailToUser(item.User_Id, "En lærer aflyste din booking", $"Din booking den " + $"{TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra " + $"{new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} til " + $"{new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")} i rum {TCPREF.BookingIsSelected.RoomName} " + $"er blevet aflyst af {LoginHandler.SelectedUser.User_Name}, vi beklager ulejligheden. " + $"Du er selvfølgelig velkommen til at booke et nyt rum i appen.", true);
+                }
+                await PersistancyService.SaveInsertAsJsonAsync(new Booking
+                {
+                    Date = TCPREF.BookingIsSelected.Date.Date,
+                    Room_Id = TCPREF.BookingIsSelected.Room_Id,
+                    TavleBookings = null,
+                    Time_start = new TimeSpan(TCPREF.InputTimeStart.Hours, TCPREF.InputTimeStart.Minutes, 0),
+                    Time_end = new TimeSpan(TCPREF.InputTimeEnd.Hours, TCPREF.InputTimeEnd.Minutes, 0),
+                    User_Id = LoginHandler.CurrentUserId
+                }, "Bookings");
+                MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {TCPREF.BookingIsSelected.RoomName} " + $"d. {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} " + $"mellem {new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")}.", true);
+                ResetList();
+                DialogHandler.Dialog("Din booking er nu oprettet. God dag!", "Booking Oprettet!");
             }
 
-            await PersistancyService.SaveInsertAsJsonAsync(new Booking
+            if (query.Count <= 0)
             {
-                Date = TCPREF.InputDate.Date,
-                Room_Id = TCPREF.BookingIsSelected.Room_Id,
-                TavleBookings = null,
-                Time_start = new TimeSpan(TCPREF.InputTimeStart.Hours, TCPREF.InputTimeStart.Minutes, 0),
-                Time_end = new TimeSpan(TCPREF.InputTimeEnd.Hours, TCPREF.InputTimeEnd.Minutes, 0),
-                User_Id = LoginHandler.CurrentUserId
-            }, "Bookings");
-            ResetList();
-            DialogHandler.Dialog("Din booking er nu oprettet. God dag!", "Booking Oprettet!");
+                var result = await DialogHandler.GenericYesNoDialog(
+                    "Der er ikke nogen booking på dit valgte tidspunkt, er du sikker på at du valgte det rigtige tidspunkt?",
+                    "Ingen booking på valgte tidspunkt", "Opret Ny booking i stedet", "Indtast tid igen");
+                if (result)
+                {
+                    await PersistancyService.SaveInsertAsJsonAsync(new Booking
+                    {
+                        Date = TCPREF.BookingIsSelected.Date.Date,
+                        Room_Id = TCPREF.BookingIsSelected.Room_Id,
+                        TavleBookings = null,
+                        Time_start = new TimeSpan(TCPREF.InputTimeStart.Hours, TCPREF.InputTimeStart.Minutes, 0),
+                        Time_end = new TimeSpan(TCPREF.InputTimeEnd.Hours, TCPREF.InputTimeEnd.Minutes, 0),
+                        User_Id = LoginHandler.CurrentUserId
+                    }, "Bookings");
+                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {TCPREF.BookingIsSelected.RoomName} " + $"d. {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} " + $"mellem {new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")}.", true);
+                    ResetList();
+                    DialogHandler.Dialog("Din booking er nu oprettet. God dag!", "Booking Oprettet!");
+                }
+
+            }
         }
         #endregion 
         #endregion
