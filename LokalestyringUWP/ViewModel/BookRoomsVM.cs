@@ -20,23 +20,26 @@ namespace LokalestyringUWP.ViewModel
     public class BookRoomsVM : INotifyPropertyChanged
     {
         private RoomsView _selectedRoomsView;
+        private TimeSpan _selectedStartTime;
+        private TimeSpan _selectedEndTime;
+        private string _selectedBuilding;
+        private string _selectedRoomType;
+        private DateTimeOffset _selectedDate;
 
         public RelayCommand BookSelectedRoomCommand { get; set; }
-        public ICommand FilterSearchCommand => CommandHandler.FilterSearchCommand;
         public ICommand GoBackCommand => CommandHandler.GoBackCommand;
         public string selectedLocation => LocationsVM.SelectedLocation.City;
 
         public BookRoomsVM()
         {
             RoomHandler = new RoomHandler(this); //SKAL INITIALISERES FØRST
+            RoomList = new ObservableCollection<RoomsView>();
             Date = DateTimeOffset.Now.Date;
             TimeStart = DateTime.Now.TimeOfDay;
             TimeEnd = TimeStart + TimeSpan.FromHours(4);
             BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomHandler.RoomIsSelectedCheck);
             CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
-            CommandHandler.FilterSearchCommand = new RelayCommand(RoomHandler.FilterSearchMethod, null);
             CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
-            RoomList = new ObservableCollection<RoomsView>();
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.FilterSearchMethod();
@@ -59,14 +62,67 @@ namespace LokalestyringUWP.ViewModel
 
 
 
-        public TimeSpan TimeStart { get; set; }
+        public TimeSpan TimeStart { 
+            get { return _selectedStartTime; }
+            set
+            {
+                _selectedStartTime = value;
+                OnPropertyChanged(nameof(TimeStart));
+                if (TimeEnd != TimeSpan.Zero && TimeStart != TimeSpan.Zero)
+                {
+                    RoomHandler.FilterSearchMethod();
+                }
+            }
+        }
 
-        public TimeSpan TimeEnd { get; set; }
+        public TimeSpan TimeEnd 
+        { 
+            get { return _selectedEndTime; }
+            set
+            {
+                _selectedEndTime = value;
+                OnPropertyChanged(nameof(TimeEnd));
+                if (TimeEnd != TimeSpan.Zero && TimeStart != TimeSpan.Zero)
+                {
+                    RoomHandler.FilterSearchMethod();
+                }
+            }
+        }
 
-        public DateTimeOffset Date { get; set; }
+        public DateTimeOffset Date 
+        { 
+            get { return _selectedDate; }
+            set
+            {
+                _selectedDate = value;
+                OnPropertyChanged();
+                if (TimeEnd != TimeSpan.Zero && TimeStart != TimeSpan.Zero)
+                {
+                    RoomHandler.FilterSearchMethod();
+                }
+            }
+        }
 
-        public string SelectedBuildingFilter { get; set; }
-        public string SelectedRoomtypeFilter { get; set; }
+        public string SelectedBuildingFilter 
+        { 
+            get { return _selectedBuilding; }
+            set
+            {
+                _selectedBuilding = value;
+                OnPropertyChanged();
+                RoomHandler.FilterSearchMethod();
+            }
+        }
+        public string SelectedRoomtypeFilter 
+        { 
+            get { return _selectedRoomType; }
+            set
+            {
+                _selectedRoomType = value;
+                OnPropertyChanged();
+                RoomHandler.FilterSearchMethod();
+            }
+        }
 
 
         public List<string> RoomtypeList
