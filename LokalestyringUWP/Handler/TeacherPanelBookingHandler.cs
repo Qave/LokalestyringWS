@@ -21,13 +21,18 @@ namespace LokalestyringUWP.Handler
     /// </summary>
     public class TeacherPanelBookingHandler
     {
+        #region Property and Reference
         /// <summary>
         /// A reference to TeacherControlPanel
         /// </summary>
         public TeacherControlPanelVM TCPREF { get; set; }
-        
+        /// <summary>
+        /// A property for saving a mailaddress
+        /// </summary>
         public string MailAddress { get; set; }
+        #endregion
 
+        #region Constructor
         /// <summary>
         /// The Constructor of the class TeacherPanelBookingHandler
         /// </summary>
@@ -35,18 +40,42 @@ namespace LokalestyringUWP.Handler
         public TeacherPanelBookingHandler(TeacherControlPanelVM rf)
         {
             TCPREF = rf;
-            
+
+        }
+        #endregion
+
+        #region Methods
+        #region List Resetting Methods
+        /// <summary>
+        /// This method filters the listview with the correct objects
+        /// </summary>
+        public void FilterMethod()
+        {
+            if (TCPREF.InputTimeStart >= TCPREF.InputTimeEnd)
+            {
+                DialogHandler.Dialog("Vælg venligst en gyldig start- og sluttid.", "Ugyldigt tidspunkt");
+            }
+            else if (TCPREF.InputDate.Date < DateTime.Now.Date)
+            {
+                DialogHandler.Dialog("Vælg venligst en gyldig dato fra denne måned eller frem", "Ugyldig dato");
+            }
+            else
+            {
+                ResetList();
+            }
         }
 
-
         /// <summary>
-        /// This method clears the BookingList, which is a list of AllBookings and refills it with all the classrooms from the AllBookingsView singleton
+        /// This method clears the BookingList, which is a list of AllBookings and refills it with all the classrooms from the AllBookingsView singleton where the Date of the booking matches the selected date
         /// </summary>
-        public void ResetList()
+        public async void ResetList()
         {
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
             TCPREF.BookingList.Clear();
             var query = (from r in AllBookingsViewCatalogSingleton.Instance.AllBookings
-                         where r.Type == "Klasselokale"
+                         join l in RoomsViewCatalogSingleton.Instance.RoomsView on r.Room_Id equals l.Room_Id
+                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City && r.Date.Date == TCPREF.InputDate.Date
                          select r).ToList();
 
             foreach (var item in query)
@@ -54,18 +83,30 @@ namespace LokalestyringUWP.Handler
                 TCPREF.BookingList.Add(item);
             }
         }
-
         /// <summary>
-        /// This method navigates to the TeacherControlPanel
+        /// The start list shows all the bookings
         /// </summary>
-        public void TeacherControlPanelRedirect()
+        public async void ShowAllBookingList()
         {
-            ((Frame)Window.Current.Content).Navigate(typeof(PageUserBookings));
-        }
+            AllBookingsViewCatalogSingleton.Instance.AllBookings.Clear();
+            await AllBookingsViewCatalogSingleton.Instance.LoadAllBookingsAsync();
+            TCPREF.BookingList.Clear();
+            var query = (from r in AllBookingsViewCatalogSingleton.Instance.AllBookings
+                         join l in RoomsViewCatalogSingleton.Instance.RoomsView on r.Room_Id equals l.Room_Id
+                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City
+                         select r).ToList();
 
-        //Easier to just steal the booking instead of deleting the booking and then having to go back and redo the whole booking
+            foreach (var item in query)
+            {
+                TCPREF.BookingList.Add(item);
+            }
+        }
+        #endregion
+
+        #region Main Method
+
         /// <summary>
-        /// This Method steals a booking if a series of conditions are met
+        /// This Method calls TeacherSnatchRoom if a series of conditions are met
         /// </summary>
         public async Task TeacherStealsBookingMethod()
         {
@@ -82,52 +123,39 @@ namespace LokalestyringUWP.Handler
                         {
                             TeacherSnatchRoom();
                         }
+                        else
+                        {
+                            DialogHandler.Dialog("Der skal være minimum tre dages varsel før du kan booket et lokale",
+                                "3-dages varsel-fejl!");
+                        }
                     }
                 }
             }
         }
 
-        /// <summary>
-        /// This Method removes a booking if a series of conditions are met
-        /// </summary>
-        public async Task TeacherCancelsBookingMethod()
-        {
-            if (LoginHandler.SelectedUser.Teacher == true)
-            {
-                if (IsNotATeach())
-                {
-                    if (TCPREF.BookingIsSelected.Date.Date >= DateTime.Now.Date.AddDays(3))
-                    {
-                        PersistancyService.DeleteFromDatabaseAsync("Bookings", TCPREF.BookingIsSelected.Booking_Id);
-                    }
-                    else
-                    {
-                        DialogHandler.Dialog($"Der skal minimum være 3 dages varsel, der er mindre end tre dage til {TCPREF.BookingIsSelected.Date.Date.ToString("dd/MM/yyyy")}", "For kort varsel!");
-                    }
-                }
-            }
-        }
+        #endregion
 
+        #region Teacher-Check Method
         /// <summary>
-        /// Bool method that decides if a booking is not a teacher booking
+        /// Bool method that decides if a booking within the specified timeinterval contains a teacher booking
         /// </summary>
         /// <returns></returns>
         public bool IsNotATeach()
         {
-
-            //skal tjekke hele den nye bookings tidsintervaller for om der er en lærer der har booket på samme tid 
-
             var query = from t in UserCatalogSingleton.Instance.Users
-                join b in BookingCatalogSingleton.Instance.Bookings on t.User_Id equals b.User_Id
-                        where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.Time_end >= TCPREF.InuputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
+                        join b in BookingCatalogSingleton.Instance.Bookings on t.User_Id equals b.User_Id
+                        where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
                         select t;
             if (query.Any(l => l.Teacher))
             {
-                DialogHandler.Dialog("Din valgte booking indeholder en lærer-booking, det er desværre ikke muligt at slette en anden lærers booking", "lærer-booking fejl");
+                DialogHandler.Dialog("Den valgte booking indeholder en lærer-booking, det er desværre ikke muligt at slette en anden lærers booking", "lærer-booking fejl");
                 return false;
             }
             return true;
         }
+        #endregion
+
+        #region Mail-Service Method
         /// <summary>
         /// Method to find a mail connected to the booking of a user and sends them a message
         /// </summary>
@@ -157,6 +185,9 @@ namespace LokalestyringUWP.Handler
                 throw new Exception("No Email found");
             }
         }
+        #endregion
+
+        #region Booking-Replace Method
         /// <summary>
         /// This method replaces every booking on a room in between the selected timeend and timestart
         /// </summary>
@@ -164,13 +195,13 @@ namespace LokalestyringUWP.Handler
         public async Task TeacherSnatchRoom()
         {
             var query = (from b in BookingCatalogSingleton.Instance.Bookings
-                where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.Time_end >= TCPREF.InuputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
-                select b).ToList();
+                         where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == b.Date && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
+                         select b).ToList();
 
             foreach (var item in query)
             {
-                PersistancyService.DeleteFromDatabaseAsync("Bookings",item.Booking_Id);
-                await GetMailToUser(item.User_Id,"En lærer aflyste din booking", $"Din booking den " +
+                PersistancyService.DeleteFromDatabaseAsync("Bookings", item.Booking_Id);
+                await GetMailToUser(item.User_Id, "En lærer aflyste din booking", $"Din booking den " +
                     $"{TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} fra " +
                     $"{new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} til " +
                     $"{new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")} i rum {TCPREF.BookingIsSelected.RoomName} " +
@@ -183,12 +214,15 @@ namespace LokalestyringUWP.Handler
                 Date = TCPREF.InputDate.Date,
                 Room_Id = TCPREF.BookingIsSelected.Room_Id,
                 TavleBookings = null,
-                Time_start = TCPREF.InuputTimeStart,
-                Time_end = TCPREF.InputTimeEnd,
+                Time_start = new TimeSpan(TCPREF.InputTimeStart.Hours, TCPREF.InputTimeStart.Minutes, 0),
+                Time_end = new TimeSpan(TCPREF.InputTimeEnd.Hours, TCPREF.InputTimeEnd.Minutes, 0),
                 User_Id = LoginHandler.CurrentUserId
-            },"Bookings");
+            }, "Bookings");
             ResetList();
+            DialogHandler.Dialog("Din booking er nu oprettet. God dag!", "Booking Oprettet!");
         }
+        #endregion 
+        #endregion
     }
 }
 
