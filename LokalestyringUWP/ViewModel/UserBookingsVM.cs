@@ -59,9 +59,9 @@ namespace LokalestyringUWP.ViewModel
             BookIgenImorgenCommand = new RelayCommand(async () => await UserBookingHandler.BookAgainTomorrowMethodAsync(), null);
             GoBackCommand = new RelayCommand(UserBookingHandler.GoBackMethod, null);  // DEN ER NULL; FIX DEN xD
             // Loads default visibility states
-            OnPageLoadVisibilities();
+            UserBookingHandler.OnPageLoadVisibilities();
             // Filters the bookings to only show bookings for the selected user. HARD CODED USER ID, for use on the page, as a logged in user.
-            RefreshLists();
+            UserBookingHandler.RefreshLists();
         }
 
         public UserBookingHandler UserBookingHandler { get; set; }
@@ -100,6 +100,7 @@ namespace LokalestyringUWP.ViewModel
             {
                 _selectedBooking = value;
                 CheckIfTavleBookingExists();
+                ResetSelectedTavleProperties();
                 // Updates the view when a booking is selected
                 NoElementsChosenVisibility = Visibility.Collapsed;
                 ElementIsChosenVisibility = Visibility.Visible;
@@ -152,6 +153,7 @@ namespace LokalestyringUWP.ViewModel
         public Visibility TavleCanBeBookedVisibility { get; set; }
 
         #endregion
+
         // Methods for binding the corresponding ICommand property.
         #region Button Command Methods
 
@@ -176,86 +178,10 @@ namespace LokalestyringUWP.ViewModel
             OnPropertyChanged(nameof(SelectedBooking));
             OnPropertyChanged(nameof(SelectedTavleBooking));
         }
+
         #endregion
         // Methods for refreshing lists and visibility properties based on userId, the bookfilter method checks if its possible to book a tavle
         #region Refresh and filter methods
-
-        /// <summary>
-        /// Method that posts the tavlebooking to the database, after it has checked if its possible in the chosen timespan.
-        /// </summary>
-        /// <param name="tavleEndTime">The total time for the selected tavlebooking (Comes from the Booktavle Method)</param>
-        /// <param name="myTavleBooking">The chosen tavlebooking. This value comes from the SelectedDuration, and SelectedTavleStartTime properties</param>
-        /// <returns></returns>
-        public async Task BookTavle(TimeSpan tavleEndTime, TavleBooking myNewTavleBooking)
-        {
-            AllBookingsView tempSelectedBooking = SelectedBooking;
-
-            var doesUserHaveAnyTavleBookingsForThisRoom = (from t in Tavlebookings
-                                                           select t).Where(x => x.Booking_Id == SelectedBooking.Booking_Id).ToList();
-            if (doesUserHaveAnyTavleBookingsForThisRoom.Count > 0)
-            {
-                DialogHandler.Dialog("Det er ikke muligt at have flere end 1 tavle\nSlet venligst eksisterende tavler og book derefter igen.", "For mange bookede tavler");
-                return;
-            }
-            else
-            {
-                if (SelectedBooking.Type == "Klasselokale")
-                {
-                    var numberOfTavleBookingsForThisRoomOnThatDay = (from t in Tavlebookings
-                                                                     join b in AllBookingsViewCatalogSingleton.Instance.AllBookings on t.Booking_Id equals b.Booking_Id
-                                                                     select new
-                                                                     {
-                                                                         BookingId = t.Booking_Id,
-                                                                         UserId = b.User_Id,
-                                                                         RoomId = b.Room_Id,
-                                                                         BookingDate = b.Date,
-                                                                         BookingStart = b.BookingStart,
-                                                                         BookingEnd = b.BookingEnd,
-                                                                         TavleId = t.Tavle_Id,
-                                                                         TavleStart = t.Time_start,
-                                                                         TavleEnd = t.Time_end
-
-                                                                     }).Where(x => SelectedBooking.Room_Id == x.RoomId && SelectedBooking.Date == x.BookingDate).ToList();
-                    if (numberOfTavleBookingsForThisRoomOnThatDay.Count > 0 && numberOfTavleBookingsForThisRoomOnThatDay.Count <= 2)
-                    {
-                        var checkTavleTime = (from t in numberOfTavleBookingsForThisRoomOnThatDay
-                                              select t).Where(x => (SelectedTavleStartTime + TimeSpan.FromSeconds(1)) <= x.TavleEnd && (tavleEndTime - TimeSpan.FromSeconds(1)) >= x.TavleStart).ToList();
-                        if (checkTavleTime.Count == 0)
-                        {
-                            // INSERT 
-                            if (await DialogHandler.GenericYesNoDialog("Vil du booke tavlen i dette rum", "Book Tavle?", "Ja", "Fortryd"))
-                            {
-                                await PersistancyService.SaveInsertAsJsonAsync(myNewTavleBooking, "TavleBookings");
-                            }
-                            else
-                            {
-                                return;
-                            }
-                        }
-                        else
-                        {
-                            DialogHandler.Dialog("Denne tid modstrider en anden tavle booking\nVælg venligst en tidligere eller senere tid", "Modstridende tider");
-                        }
-                    }
-                    else
-                    {
-                        //INSERT
-
-                        if (await DialogHandler.GenericYesNoDialog("Vil du booke tavlen i dette rum", "Book Tavle?", "Ja", "Fortryd"))
-                        {
-                            await PersistancyService.SaveInsertAsJsonAsync(myNewTavleBooking, "TavleBookings");
-                        }
-                        else
-                        {
-                            return;
-                        }
-                    }
-                }
-            }
-            RefreshLists();
-            SelectedBooking = tempSelectedBooking;
-            
-        }
 
         /// <summary>
         /// Method that calls the UserBookingHandler and calls the corresponding methodname, and updates the view after the call
@@ -270,33 +196,6 @@ namespace LokalestyringUWP.ViewModel
             OnPropertyChanged(nameof(TavleCanBeBookedVisibility));
             OnPropertyChanged(nameof(TavleButtonsEnabled));
             OnPropertyChanged(nameof(SelectedTavleBooking));
-        }
-
-        ///// <summary>
-        ///// Method that calls the UserBookingHandler that Finds and adds the bookings for the user that is logged in to ObservableCollection<AllBookingsView> AllUserBookingsFromSingleton
-        ///// </summary>
-        ///// <param name="userid">The current user's ID</param>
-        //public void FindUserBookingsOnId(int userid)
-        //{
-        //    UserBookingHandler.FindUserBookingsOnId(userid);
-        //}
-
-        /// <summary>
-        /// Method that calls the corresponding method in the UserBookingHandler, that reloads the singletons for bookings and tavle bookings for the user that is logged in
-        /// </summary>
-        public void RefreshLists()
-        {
-            // Sets the bookings for the selected user
-            UserBookingHandler.RefreshLists();
-            UserBookingHandler.FindUserBookingsOnId(SelectedUser.User_Id);
-        }
-
-        /// <summary>
-        /// When the viewmodel (Page) gets loaded or comes into view set default values on visibilities
-        /// </summary>
-        public void OnPageLoadVisibilities()
-        {
-            UserBookingHandler.OnPageLoadVisibilities();
         }
 
         #endregion
