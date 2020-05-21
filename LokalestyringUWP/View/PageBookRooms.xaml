@@ -2,9 +2,9 @@
     x:Class="LokalestyringUWP.View.PageBookRooms"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Include="using:LokalestyringUWP.Include"
     xmlns:ViewModel="using:LokalestyringUWP.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:Include="using:LokalestyringUWP.Include"
     xmlns:local="using:LokalestyringUWP.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
@@ -35,46 +35,113 @@
     <Page.Resources>
         <DataTemplate x:Key="RoomBookingsTemplate">
             <Grid
-                    Width="220"
-                    Height="135"
-                    Background="#fff8b7" BorderBrush="Black" BorderThickness="1" Padding="10,0,10,0">
+                Width="220"
+                Height="135"
+                Padding="10,0,10,0"
+                Background="#fff8b7"
+                BorderBrush="Black"
+                BorderThickness="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1.6*"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="1.6*" />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Grid Grid.Row="0" Grid.ColumnSpan="2" BorderBrush="black" BorderThickness="0,0,0,1">
-                    <TextBlock Text="{Binding RoomName}" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Grid
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2"
+                    BorderBrush="black"
+                    BorderThickness="0,0,0,1">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="{Binding RoomName}" />
                 </Grid>
-                <Grid Grid.Row="1" Grid.Column="0" BorderBrush="#999" BorderThickness="0,0,0,1">
-                    <TextBlock Text="Etage:" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Grid
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    BorderBrush="#999"
+                    BorderThickness="0,0,0,1">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="Etage:" />
                 </Grid>
-                <Grid Grid.Row="1" Grid.Column="1" BorderBrush="#999" BorderThickness="0,0,0,1">
-                    <TextBlock Text="{Binding FloorString}" FontWeight="SemiBold" HorizontalAlignment="right" VerticalAlignment="Center"/>
+                <Grid
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    BorderBrush="#999"
+                    BorderThickness="0,0,0,1">
+                    <TextBlock
+                        HorizontalAlignment="right"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="{Binding FloorString}" />
                 </Grid>
-                <Grid Grid.Row="2" Grid.Column="0" BorderBrush="#999" BorderThickness="0,0,0,1">
-                    <TextBlock Text="Type:" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Grid
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    BorderBrush="#999"
+                    BorderThickness="0,0,0,1">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="Type:" />
                 </Grid>
-                <Grid Grid.Row="2" Grid.Column="1" BorderBrush="#999" BorderThickness="0,0,0,1">
-                    <TextBlock Text="{Binding Type}" FontWeight="SemiBold" HorizontalAlignment="right" VerticalAlignment="Center"/>
+                <Grid
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    BorderBrush="#999"
+                    BorderThickness="0,0,0,1">
+                    <TextBlock
+                        HorizontalAlignment="right"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="{Binding Type}" />
                 </Grid>
-                <Grid Grid.Row="3" Grid.Column="0" BorderBrush="#999" BorderThickness="0,0,0,1">
-                    <TextBlock Text="Bygning:" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Grid
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    BorderBrush="#999"
+                    BorderThickness="0,0,0,1">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="Bygning:" />
                 </Grid>
-                <Grid Grid.Row="3" Grid.Column="1" BorderBrush="#999" BorderThickness="0,0,0,1">
-                    <TextBlock Text="{Binding BuildingString}" FontWeight="SemiBold" HorizontalAlignment="right" VerticalAlignment="Center"/>
+                <Grid
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    BorderBrush="#999"
+                    BorderThickness="0,0,0,1">
+                    <TextBlock
+                        HorizontalAlignment="right"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="{Binding BuildingString}" />
                 </Grid>
                 <Grid Grid.Row="4" Grid.Column="0">
-                    <TextBlock Text="Aktive Bookninger:" FontWeight="SemiBold" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="Aktive Bookninger:" />
                 </Grid>
                 <Grid Grid.Row="4" Grid.Column="1">
-                    <TextBlock Text="{Binding Booking_LimitString}" FontWeight="SemiBold" HorizontalAlignment="right" VerticalAlignment="Center"/>
+                    <TextBlock
+                        HorizontalAlignment="right"
+                        VerticalAlignment="Center"
+                        FontWeight="SemiBold"
+                        Text="{Binding Booking_LimitString}" />
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -88,17 +155,15 @@
         <Grid
             Grid.Row="0"
             Height="70"
-            Background="#fff8b7"
             VerticalAlignment="Center"
+            Background="#fff8b7"
             BorderBrush="black"
             BorderThickness="0,0,0,1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Border
-                Grid.Row="0"
-                Grid.ColumnSpan="3">
+            <Border Grid.Row="0" Grid.ColumnSpan="3">
                 <StackPanel
                     Margin="10,10,0,0"
                     HorizontalAlignment="Center"
@@ -131,114 +196,177 @@
 
         <Grid Grid.Row="1">
             <Grid.Background>
-                <ImageBrush ImageSource="/Assets/Images/Lokation_Bg.jpg" Stretch="UniformToFill"/>
+                <ImageBrush ImageSource="/Assets/Images/Lokation_Bg.jpg" Stretch="UniformToFill" />
             </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition Height="2.7*"/>
+                <RowDefinition Height="2.7*" />
                 <RowDefinition Height="6*" />
-                <RowDefinition Height="0.5*"/>
+                <RowDefinition Height="0.5*" />
             </Grid.RowDefinitions>
 
-            <!-- Filter-->
-            <Grid Grid.Row="0" Background="white" Margin="10" Padding="5" CornerRadius="5" BorderBrush="black" BorderThickness="1">
+            <!--  Filter  -->
+            <Grid
+                Grid.Row="0"
+                Margin="10"
+                Padding="5"
+                Background="white"
+                BorderBrush="black"
+                BorderThickness="1"
+                CornerRadius="5">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.9*"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="1.9*" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <!--Top row-->
-                    <Grid Grid.Row="0" Grid.Column="0" Padding="10,0,0,0">
-                        <TextBlock Text="Dato:" Foreground="black" FontWeight="Bold" FontSize="16"/>
-                        <DatePicker Date="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    <!--  Top row  -->
+                    <Grid
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Padding="10,0,0,0">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="black"
+                            Text="Dato:" />
+                        <DatePicker
                             Background="#fff387"
+                            Date="{Binding Date, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             YearVisible="False" />
                     </Grid>
                     <Grid Grid.Row="0" Grid.Column="1">
                         <StackPanel>
-                            <TextBlock Text="Vælg Bygning:" Foreground="black" FontWeight="Bold" HorizontalAlignment="Left" Margin="20,0,10,0"/>
-                            <ComboBox Width="130" Margin="20,1,10,0" HorizontalAlignment="Left" BorderBrush="#999251" Background="#fff8b7" ItemsSource="{Binding BuildingList}"
-                        SelectedValue="{Binding SelectedBuildingFilter, Mode=TwoWay}" />
+                            <TextBlock
+                                Margin="20,0,10,0"
+                                HorizontalAlignment="Left"
+                                FontWeight="Bold"
+                                Foreground="black"
+                                Text="Vælg Bygning:" />
+                            <ComboBox
+                                Width="130"
+                                Margin="20,1,10,0"
+                                HorizontalAlignment="Left"
+                                Background="#fff8b7"
+                                BorderBrush="#999251"
+                                ItemsSource="{Binding BuildingList}"
+                                SelectedValue="{Binding SelectedBuildingFilter, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
-                    <!--Mid Row-->
-                    <Grid Grid.Row="1" Grid.Column="0" Padding="10,0,0,0">
-                        <TextBlock Text="Starttid:" Foreground="black" FontWeight="Bold" FontSize="16"/>
-                        <TimePicker ClockIdentifier="24HourClock"
-                                    Background="#fff387"
+                    <!--  Mid Row  -->
+                    <Grid
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Padding="10,0,0,0">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="black"
+                            Text="Starttid:" />
+                        <TimePicker
+                            Background="#fff387"
+                            ClockIdentifier="24HourClock"
                             SelectedTime="{Binding TimeStart, Mode=TwoWay}" />
                     </Grid>
                     <Grid Grid.Row="1" Grid.Column="1">
                         <StackPanel>
-                            <TextBlock Text="Vælg Rumtype:" Foreground="black" FontWeight="Bold" HorizontalAlignment="Left" Margin="20,0,10,0"/>
-                            <ComboBox Width="130" Margin="20,1,10,0" HorizontalAlignment="Left" BorderBrush="#999251" Background="#fff8b7" ItemsSource="{Binding RoomtypeList}"
-                        SelectedValue="{Binding SelectedRoomtypeFilter, Mode=TwoWay}" />
+                            <TextBlock
+                                Margin="20,0,10,0"
+                                HorizontalAlignment="Left"
+                                FontWeight="Bold"
+                                Foreground="black"
+                                Text="Vælg Rumtype:" />
+                            <ComboBox
+                                Width="130"
+                                Margin="20,1,10,0"
+                                HorizontalAlignment="Left"
+                                Background="#fff8b7"
+                                BorderBrush="#999251"
+                                ItemsSource="{Binding RoomtypeList}"
+                                SelectedValue="{Binding SelectedRoomtypeFilter, Mode=TwoWay}" />
                         </StackPanel>
                     </Grid>
-                    <!--Bottom Row-->
-                    <Grid Grid.Row="2" Grid.Column="0" Padding="10,0,0,0">
-                        <TextBlock Text="Sluttid:" Foreground="black" FontWeight="Bold" FontSize="16"/>
-                        <TimePicker ClockIdentifier="24HourClock"
-                                    Background="#fff387"
+                    <!--  Bottom Row  -->
+                    <Grid
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Padding="10,0,0,0">
+                        <TextBlock
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="black"
+                            Text="Sluttid:" />
+                        <TimePicker
+                            Background="#fff387"
+                            ClockIdentifier="24HourClock"
                             SelectedTime="{Binding TimeEnd, Mode=TwoWay}" />
-                    </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1">
-                        <Button
-                            Margin="20,1,10,0"
-                            VerticalAlignment="Center"
-                            Background="Black"
-                            Foreground="White"
-                            Width="130"
-                            Command="{Binding FilterSearchCommand}"
-                            Content="Filtrér lokaler" />
                     </Grid>
                 </Grid>
             </Grid>
-            <!-- Listview-->
+            <!--  Listview  -->
             <Grid Grid.Row="1" Margin="0,15,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="8*"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="8*" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <ScrollViewer
-                Grid.Row="0"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Stretch" BorderBrush="Black" BorderThickness="0,0,0,1">
+                    Grid.Row="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Stretch"
+                    BorderBrush="Black"
+                    BorderThickness="0,0,0,1">
 
                     <GridView
                         ItemTemplate="{StaticResource RoomBookingsTemplate}"
                         ItemsSource="{Binding RoomList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedItem="{Binding SelectedRoomsView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /> 
+                        SelectedItem="{Binding SelectedRoomsView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </ScrollViewer>
                 <Button
                     Grid.Row="1"
+                    Width="200"
+                    Height="40"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Foreground="black"
                     Background="#fff387"
-                    Height="40"
-                    Width="200"
                     Command="{Binding BookSelectedRoomCommand}"
-                    Content="Book valgt lokale" />
+                    Content="Book valgt lokale"
+                    Foreground="black" />
             </Grid>
-            <!--Footer-->
-            <Grid Grid.Row="2" VerticalAlignment="Bottom" Background="black" Opacity="0.9" Height="45">
+            <!--  Footer  -->
+            <Grid
+                Grid.Row="2"
+                Height="45"
+                VerticalAlignment="Bottom"
+                Background="black"
+                Opacity="0.9">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="1" Text="Sjællands Erhversakademi" VerticalAlignment="Center" FontSize="17" Foreground="White" HorizontalAlignment="Right" Margin="0,0,20,0"/>
-                    <TextBlock Grid.Column="0" Text="Zealand" VerticalAlignment="Center" FontSize="17" Foreground="White" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+                    <TextBlock
+                        Grid.Column="1"
+                        Margin="0,0,20,0"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        FontSize="17"
+                        Foreground="White"
+                        Text="Sjællands Erhversakademi" />
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="20,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="17"
+                        Foreground="White"
+                        Text="Zealand" />
                 </Grid>
             </Grid>
         </Grid>
     </Grid>
 </Page>
 
-        
-        
+
