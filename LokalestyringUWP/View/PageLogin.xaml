@@ -15,7 +15,7 @@
     <Grid>
         <Grid>
             <Grid.Background>
-                <SolidColorBrush Color="Aquamarine" />
+                <ImageBrush ImageSource="/Assets/Images/Login_Bg.jpg" Stretch="UniformToFill"/>
             </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -34,47 +34,70 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <StackPanel
-                Grid.Row="2"
+                Grid.Row="4"
                 Grid.RowSpan="7"
                 Grid.Column="0"
                 Grid.ColumnSpan="2">
-                <StackPanel Width="Auto">
+                <StackPanel Width="Auto" Margin="40,40,40,40">
                     <TextBlock
+                        Margin="5,0,0,0"
                         FontFamily="dubai"
-                        FontSize="35"
-                        Text="Login"
-                        TextAlignment="Center" />
+                        FontSize="20"
+                        Text="Zealand Lokalestyring"
+                        TextAlignment="Start" />
+
                     <TextBox
-                        Margin="10,50,10,10"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Background="White"
                         FontFamily="dubai"
-                        FontSize="35"
+                        FontSize="18"
+                        Height="40"
+                        Margin="5,0,0,10"
                         PlaceholderText="Brugernavn"
                         Text="{Binding UserNameVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                     <PasswordBox
-                        Margin="10,10,10,10"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Background="white"
                         FontFamily="dubai"
-                        FontSize="35"
+                        Height="40"
+                        FontSize="18"
+                        Margin="5,0,0,0"
                         Password="{Binding PasswordVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         PlaceholderText="Password" />
                     <!--  Knapper  -->
-                    <Button
-                        Width="240"
-                        Margin="10,20,10,10"
-                        HorizontalAlignment="Center"
-                        Background="DarkCyan"
-                        Command="{Binding LoginCommand}"
-                        Content="Log Ind"
-                        FontFamily="dubai"
-                        Foreground="White" />
-                    <Button
-                        Width="240"
-                        Margin="10,20,10,10"
-                        HorizontalAlignment="Center"
-                        Background="DarkCyan"
-                        Command="{Binding CreateAccountCommand}"
-                        Content="Opret Konto"
-                        FontFamily="dubai"
-                        Foreground="White" />
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button
+                            Grid.Column="0"
+                            Margin="5 0 0 0"
+                            Padding="0"
+                            Width="105"
+                            FontSize="18"
+                            HorizontalAlignment="left"
+                            VerticalAlignment="Top"
+                            Background="Transparent"
+                            Command="{Binding CreateAccountCommand}"
+                            Content="Opret Bruger"
+                            FontFamily="dubai"
+                            Foreground="black" />
+                        <Button
+                            Grid.Column="1"
+                            Width="120"
+                            Margin="0,10,0,0"
+                            HorizontalAlignment="Right"
+                            Background="Black"                            
+                            Command="{Binding LoginCommand}"
+                            Content="Log på"
+                            FontFamily="dubai"
+                            Foreground="White" />
+                    </Grid>
                 </StackPanel>
             </StackPanel>
         </Grid>
