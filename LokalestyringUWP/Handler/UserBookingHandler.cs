@@ -5,7 +5,9 @@ using LokalestyringUWP.View;
 using LokalestyringUWP.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -13,7 +15,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace LokalestyringUWP.Handler
 {
-    public class UserBookingHandler 
+    public class UserBookingHandler : INotifyPropertyChanged
     {
         public static UserBookingsVM Reference { get; set; }
         public UserBookingHandler(UserBookingsVM r)
@@ -27,20 +29,23 @@ namespace LokalestyringUWP.Handler
         public static async Task CancelBookingMethodAsync()
         {
             // Checks if the user wants to delete the booking, or not
-            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse denne bookning?\nTilhørende tavlebookings vil også blive Aflyst.\nDer vil blive tilsendt kvittering på denne aflysning på din mail", "Aflys Bookning?", "Ja, Aflys booking", "Fortryd");
             // If user wants to delete the booking.
             if (result)
             {
                 var query = (from q in BookingCatalogSingleton.Instance.Bookings
-                            where q.Booking_Id == Reference.SelectedBooking.Booking_Id
-                            select q).ToList();
+                             where q.Booking_Id == Reference.SelectedBooking.Booking_Id
+                             select q).ToList();
                 foreach (var item in query)
                 {
-                        BookingCatalogSingleton.Instance.Bookings.Remove(item);
+                    BookingCatalogSingleton.Instance.Bookings.Remove(item);
                 }
 
                 // The async delete method from PersistancyService.
                 PersistancyService.DeleteFromDatabaseAsync("Bookings", Reference.SelectedBooking.Booking_Id);
+                await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på aflysning af booking", $"Du har aflyst din bookning for {Reference.SelectedBooking.RoomName} " +
+                $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
+                $"mellem {new DateTime(Reference.SelectedBooking.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(Reference.SelectedBooking.BookingEnd.Ticks).ToString("HH:mm")}.", true);
 
                 // Deletes the selected object from the singleton observable collection
                 Reference.AllUserBookingsFromSingleton.Remove(Reference.SelectedBooking);
@@ -56,7 +61,7 @@ namespace LokalestyringUWP.Handler
         public static async Task CancelTavleBookingMethodAsync()
         {
             // Checks if the user wants to delete the TavleBooking, or not
-            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse tavlen for denne bookning?\nDin Booking på rummet vil ikke blive slettet", "Aflys Tavle?", "Ja, Aflys Tavle", "Fortryd");
+            var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil Aflyse tavlen for denne bookning?\nDin Booking på rummet vil ikke blive slettet\nEn kvittering vil blive tilsendt for aflysning af denne tavle tid", "Aflys Tavle?", "Ja, Aflys Tavle", "Fortryd");
             // If user wants to delete the booking.
             if (result)
             {
@@ -69,14 +74,16 @@ namespace LokalestyringUWP.Handler
                     PersistancyService.DeleteFromDatabaseAsync("TavleBookings", _selectedTavleBooking.Tavle_Id);
                     // Deletes the selected object from the singleton observable collection, which in turn updates the view.
                     TavleBookingCatalogSingleton.Instance.TavleBookings.Remove(_selectedTavleBooking);
-                    //SelectedBooking.TavleStart = null;
-                    //SelectedBooking.TavleEnd = null;
 
+                    await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på aflysning af tavle booking", $"Du har aflyst din tavletid for rum: {Reference.SelectedBooking.RoomName} " +
+                    $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
+                    $"mellem {new DateTime(_selectedTavleBooking.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(_selectedTavleBooking.Time_end.Ticks).ToString("HH:mm")}.", true);
                     //Update the viewpage
                     Reference.AflysTavleBtnVisibility = Visibility.Collapsed;
                     Reference.BookTavleBtnVisibility = Visibility.Visible;
                     Reference.SelectedTavleBooking = null;
                     Reference.CheckIfTavleBookingExists();
+                    
                 }
                 catch (Exception)
                 {
@@ -118,8 +125,19 @@ namespace LokalestyringUWP.Handler
                 // If 0 or less
                 if (checkTime.Count < 1)
                 {
-                    // Inserts the selectedbooking into the database and updates the singleton                  
-                    returnedObj = await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                    var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke dette rum igen imorgen samme tid?\nKvittering på bookning af det nye rum vil blive tilsendt via mail","Book igen imorgen?","Ja","Fortryd");
+                    if (result)
+                    {
+                        // Inserts the selectedbooking into the database and updates the singleton                  
+                        returnedObj = await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                        await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af rum", $"Du har booked rummet {Reference.SelectedBooking.RoomName} igen for " +
+                        $"d. {returnedObj.Date.ToString("dd/MM/yyyy")} " +
+                        $"mellem {new DateTime(returnedObj.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(returnedObj.Time_end.Ticks).ToString("HH:mm")}.", true);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 else
                 {
@@ -129,7 +147,19 @@ namespace LokalestyringUWP.Handler
             }
             else
             {
-                returnedObj = await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                var result = await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke dette rum igen imorgen samme tid?\nKvittering på bookning af det nye rum vil blive tilsendt via mail", "Book igen imorgen?", "Ja", "Fortryd");
+                if (result)
+                {
+                    // Inserts the selectedbooking into the database and updates the singleton                  
+                    returnedObj = await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
+                    await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af rum", $"Du har booked rummet {Reference.SelectedBooking.RoomName} igen for " +
+                    $"d. {returnedObj.Date.ToString("dd/MM/yyyy")} " +
+                    $"mellem {new DateTime(returnedObj.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(returnedObj.Time_end.Ticks).ToString("HH:mm")}.", true);
+                }
+                else
+                {
+                    return;
+                }
             }
             if (returnedObj != null)
             {
@@ -151,9 +181,9 @@ namespace LokalestyringUWP.Handler
                 // Adds the viewToAdd object, to the singleton
                 Reference.AllUserBookingsFromSingleton.Add(viewToAdd);
                 // Refreshes the singleton, and re-queries the bookings for the selected user
-                Reference.RefreshLists();
+                RefreshLists();
                 // sets the selected booking to the newly added booking
-                Reference.SelectedBooking = Reference.AllUserBookingsFromSingleton.Last();
+                Reference.SelectedBooking = Reference.AllUserBookingsFromSingleton.First();
             }
         }
 
@@ -165,7 +195,7 @@ namespace LokalestyringUWP.Handler
             TavleBooking myNewTavleBooking = null;
             if (Reference.SelectedTavleStartTime != TimeSpan.Zero)
             {
-                // does selected duration exceed bookingEnd?
+
                 TimeSpan tavleEndTime = Reference.SelectedTavleStartTime.Add(TimeSpan.Parse(Reference.SelectedDuration));
                 if (tavleEndTime > Reference.SelectedBooking.BookingEnd)
                 {
@@ -175,7 +205,7 @@ namespace LokalestyringUWP.Handler
                     {
                         tavleEndTime = Reference.SelectedBooking.BookingEnd;
                         myNewTavleBooking = new TavleBooking() { Booking_Id = Reference.SelectedBooking.Booking_Id, Time_start = Reference.SelectedTavleStartTime, Time_end = tavleEndTime };
-                        await Reference.BookTavle(tavleEndTime, myNewTavleBooking);
+                        await BookTavle(tavleEndTime, myNewTavleBooking);
                     }
                     else
                     {
@@ -190,8 +220,10 @@ namespace LokalestyringUWP.Handler
                 else
                 {
                     myNewTavleBooking = new TavleBooking() { Booking_Id = Reference.SelectedBooking.Booking_Id, Time_start = Reference.SelectedTavleStartTime, Time_end = tavleEndTime };
-                    await Reference.BookTavle(tavleEndTime, myNewTavleBooking);
+                    await BookTavle(tavleEndTime, myNewTavleBooking);
                 }
+
+
             }
             else
             {
@@ -199,6 +231,85 @@ namespace LokalestyringUWP.Handler
             }
         }
 
+        /// <summary>
+        /// Method that posts the tavlebooking to the database, after it has checked if its possible in the chosen timespan.
+        /// </summary>
+        /// <param name="tavleEndTime">The total time for the selected tavlebooking (Comes from the Booktavle Method)</param>
+        /// <param name="myTavleBooking">The chosen tavlebooking. This value comes from the SelectedDuration, and SelectedTavleStartTime properties</param>
+        /// <returns></returns>
+        public static async Task BookTavle(TimeSpan tavleEndTime, TavleBooking myNewTavleBooking)
+        {
+            AllBookingsView tempSelectedBooking = Reference.SelectedBooking;
+            var doesUserHaveAnyTavleBookingsForThisRoom = (from t in Reference.Tavlebookings
+                                                           select t).Where(x => x.Booking_Id == Reference.SelectedBooking.Booking_Id).ToList();
+            if (doesUserHaveAnyTavleBookingsForThisRoom.Count > 0)
+            {
+                DialogHandler.Dialog("Det er ikke muligt at booke flere end 1 tavle\nSlet venligst eksisterende tavler og book derefter igen.", "For mange bookede tavler");
+                return;
+            }
+            else
+            {
+                if (Reference.SelectedBooking.Type == "Klasselokale")
+                {
+                    var numberOfTavleBookingsForThisRoomOnThatDay = (from t in Reference.Tavlebookings
+                                                                     join b in AllBookingsViewCatalogSingleton.Instance.AllBookings on t.Booking_Id equals b.Booking_Id
+                                                                     select new
+                                                                     {
+                                                                         BookingId = t.Booking_Id,
+                                                                         UserId = b.User_Id,
+                                                                         RoomId = b.Room_Id,
+                                                                         BookingDate = b.Date,
+                                                                         BookingStart = b.BookingStart,
+                                                                         BookingEnd = b.BookingEnd,
+                                                                         TavleId = t.Tavle_Id,
+                                                                         TavleStart = t.Time_start,
+                                                                         TavleEnd = t.Time_end
+
+                                                                     }).Where(x => Reference.SelectedBooking.Room_Id == x.RoomId && Reference.SelectedBooking.Date == x.BookingDate).ToList();
+                    if (numberOfTavleBookingsForThisRoomOnThatDay.Count > 0 && numberOfTavleBookingsForThisRoomOnThatDay.Count <= 2)
+                    {
+                        var checkTavleTime = (from t in numberOfTavleBookingsForThisRoomOnThatDay
+                                              select t).Where(x => (Reference.SelectedTavleStartTime + TimeSpan.FromSeconds(1)) <= x.TavleEnd && (tavleEndTime - TimeSpan.FromSeconds(1)) >= x.TavleStart).ToList();
+                        if (checkTavleTime.Count == 0)
+                        {
+                            // INSERT 
+                            if (await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke denne tavletid?\nKvittering på tavlen vil blive tilsendt via mail", "Book Book Tavle?", "Ja", "Fortryd"))
+                            {
+                                await PersistancyService.SaveInsertAsJsonAsync(myNewTavleBooking, "TavleBookings");
+                                await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af tavletid", $"Du har booked tavlen i rummet {Reference.SelectedBooking.RoomName}" +
+                                $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
+                                $"mellem {new DateTime(myNewTavleBooking.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(myNewTavleBooking.Time_end.Ticks).ToString("HH:mm")}.", true);
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            DialogHandler.Dialog("Denne tid modstrider en anden tavle booking\nVælg venligst en tidligere eller senere tid", "Modstridende tider");
+                        }
+                    }
+                    else
+                    {
+                        // INSERT 
+                        if (await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke denne tavletid?\nKvittering på tavlen vil blive tilsendt via mail", "Book Book Tavle?", "Ja", "Fortryd"))
+                        {
+                            await PersistancyService.SaveInsertAsJsonAsync(myNewTavleBooking, "TavleBookings");
+                            await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af tavletid", $"Du har booked tavlen i rummet {Reference.SelectedBooking.RoomName}" +
+                            $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
+                            $"mellem {new DateTime(myNewTavleBooking.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(myNewTavleBooking.Time_end.Ticks).ToString("HH:mm")}.", true);
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+            RefreshLists();
+            Reference.SelectedBooking = tempSelectedBooking;
+        }
         /// <summary>
         /// Checks if there is any "tavle" bookings for the selected booking. if there is, change the "BookTavleBtnVisibility" to Visible or Collasped respectively
         /// </summary>
@@ -291,6 +402,7 @@ namespace LokalestyringUWP.Handler
             // Refresh TavleBookings singleton
             TavleBookingCatalogSingleton.Instance.TavleBookings.Clear();
             TavleBookingCatalogSingleton.Instance.LoadTavleBookingsAsync();
+            FindUserBookingsOnId(Reference.SelectedUser.User_Id);
         }
 
         /// <summary>
@@ -309,7 +421,7 @@ namespace LokalestyringUWP.Handler
         public static void ResetSelectedTavleProperties()
         {
             Reference.SelectedTavleStartTime = new TimeSpan(0, 0, 0);
-            Reference.SelectedDuration = null;          
+            Reference.SelectedDuration = Reference.PossibleDurations[0];        
         }
 
         /// <summary>
@@ -319,5 +431,17 @@ namespace LokalestyringUWP.Handler
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
         }
+
+        #region INotifyPropertyChanged interface implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// Refreshes the property on the pageview.
+        /// </summary>
+        /// <param name="propertyName">You can specify the property to update when using "nameof(propertyName)" as a parameter</param>
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
     }
 }
