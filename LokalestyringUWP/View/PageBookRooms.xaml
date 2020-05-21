@@ -135,23 +135,13 @@
                 <TimePicker
                     ClockIdentifier="24HourClock"
                     Header="Starttid:"
-                    SelectedTime="{Binding TimeStart, Mode=TwoWay}" />
+                    SelectedTime="{Binding TimeStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TimePicker
                     ClockIdentifier="24HourClock"
                     Header="Sluttid"
-                    SelectedTime="{Binding TimeEnd, Mode=TwoWay}" />
+                    SelectedTime="{Binding TimeEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             </StackPanel>
-            <Button
-                Grid.Row="3"
-                Grid.Column="3"
-                Grid.ColumnSpan="3"
-                Margin="0,0,10,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Background="Gold"
-                Command="{Binding FilterSearchCommand}"
-                Content="Filtrér lokaler" />
         </Grid>
         <ScrollViewer
             Grid.Row="1"
