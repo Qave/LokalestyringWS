@@ -26,11 +26,12 @@
             Grid.Row="0"
             Height="70"
             VerticalAlignment="Center"
-            BorderBrush="LightGray"
-            BorderThickness="0,0,0,2">
+            BorderBrush="black"
+            Background="#fff8b7"
+            BorderThickness="0,0,0,1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="5*"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid Grid.Column="0">
@@ -46,12 +47,10 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="17">
-                    <Run Text="Bookings for" />
-                    <Run Text="{Binding SelectedUser.User_Name}" />
+                    <Run Text="Bookings for"/>
+                    <Run Text="{Binding SelectedUser.User_Name}"/>
                 </TextBlock>
             </Grid>
-
-
             <Grid
                 Grid.Column="3"
                 Margin="0,10,20,0"
@@ -66,58 +65,68 @@
             x:Name="ContentWrapper"
             Grid.Row="1"
             Padding="35">
+            <Grid.Background>
+                <ImageBrush ImageSource="/Assets/Images/UserBookings_Bg.jpg" Stretch="UniformToFill"/>
+            </Grid.Background>
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="1.9*" />
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="2.7*" />
+                <RowDefinition/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Visibility="{Binding NoElementsChosenVisibility}">
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
+            <Grid Grid.Row="0" Visibility="{Binding NoElementsChosenVisibility}" CornerRadius="5">
+                    <Grid.Background>
+                        <SolidColorBrush Color="black" Opacity="0.5" />
+                    </Grid.Background>
+                <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <TextBlock                   
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="20"
                     Text="Ingen elementer valgt" />
+                </StackPanel>
             </Grid>
             <Grid
                 Grid.Row="0"
-                BorderBrush="#72DAFF"
-                BorderThickness="1"
+                BorderBrush="#fff8b7"
+                BorderThickness="7"
+                CornerRadius="5"
                 Visibility="{Binding ElementIsChosenVisibility}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Margin="10,10,10,5">
+                <Grid Grid.Row="0" Background="white">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid
                         Grid.Row="0"
-                        VerticalAlignment="Stretch"
-                        BorderBrush="#81a6c7"
-                        BorderThickness="0,0,0,1">
-                        <TextBlock VerticalAlignment="Center" FontSize="20">
+                        VerticalAlignment="Stretch" Background="#fff8b7">
+                        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="20">
                             <Run Text="{Binding SelectedBooking.RoomName}" />
                             <Run
                                 FontSize="15"
-                                Foreground="gray"
+                                Foreground="black"
                                 Text="{Binding SelectedBooking.Type}" />
                         </TextBlock>
                     </Grid>
                     <Grid Grid.Row="1">
-                        <TextBlock VerticalAlignment="Center" FontSize="20">
+                        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="20">
                             <Run Text="Bygning:" />
                             <Run Text="{Binding SelectedBooking.Building_Letter}" />
                         </TextBlock>
 
                     </Grid>
                     <Grid Grid.Row="2">
-                        <TextBlock VerticalAlignment="Top" FontSize="18">
+                        <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontSize="18">
                             <Run Text="Etage:" />
                             <Run Text="{Binding SelectedBooking.Floor}" />
                         </TextBlock>
@@ -126,12 +135,11 @@
                         Grid.Row="0"
                         Grid.Column="1"
                         VerticalAlignment="Stretch"
-                        BorderBrush="#81a6c7"
-                        BorderThickness="0,0,0,1">
+                        Background="#fff8b7">
                         <TextBlock
                             HorizontalAlignment="Right"
                             VerticalAlignment="center"
-                            FontSize="17">
+                            FontSize="17" Margin="0,0,10,0">
                             <Run Text="{Binding SelectedBooking.Date, Converter={StaticResource DateToStringFormatConverter}}" />
                             <Run Text="-" />
                             <Run Text="{Binding SelectedBooking.BookingStart, Converter={StaticResource DateToStringFormatConverter}}" />
@@ -142,45 +150,32 @@
                     <StackPanel Grid.Row="1" Grid.Column="1">
                         <Button
                             Grid.Column="1"
-                            Margin="0,5,0,0"
+                            Margin="0,10,10,0"
                             HorizontalAlignment="Stretch"
-                            Background="#B2FFA9"
-                            BorderBrush="#2FAB21"
-                            BorderThickness="1"
-                            Command="{Binding BookIgenImorgenCommand}"
-                            Content="Book igen imorgen" />
+                            Background="#fff8b7"
+                            Content="Book igen imorgen" 
+                            Command="{Binding BookIgenImorgenCommand}"/>
                     </StackPanel>
                     <Grid Grid.Row="2" Grid.Column="1">
                         <Button
                             HorizontalAlignment="Stretch"
+                            Margin="0,10,10,0"
                             Background="#FF5F5F"
-                            BorderBrush="#950707"
-                            BorderThickness="1"
                             Command="{Binding AflysBookingCommand}"
                             Content="Aflys Booking" />
                     </Grid>
                 </Grid>
-                <Grid
-                    Grid.Row="1"
-                    Margin="10,5,10,10"
-                    Visibility="{Binding TavleInkluderetVisibility}">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="20"
-                        Text="Tavlen er inkluderet i dette rum!" />
+                <Grid Grid.Row="1" Margin="10,5,10,10" Visibility="{Binding TavleInkluderetVisibility}">
+                    <TextBlock Text="Tavlen er inkluderet i dette rum!" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                 </Grid>
-                <Grid
-                    Grid.Row="1"
-                    Margin="10,5,10,10"
-                    Visibility="{Binding TavleCanBeBookedVisibility}">
+                <Grid Grid.Row="1" Padding="10,5,10,10" Background="white" Visibility="{Binding TavleCanBeBookedVisibility}">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="1.6*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Row="0" VerticalAlignment="Stretch">
@@ -194,10 +189,10 @@
                     </Grid>
                     <Grid Grid.Row="2">
                         <TimePicker
-                            Background="white"
+                            Background="#fff8b7"
                             Foreground="Black"
-                            IsEnabled="{Binding TavleButtonsEnabled}"
-                            SelectedTime="{Binding SelectedTavleStartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            IsEnabled="{Binding TavleButtonsEnabled}" 
+                            SelectedTime="{Binding SelectedTavleStartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
                     <Grid
                         Grid.Row="0"
@@ -214,17 +209,13 @@
                             Grid.Column="0"
                             HorizontalAlignment="Stretch"
                             Background="#FF5F5F"
-                            BorderBrush="#950707"
-                            BorderThickness="1"
                             Command="{Binding AflysTavleCommand}"
                             Content="Aflys Tavle"
                             Visibility="{Binding AflysTavleBtnVisibility}" />
                         <Button
                             Grid.Column="0"
                             HorizontalAlignment="Stretch"
-                            Background="#B2FFA9"
-                            BorderBrush="#2FAB21"
-                            BorderThickness="1"
+                            Background="#fff8b7"
                             Command="{Binding BookTavleCommand}"
                             Content="Book Tavle"
                             Visibility="{Binding BookTavleBtnVisibility}" />
@@ -233,12 +224,14 @@
                         <ComboBox
                             HorizontalAlignment="Stretch"
                             VerticalAlignment="Center"
-                            Background="white"
-                            BorderThickness="1"
+                            Background="#fffbd4"
+                            BorderBrush="#999251"
                             IsEnabled="{Binding TavleButtonsEnabled}"
-                            ItemsSource="{Binding PossibleDurations}"
                             PlaceholderText="Varighed"
-                            SelectedItem="{Binding SelectedDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            ItemsSource="{Binding PossibleDurations}"
+                            
+                            SelectedItem="{Binding SelectedDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        </ComboBox>
                     </Grid>
                 </Grid>
             </Grid>
@@ -247,7 +240,7 @@
                 Grid.Row="1"
                 Margin="0,25,0,0"
                 Padding="0,20,0,0"
-                BorderBrush="#72DAFF"
+                BorderBrush="#fff387"
                 BorderThickness="0,1,0,0"
                 Visibility="Visible">
                 <Grid>
@@ -264,9 +257,9 @@
                         </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderBrush="#72DAFF" BorderThickness="1">
+                                <Border BorderBrush="black" BorderThickness="1">
 
-                                    <Grid Padding="10" Background="AliceBlue">
+                                    <Grid Padding="10" Background="#fff387">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
                                             <ColumnDefinition />
@@ -287,7 +280,17 @@
                     </ListView>
                 </Grid>
             </ScrollViewer>
-        </Grid>
 
+        </Grid>
+        <Grid Grid.Row="2" VerticalAlignment="Bottom" Background="black" Opacity="0.9" Height="45">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="1" Text="Sjællands Erhversakademi" VerticalAlignment="Center" FontSize="17" Foreground="White" HorizontalAlignment="Right" Margin="0,0,20,0"/>
+                <TextBlock Grid.Column="0" Text="Zealand" VerticalAlignment="Center" FontSize="17" Foreground="White" HorizontalAlignment="Left" Margin="20,0,0,0"/>
+            </Grid>
+        </Grid>
     </Grid>
 </Page>

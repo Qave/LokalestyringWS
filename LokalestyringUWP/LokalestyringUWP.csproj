@@ -184,7 +184,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Images\BMmenu.png" />
+    <Content Include="Assets\Images\BookRoom_Bg.jpg" />
     <Content Include="Assets\Images\BurgermenuIcon.png" />
+    <Content Include="Assets\Images\Login_Bg.jpg" />
+    <Content Include="Assets\Images\Lokation_Bg.jpg" />
+    <Content Include="Assets\Images\UserBookings_Bg.jpg" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

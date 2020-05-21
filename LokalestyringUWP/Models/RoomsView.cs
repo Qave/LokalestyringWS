@@ -44,17 +44,17 @@ namespace LokalestyringUWP.Models
 
         public string Booking_LimitString 
         {
-            get { return $"Aktive bookinger: {Booking_Limit}/{MaxBookings}"; }  
+            get { return $"{Booking_Limit}/{MaxBookings}"; }  
         }
 
         public string FloorString 
         { 
-            get { return $"Etage: {Floor}"; } 
+            get { return $"{Floor}"; } 
         }
 
         public string BuildingString 
         { 
-            get { return $"Bygning: {Building_Letter}"; } 
+            get { return $"{Building_Letter}"; } 
         }
 
     }
