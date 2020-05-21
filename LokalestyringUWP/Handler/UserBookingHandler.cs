@@ -429,7 +429,9 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public static void GoBackMethod()
         {
-            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
+            ((Frame) Window.Current.Content).Navigate(LocationsVM.SelectedLocation == null
+                ? typeof(PageLocations)
+                : typeof(PageBookRooms));
         }
 
         #region INotifyPropertyChanged interface implementation
