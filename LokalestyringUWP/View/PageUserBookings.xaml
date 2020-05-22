@@ -283,7 +283,7 @@
                             <DataTemplate>
                                 <Border BorderBrush="black" BorderThickness="1">
 
-                                    <Grid Padding="10" Background="#fff387">
+                                    <Grid Padding="10" Background="#fff8b7">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
                                             <ColumnDefinition />
