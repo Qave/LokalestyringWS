@@ -81,7 +81,7 @@ namespace LokalestyringUWP.Handler
         /// <summary>
         /// A methods that first reloads the booking list with the database values and then calls all other filter methods. 
         /// </summary>
-        public async void FilterSearchMethod()
+        public async void FilterSearchMethodAsync()
         {
             if (CompareDatesAndTime())
             {
@@ -289,7 +289,7 @@ namespace LokalestyringUWP.Handler
         /// <summary>
         /// Creates new booking object in the database and sends an email with confirmation of the booking, if the conditions are met. 
         /// </summary>
-        public async void CreateBooking()
+        public async void CreateBookingAsync()
         {
             bool variable = true;
             foreach (var item in BookingCatalogSingleton.Instance.Bookings)
@@ -325,7 +325,7 @@ namespace LokalestyringUWP.Handler
                     await PersistancyService.SaveInsertAsJsonAsync(booking, "Bookings");
                     BookingCatalogSingleton.Instance.Bookings.Clear();
                     await BookingCatalogSingleton.Instance.LoadbookingsAsync();
-                    FilterSearchMethod();
+                    FilterSearchMethodAsync();
                     // Does not need to be awaited, since it doesn't disrupt the flow of the program. 
                     MailService.MailSenderAsync(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +

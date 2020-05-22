@@ -36,11 +36,11 @@ namespace LokalestyringUWP.ViewModel
             Date = DateTimeOffset.Now.Date;
             TimeStart = DateTime.Now.TimeOfDay;
             TimeEnd = TimeStart + TimeSpan.FromHours(4);
-            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomHandler.RoomIsSelectedCheck);
+            BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBookingAsync, RoomHandler.RoomIsSelectedCheck);
             GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
-            RoomHandler.FilterSearchMethod();
+            RoomHandler.FilterSearchMethodAsync();
         }
         #region Properties
         public RelayCommand BookSelectedRoomCommand { get; set; }
@@ -70,7 +70,7 @@ namespace LokalestyringUWP.ViewModel
                 OnPropertyChanged(nameof(TimeStart));
                 if (TimeEnd != TimeSpan.Zero && TimeStart != TimeSpan.Zero)
                 {
-                    RoomHandler.FilterSearchMethod();
+                    RoomHandler.FilterSearchMethodAsync();
                 }
             }
         }
@@ -84,7 +84,7 @@ namespace LokalestyringUWP.ViewModel
                 OnPropertyChanged(nameof(TimeEnd));
                 if (TimeEnd != TimeSpan.Zero && TimeStart != TimeSpan.Zero)
                 {
-                    RoomHandler.FilterSearchMethod();
+                    RoomHandler.FilterSearchMethodAsync();
                 }
             }
         }
@@ -98,7 +98,7 @@ namespace LokalestyringUWP.ViewModel
                 OnPropertyChanged();
                 if (TimeEnd != TimeSpan.Zero && TimeStart != TimeSpan.Zero)
                 {
-                    RoomHandler.FilterSearchMethod();
+                    RoomHandler.FilterSearchMethodAsync();
                 }
             }
         }
@@ -110,7 +110,7 @@ namespace LokalestyringUWP.ViewModel
             {
                 _selectedBuilding = value;
                 OnPropertyChanged();
-                RoomHandler.FilterSearchMethod();
+                RoomHandler.FilterSearchMethodAsync();
             }
         }
         public string SelectedRoomtypeFilter 
@@ -120,10 +120,9 @@ namespace LokalestyringUWP.ViewModel
             {
                 _selectedRoomType = value;
                 OnPropertyChanged();
-                RoomHandler.FilterSearchMethod();
+                RoomHandler.FilterSearchMethodAsync();
             }
         }
-
 
         public List<string> RoomtypeList
         {
