@@ -115,7 +115,6 @@
                                     <TextBlock Text="{Binding RoomName}" />
                                     <TextBlock Text="{Binding Type}" />
                                     <TextBlock Text="{Binding Date, Converter={StaticResource DateToStringFormatConverter}}" />
-                                    <TextBlock Text="{Binding User_Id}" />
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock>
                                             <Run Text="{Binding BookingStart, Converter={StaticResource DateToStringFormatConverter}}" />
