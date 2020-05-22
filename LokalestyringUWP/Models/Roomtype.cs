@@ -18,11 +18,6 @@ namespace LokalestyringUWP.Models
 
         public int Booking_Limit { get; set; }
 
-        public override string ToString()
-        {
-            return $"{Type_Id}, {Type}, {Booking_Limit}";
-        }
-
         public virtual ICollection<Room> Rooms { get; set; }
     }
 }

@@ -8,9 +8,6 @@ namespace LokalestyringUWP.Models
 {
     public class Building
     {
-        public Building()
-        {
-        }
 
         public int Building_Id { get; set; }
 

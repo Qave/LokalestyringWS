@@ -253,7 +253,7 @@ namespace LokalestyringUWP.Handler
             }
         }
         /// <summary>
-        /// Filters rooms that the user already have booked in selected time interval. You are only able to book one room at a specific time and date per user. 
+        /// Filters rooms that the user already have booked in selected time interval. You are only able to book one room at a specific time and date per student. 
         /// </summary>
         public void CheckUserDoubleBooking()
         {
@@ -272,6 +272,9 @@ namespace LokalestyringUWP.Handler
 
         #endregion
 
+        /// <summary>
+        /// Check if room is selected.
+        /// </summary>
         public bool RoomIsSelectedCheck()
         {
             return (RoomReference.SelectedRoomsView != null);

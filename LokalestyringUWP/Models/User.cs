@@ -18,9 +18,5 @@ namespace LokalestyringUWP.Models
 
         public bool Teacher { get; set; }
 
-        public override string ToString()
-        {
-            return $"{User_Id}, {User_Name}, {User_Email}, {Teacher}";
-        }
     }
 }

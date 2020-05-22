@@ -23,10 +23,5 @@ namespace LokalestyringUWP.Models
         public virtual ICollection<Booking> Bookings { get; set; }
 
         public virtual Booking Booking { get; set; }
-
-        public override string ToString()
-        {
-            return $"{Tavle_Id}, {Booking_Id}, {Time_start}, {Time_end}";
-        }
     }
 }

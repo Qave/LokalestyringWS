@@ -8,20 +8,12 @@ namespace LokalestyringUWP.Models
 {
     public class Location
     {
-        public Location()
-        {
-        }
 
         public int Loc_Id { get; set; }
 
         public string Name { get; set; }
 
         public string City { get; set; }
-
-        public override string ToString()
-        {
-            return $"{Loc_Id}, {Name}, {City}";
-        }
 
         //public virtual ICollection<Room> AllRooms { get; set; }
     }

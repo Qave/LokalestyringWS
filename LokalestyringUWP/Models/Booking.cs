@@ -8,9 +8,6 @@ namespace LokalestyringUWP.Models
 {
     public class Booking
     {
-        public Booking()
-        {
-        }
 
         public int Booking_Id { get; set; }
 
