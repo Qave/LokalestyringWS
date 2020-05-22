@@ -52,10 +52,12 @@ namespace LokalestyringUWP.Handler
         /// <summary>
         /// Filters rooms by location, building, roomtype, date and time. If the chosen time or date is not valid, a dialog message is shown, asking the user to pick a valid time or date.
         /// </summary>
-        public void FilterSearchMethod()
+        public async void FilterSearchMethod()
         {
             if (CompareDatesAndTime())
             {
+                BookingCatalogSingleton.Instance.Bookings.Clear();
+                await BookingCatalogSingleton.Instance.LoadbookingsAsync();
                 RestoreList();
                 CheckBookingLimit();
                 CheckBuilding();
