@@ -17,7 +17,7 @@ namespace LokalestyringUWP.Service
         /// <param name="subject"></param>
         /// <param name="body"></param>
         /// <param name="isBodyHtml"></param>
-        public static async Task MailSender(string userMail, string subject, string body, bool isBodyHtml)
+        public static async void MailSender(string userMail, string subject, string body, bool isBodyHtml)
         {
             await SendMail(userMail, subject, body, isBodyHtml);
         }
