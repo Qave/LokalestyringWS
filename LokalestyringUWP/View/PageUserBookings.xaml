@@ -215,6 +215,7 @@
                     <Grid Grid.Row="2">
                         <TimePicker
                             Background="#fff8b7"
+                            ClockIdentifier="24HourClock"
                             Foreground="Black"
                             IsEnabled="{Binding TavleButtonsEnabled}"
                             SelectedTime="{Binding SelectedTavleStartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

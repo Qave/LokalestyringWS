@@ -43,7 +43,7 @@ namespace LokalestyringUWP.Handler
 
                 // The async delete method from PersistancyService.
                 PersistancyService.DeleteFromDatabaseAsync("Bookings", Reference.SelectedBooking.Booking_Id);
-                await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på aflysning af booking", $"Du har aflyst din bookning for {Reference.SelectedBooking.RoomName} " +
+                MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på aflysning af booking", $"Du har aflyst din bookning for {Reference.SelectedBooking.RoomName} " +
                 $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
                 $"mellem {new DateTime(Reference.SelectedBooking.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(Reference.SelectedBooking.BookingEnd.Ticks).ToString("HH:mm")}.", true);
 
@@ -75,7 +75,7 @@ namespace LokalestyringUWP.Handler
                     // Deletes the selected object from the singleton observable collection, which in turn updates the view.
                     TavleBookingCatalogSingleton.Instance.TavleBookings.Remove(_selectedTavleBooking);
 
-                    await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på aflysning af tavle booking", $"Du har aflyst din tavletid for rum: {Reference.SelectedBooking.RoomName} " +
+                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på aflysning af tavle booking", $"Du har aflyst din tavletid for rum: {Reference.SelectedBooking.RoomName} " +
                     $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
                     $"mellem {new DateTime(_selectedTavleBooking.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(_selectedTavleBooking.Time_end.Ticks).ToString("HH:mm")}.", true);
                     //Update the viewpage
@@ -130,7 +130,7 @@ namespace LokalestyringUWP.Handler
                     {
                         // Inserts the selectedbooking into the database and updates the singleton                  
                         returnedObj = await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
-                        await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af rum", $"Du har booked rummet {Reference.SelectedBooking.RoomName} igen for " +
+                        MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af rum", $"Du har booked rummet {Reference.SelectedBooking.RoomName} igen for " +
                         $"d. {returnedObj.Date.ToString("dd/MM/yyyy")} " +
                         $"mellem {new DateTime(returnedObj.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(returnedObj.Time_end.Ticks).ToString("HH:mm")}.", true);
                     }
@@ -152,7 +152,7 @@ namespace LokalestyringUWP.Handler
                 {
                     // Inserts the selectedbooking into the database and updates the singleton                  
                     returnedObj = await PersistancyService.SaveInsertAsJsonAsync(updatedBooking, "Bookings");
-                    await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af rum", $"Du har booked rummet {Reference.SelectedBooking.RoomName} igen for " +
+                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af rum", $"Du har booked rummet {Reference.SelectedBooking.RoomName} igen for " +
                     $"d. {returnedObj.Date.ToString("dd/MM/yyyy")} " +
                     $"mellem {new DateTime(returnedObj.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(returnedObj.Time_end.Ticks).ToString("HH:mm")}.", true);
                 }
@@ -276,7 +276,7 @@ namespace LokalestyringUWP.Handler
                             if (await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke denne tavletid?\nKvittering på tavlen vil blive tilsendt via mail", "Book Book Tavle?", "Ja", "Fortryd"))
                             {
                                 await PersistancyService.SaveInsertAsJsonAsync(myNewTavleBooking, "TavleBookings");
-                                await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af tavletid", $"Du har booked tavlen i rummet {Reference.SelectedBooking.RoomName}" +
+                                MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af tavletid", $"Du har booked tavlen i rummet {Reference.SelectedBooking.RoomName}" +
                                 $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
                                 $"mellem {new DateTime(myNewTavleBooking.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(myNewTavleBooking.Time_end.Ticks).ToString("HH:mm")}.", true);
                             }
@@ -296,7 +296,7 @@ namespace LokalestyringUWP.Handler
                         if (await DialogHandler.GenericYesNoDialog("Er du sikker på du vil booke denne tavletid?\nKvittering på tavlen vil blive tilsendt via mail", "Book Book Tavle?", "Ja", "Fortryd"))
                         {
                             await PersistancyService.SaveInsertAsJsonAsync(myNewTavleBooking, "TavleBookings");
-                            await MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af tavletid", $"Du har booked tavlen i rummet {Reference.SelectedBooking.RoomName}" +
+                            MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking af tavletid", $"Du har booked tavlen i rummet {Reference.SelectedBooking.RoomName}" +
                             $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
                             $"mellem {new DateTime(myNewTavleBooking.Time_start.Ticks).ToString("HH:mm")} og {new DateTime(myNewTavleBooking.Time_end.Ticks).ToString("HH:mm")}.", true);
                         }
