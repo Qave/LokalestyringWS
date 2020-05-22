@@ -14,13 +14,13 @@ namespace LokalestyringUWP.ViewModel
 {
     class BurgerMenuVM
     {
-        public ICommand LogOutCommand => CommandHandler.LogOutCommand;
+        public ICommand LogOutCommand { get; set; }
         public ICommand GoToUserBookingsCommand { get; set; }
         public ICommand GoToTecherControlPanel { get; set; }
 
         public BurgerMenuVM()
         {
-            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
+            LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
             GoToUserBookingsCommand = new RelayCommand(GoToUserBookingsMethod, null);
             GoToTecherControlPanel = new RelayCommand(GoToTecherControlPanelMethod, null);
         }

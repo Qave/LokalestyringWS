@@ -103,7 +103,10 @@ namespace LokalestyringUWP.ViewModel
                 // Updates the view when a booking is selected
                 NoElementsChosenVisibility = Visibility.Collapsed;
                 ElementIsChosenVisibility = Visibility.Visible;
+                if (SelectedBooking != null)
+                {
                 SelectedTavleStartTime = SelectedBooking.BookingStart;
+                }
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(NoElementsChosenVisibility));
                 OnPropertyChanged(nameof(ElementIsChosenVisibility));

@@ -40,11 +40,11 @@ namespace LokalestyringUWP.ViewModel
             }
         }
         public User CurrentUser { get {return LoginHandler.SelectedUser; } }
-        public ICommand LogOutCommand => CommandHandler.LogOutCommand;
+        public ICommand LogOutCommand { get; set; }
 
         public LocationsVM()
         {
-            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
+            LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
         }
         /// <summary>
         /// Checks if selectedlocation is null if it's not null it changes the page to PageBookRooms.

@@ -46,7 +46,6 @@ namespace LokalestyringUWP.Handler
                 MailService.MailSenderAsync(LoginHandler.SelectedUser.User_Email, "Kvittering på aflysning af booking", $"Du har aflyst din bookning for {Reference.SelectedBooking.RoomName} " +
                 $"d. {Reference.SelectedBooking.Date.ToString("dd/MM/yyyy")} " +
                 $"mellem {new DateTime(Reference.SelectedBooking.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(Reference.SelectedBooking.BookingEnd.Ticks).ToString("HH:mm")}.", true);
-
                 // Deletes the selected object from the singleton observable collection
                 Reference.AllUserBookingsFromSingleton.Remove(Reference.SelectedBooking);
                 // Update the view

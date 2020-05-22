@@ -19,16 +19,15 @@ namespace LokalestyringUWP.ViewModel
 {
     public class BookRoomsVM : INotifyPropertyChanged
     {
+        #region Instance Fields
         private RoomsView _selectedRoomsView;
         private TimeSpan _selectedStartTime;
         private TimeSpan _selectedEndTime;
         private string _selectedBuilding;
         private string _selectedRoomType;
         private DateTimeOffset _selectedDate;
+        #endregion
 
-        public RelayCommand BookSelectedRoomCommand { get; set; }
-        public ICommand GoBackCommand => CommandHandler.GoBackCommand;
-        public string selectedLocation => LocationsVM.SelectedLocation.City;
 
         public BookRoomsVM()
         {
@@ -38,17 +37,20 @@ namespace LokalestyringUWP.ViewModel
             TimeStart = DateTime.Now.TimeOfDay;
             TimeEnd = TimeStart + TimeSpan.FromHours(4);
             BookSelectedRoomCommand = new RelayCommand(RoomHandler.CreateBooking, RoomHandler.RoomIsSelectedCheck);
-            CommandHandler.BookSelectedRoomCommand = new RelayCommand(DialogHandler.ConfirmBookingDialog, null);
-            CommandHandler.GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
+            GoBackCommand = new RelayCommand(RoomHandler.GoBackMethod, null);
             SelectedRoomtypeFilter = RoomtypeList[0];
             SelectedBuildingFilter = BuildingList[0];
             RoomHandler.FilterSearchMethod();
-
         }
-
+        #region Properties
+        public RelayCommand BookSelectedRoomCommand { get; set; }
+        public ICommand GoBackCommand { get; set; }
+        public string selectedLocation => LocationsVM.SelectedLocation.City;
         public ObservableCollection<RoomsView> RoomList { get; }
-
         public RoomHandler RoomHandler { get; set; }
+        #endregion
+
+        #region Properties That Changes In View
         public RoomsView SelectedRoomsView
         {
             get { return _selectedRoomsView; }
@@ -59,8 +61,6 @@ namespace LokalestyringUWP.ViewModel
                 BookSelectedRoomCommand.RaiseCanExecuteChanged();
             }
         }
-
-
 
         public TimeSpan TimeStart { 
             get { return _selectedStartTime; }
@@ -146,12 +146,15 @@ namespace LokalestyringUWP.ViewModel
                 };
             }
         }
+        #endregion
 
+        #region INotifyPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
     }
 }

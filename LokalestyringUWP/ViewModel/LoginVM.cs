@@ -28,15 +28,15 @@ namespace LokalestyringUWP.ViewModel
 
        public LoginVM()
         {
-            CommandHandler.LogOutCommand = new RelayCommand(LoginHandler.Logout,null);
-            CommandHandler.LoginCommand = new RelayCommand(LoginHandler.Login, null);
-            CommandHandler.CreateAccountCommand = new RelayCommand(LoginHandler.CreateAccount, null);
+            LogOutCommand = new RelayCommand(LoginHandler.Logout,null);
+            LoginCommand = new RelayCommand(LoginHandler.Login, null);
+            CreateAccountCommand = new RelayCommand(LoginHandler.CreateAccount, null);
             //UserCatalogSingleton.Instance.LoadUsersAsync();
             UserCatalogSingleton abc = UserCatalogSingleton.Instance;
         }
        //These properties are for binding in the UWP project
-        public ICommand LogOutCommand => CommandHandler.LogOutCommand;
-        public ICommand LoginCommand => CommandHandler.LoginCommand;
-        public ICommand CreateAccountCommand => CommandHandler.CreateAccountCommand;
+        public ICommand LogOutCommand { get; set; } 
+        public ICommand LoginCommand { get; set; }
+        public ICommand CreateAccountCommand { get; set; }
     }
 }

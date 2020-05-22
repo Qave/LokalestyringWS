@@ -26,13 +26,13 @@ namespace LokalestyringUWP.ViewModel
         public string Password { get; set; }
         public bool IsTeacher { get; set; }
 
-        public ICommand GoBackCommand => CommandHandler.GoBackCommand;
+        public ICommand GoBackCommand { get; set; }
         public ICommand CreateAccountCommand { get; set; }
 
 
         public CreateAccountVM()
         {
-            CommandHandler.GoBackCommand = new RelayCommand(GoBackMethod, null);
+            GoBackCommand = new RelayCommand(GoBackMethod, null);
             CreateAccountCommand = new RelayCommand(CreateAccount, null);
         }
 

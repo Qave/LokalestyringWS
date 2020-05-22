@@ -236,6 +236,9 @@ namespace LokalestyringUWP.Handler
             }
         }
 
+        /// <summary>
+        /// Removes rooms that are booked by teachers. 
+        /// </summary>
         public void CheckIfTeacher()
         {
             var query = (from r in RoomReference.RoomList

@@ -76,26 +76,5 @@ namespace LokalestyringUWP.Handler
                 //do nothing
             }
         }
-
-        public static async void ConfirmBookingDialog()
-        {
-            ContentDialog confirmBookingDialog = new ContentDialog
-            {
-                Title = "Book dette lokale?",
-                Content = "Er du sikker på du vil booke dette lokale?", //+Lokalets navn!?!?!,
-                PrimaryButtonText = "Book",
-                CloseButtonText = "Book ikke"
-
-            };
-            ContentDialogResult result = await confirmBookingDialog.ShowAsync();
-            if (result == ContentDialogResult.Primary)
-            {
-                
-            }
-            else
-            {
-                //do nothing
-            }
-        }
     }
 }
