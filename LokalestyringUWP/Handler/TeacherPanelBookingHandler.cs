@@ -229,7 +229,7 @@ namespace LokalestyringUWP.Handler
             }
             if (found)
             {
-                await MailService.MailSender(MailAddress, subject, body, HTML);
+                MailService.MailSender(MailAddress, subject, body, HTML);
             }
             if (!found)
             {
