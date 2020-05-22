@@ -75,13 +75,14 @@ namespace LokalestyringUWP.Handler
             TCPREF.BookingList.Clear();
             var query = (from r in AllBookingsViewCatalogSingleton.Instance.AllBookings
                          join l in RoomsViewCatalogSingleton.Instance.RoomsView on r.Room_Id equals l.Room_Id
-                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City && r.Date.Date == TCPREF.InputDate.Date
+                         where r.Type == "Klasselokale" && l.City == LocationsVM.SelectedLocation.City && r.Date.Date == TCPREF.InputDate.Date 
                          select r).ToList();
 
             foreach (var item in query)
             {
                 TCPREF.BookingList.Add(item);
             }
+            RemoveTeacherBooking();
         }
         #endregion
 
@@ -131,6 +132,19 @@ namespace LokalestyringUWP.Handler
         #endregion
 
         #region Teacher-Check Method
+
+        public void RemoveTeacherBooking()
+        {
+            var query = (from b in AllBookingsViewCatalogSingleton.Instance.AllBookings
+                join t in UserCatalogSingleton.Instance.Users on b.User_Id equals t.User_Id
+                where b.User_Id == t.User_Id && t.Teacher
+                select b).ToList();
+
+            foreach (var item in query)
+            {
+                TCPREF.BookingList.Remove(item);
+            }
+        }
         /// <summary>
         /// Bool method that decides if a booking within the specified timeinterval contains a teacher booking Returns false if it doesn't
         /// </summary>
@@ -138,8 +152,8 @@ namespace LokalestyringUWP.Handler
         public bool IsNotATeach()
         {
             var query = from t in UserCatalogSingleton.Instance.Users
-                        join b in BookingCatalogSingleton.Instance.Bookings on t.User_Id equals b.User_Id
-                        where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.Time_end >= TCPREF.InputTimeStart && b.Time_start <= TCPREF.InputTimeEnd
+                        join b in AllBookingsViewCatalogSingleton.Instance.AllBookings on t.User_Id equals b.User_Id
+                        where b.Room_Id == TCPREF.BookingIsSelected.Room_Id && TCPREF.InputDate.Date == TCPREF.BookingIsSelected.Date.Date && b.BookingEnd <= TCPREF.InputTimeStart && b.BookingStart >= TCPREF.InputTimeEnd && t.Teacher
                         select t;
             if (query.Any(l => l.Teacher))
             {
@@ -215,7 +229,7 @@ namespace LokalestyringUWP.Handler
             }
             if (found)
             {
-                await MailService.MailSender(MailAddress, subject, body, HTML);
+                MailService.MailSender(MailAddress, subject, body, HTML);
             }
             if (!found)
             {

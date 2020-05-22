@@ -32,21 +32,9 @@ namespace LokalestyringUWP.ViewModel
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageTeacherControlPanel));
         }
-        public Visibility HideGoToUserBookingsBtn { get; set; }
-
-        public Visibility HideGoToTecherControlPanelBtn
-        {
-            get
-            {
-                if (UserHandler.CurrentUserTeacher)
-                {
-                    return Visibility.Visible;
-                }
-                else
-                {
-                    return Visibility.Collapsed;
-                }
-            }
-        }
+        public Visibility HideGoToTecherControlPanelBtn =>
+            UserHandler.CurrentUserTeacher && LocationsVM.SelectedLocation != null
+                ? Visibility.Visible
+                : Visibility.Collapsed;
     }
 }
