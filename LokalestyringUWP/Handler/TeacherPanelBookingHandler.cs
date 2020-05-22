@@ -229,7 +229,7 @@ namespace LokalestyringUWP.Handler
             }
             if (found)
             {
-                MailService.MailSender(MailAddress, subject, body, HTML);
+                MailService.MailSenderAsync(MailAddress, subject, body, HTML);
             }
             if (!found)
             {
@@ -266,7 +266,7 @@ namespace LokalestyringUWP.Handler
                     Time_end = new TimeSpan(TCPREF.InputTimeEnd.Hours, TCPREF.InputTimeEnd.Minutes, 0),
                     User_Id = LoginHandler.CurrentUserId
                 }, "Bookings");
-                MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {TCPREF.BookingIsSelected.RoomName} " + $"d. {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} " + $"mellem {new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")}.", true);
+                MailService.MailSenderAsync(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {TCPREF.BookingIsSelected.RoomName} " + $"d. {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} " + $"mellem {new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")}.", true);
                 ResetList();
                 DialogHandler.Dialog("Din booking er nu oprettet. God dag!", "Booking Oprettet!");
             }
@@ -287,7 +287,7 @@ namespace LokalestyringUWP.Handler
                         Time_end = new TimeSpan(TCPREF.InputTimeEnd.Hours, TCPREF.InputTimeEnd.Minutes, 0),
                         User_Id = LoginHandler.CurrentUserId
                     }, "Bookings");
-                    MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {TCPREF.BookingIsSelected.RoomName} " + $"d. {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} " + $"mellem {new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")}.", true);
+                    MailService.MailSenderAsync(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {TCPREF.BookingIsSelected.RoomName} " + $"d. {TCPREF.BookingIsSelected.Date.ToString("dd/MM/yyyy")} " + $"mellem {new DateTime(TCPREF.BookingIsSelected.BookingStart.Ticks).ToString("HH:mm")} og {new DateTime(TCPREF.BookingIsSelected.BookingEnd.Ticks).ToString("HH:mm")}.", true);
                     ResetList();
                     DialogHandler.Dialog("Din booking er nu oprettet. God dag!", "Booking Oprettet!");
                 }

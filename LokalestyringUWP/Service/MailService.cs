@@ -17,9 +17,9 @@ namespace LokalestyringUWP.Service
         /// <param name="subject"></param>
         /// <param name="body"></param>
         /// <param name="isBodyHtml"></param>
-        public static async void MailSender(string userMail, string subject, string body, bool isBodyHtml)
+        public static async void MailSenderAsync(string userMail, string subject, string body, bool isBodyHtml)
         {
-            await SendMail(userMail, subject, body, isBodyHtml);
+            await SendMailAsync(userMail, subject, body, isBodyHtml);
         }
         /// <summary>
         /// Sends a mail to the users mail from the param userMail with the subject from the param subject and the body from the param body.
@@ -29,7 +29,7 @@ namespace LokalestyringUWP.Service
         /// <param name="body"></param>
         /// <param name="isBodyHtml"></param>
         /// <returns></returns>
-        private static async Task SendMail(string userMail, string subject, string body, bool isBodyHtml)
+        private static async Task SendMailAsync(string userMail, string subject, string body, bool isBodyHtml)
         {
             try
             {
