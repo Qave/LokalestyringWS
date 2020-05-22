@@ -32,6 +32,9 @@ namespace LokalestyringUWP.Handler
         #region FILTER LOGIC
         DateTime currentDate = DateTime.Now.Date;
 
+        /// <summary>
+        /// Returns true if a teacher has booked 3 rooms or more. 
+        /// </summary>
         public bool ThreeRoomsBookingLimit()
         {
             var query = (from b in BookingCatalogSingleton.Instance.Bookings
@@ -55,6 +58,9 @@ namespace LokalestyringUWP.Handler
             return true;
         }
 
+        /// <summary>
+        /// First compares times to see if a valid time has been selected. Afterwards it checks if a valid date has been selected. If both are valid, it returns true. 
+        /// </summary>
         public bool CompareDatesAndTime()
         {
             if (RoomReference.TimeStart >= RoomReference.TimeEnd || RoomReference.TimeStart == TimeSpan.Zero || RoomReference.TimeEnd == TimeSpan.Zero)
@@ -73,7 +79,7 @@ namespace LokalestyringUWP.Handler
             }
         }
         /// <summary>
-        /// Filters rooms by location, building, roomtype, date and time. If the chosen time or date is not valid, a dialog message is shown, asking the user to pick a valid time or date.
+        /// A methods that first reloads the booking list with the database values and then calls all other filter methods. 
         /// </summary>
         public async void FilterSearchMethod()
         {
@@ -86,7 +92,7 @@ namespace LokalestyringUWP.Handler
                 CheckBookingLimit();
                 CheckBuilding();
                 CheckRoomtype();
-                CheckDateAndTime();
+                CheckDateAndTimeForSingleRooms();
                 CheckUserDoubleBooking();
             }
         }
@@ -94,7 +100,7 @@ namespace LokalestyringUWP.Handler
         /// <summary>
         ///  Adds all items from the singleton list to a new list called "ResettedList". Then filters by selected location. 
         /// </summary>
-        public static void RestoreList()
+        public void RestoreList()
         {
             var query = (from q in RoomsViewCatalogSingleton.Instance.RoomsView
                          where RoomReference.selectedLocation == q.City
@@ -107,8 +113,7 @@ namespace LokalestyringUWP.Handler
         }
 
         /// <summary>
-        /// Filters by selected building. If "Alle" is selected, it doesn't filter. If selected BuildingFilter matches with the building_Letter in RoomList, it is added to the tempList.
-        /// RoomList is then cleared and the tempList items is added back to RoomList.
+        /// Filters by selected building. If "Alle" is selected, it doesn't filter.
         /// </summary>
         public void CheckBuilding()
         {
@@ -132,8 +137,7 @@ namespace LokalestyringUWP.Handler
         }
 
         /// <summary>
-        /// Filters by selected roomtype. If "Alle" is selected, it doesn't filter. If selected RoomtypeFilter matches with the roomtype in RoomList, it is added to the tempList.
-        /// RoomList is then cleared and the tempList items is added back to RoomList.
+        /// Filters by selected roomtype. If "Alle" is selected, it doesn't filter.
         /// </summary>
         public void CheckRoomtype()
         {
@@ -213,11 +217,9 @@ namespace LokalestyringUWP.Handler
             }
         }
         /// <summary>
-        /// Filters by date and time. With LINQ the tables from the RoomsView table and the booking table are joined, so the date and time properties are accessible.
-        /// The date and time properties are compared with the selected date and time properties. If the comparison is true (room is booked), it gets added to the query.
-        /// Afterwards the items in the query is removed from the original roomlist in the view, meaning it has removed all booked rooms from the list. 
+        /// Filters by date and time rooms that are not class rooms.
         /// </summary>
-        public void CheckDateAndTime()
+        public void CheckDateAndTimeForSingleRooms()
         {
             if (RoomReference.SelectedRoomtypeFilter != "Klasselokale")
             {
@@ -282,8 +284,7 @@ namespace LokalestyringUWP.Handler
         }
 
         /// <summary>
-        /// Creates new booking object and sends an email with confirmation of the booking. 
-        /// If the user already has booked a room with the same date and time interval, a pop-up will apear telling the user he needs to switch date or time.
+        /// Creates new booking object in the database and sends an email with confirmation of the booking, if the conditions are met. 
         /// </summary>
         public async void CreateBooking()
         {
