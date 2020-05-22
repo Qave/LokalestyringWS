@@ -323,6 +323,7 @@ namespace LokalestyringUWP.Handler
                     BookingCatalogSingleton.Instance.Bookings.Clear();
                     await BookingCatalogSingleton.Instance.LoadbookingsAsync();
                     FilterSearchMethod();
+                    // Does not need to be awaited, since it doesn't disrupt the flow of the program. 
                     MailService.MailSender(LoginHandler.SelectedUser.User_Email, "Kvittering på booking", $"Du har booket {selectedRoomsViewRef.RoomName} " +
                         $"d. {RoomReference.Date.ToString("dd/MM/yyyy")} " +
                         $"mellem {new DateTime(RoomReference.TimeStart.Ticks).ToString("HH:mm")} og {new DateTime(RoomReference.TimeEnd.Ticks).ToString("HH:mm")}.", true);

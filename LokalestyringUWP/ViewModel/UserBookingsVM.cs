@@ -46,7 +46,6 @@ namespace LokalestyringUWP.ViewModel
 
             // Initialize first
             UserBookingHandler = new UserBookingHandler(this);
-
             // Gets filled with the bookings from the selected user on the UserBookingsOnId Method.
             AllUserBookingsFromSingleton = new ObservableCollection<AllBookingsView>();
             Tavlebookings = new ObservableCollection<TavleBooking>();
@@ -104,6 +103,7 @@ namespace LokalestyringUWP.ViewModel
                 // Updates the view when a booking is selected
                 NoElementsChosenVisibility = Visibility.Collapsed;
                 ElementIsChosenVisibility = Visibility.Visible;
+                SelectedTavleStartTime = SelectedBooking.BookingStart;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(NoElementsChosenVisibility));
                 OnPropertyChanged(nameof(ElementIsChosenVisibility));
