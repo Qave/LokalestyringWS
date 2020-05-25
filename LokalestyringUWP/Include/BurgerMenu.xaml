@@ -50,7 +50,7 @@
                             HorizontalAlignment="Center"
                             Command="{Binding GoToTecherControlPanel}"
                             Content="Gå til lærer kontrol panel"
-                            Visibility="{Binding HideGoToTecherControlPanelBtn}" />
+                            Visibility="{Binding HideGoToTeacherControlPanelBtn}" />
                         <Button
                             Width="200"
                             Margin="0,5"

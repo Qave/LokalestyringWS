@@ -16,14 +16,14 @@ namespace LokalestyringUWP.ViewModel
     {
         public ICommand LogOutCommand { get; set; }
         public ICommand GoToUserBookingsCommand { get; set; }
-        public ICommand GoToTecherControlPanel { get; set; }
+        public ICommand GoToTeacherControlPanel { get; set; }
         public ICommand GoToAccountSettingsCommand { get; set; }
 
         public BurgerMenuVM()
         {
             LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
             GoToUserBookingsCommand = new RelayCommand(GoToUserBookingsMethod, null);
-            GoToTecherControlPanel = new RelayCommand(GoToTecherControlPanelMethod, null);
+            GoToTeacherControlPanel = new RelayCommand(GoToTeacherControlPanelMethod, null);
             GoToAccountSettingsCommand = new RelayCommand(GoToAccountSettingsMethod, null);
         }
         public void GoToUserBookingsMethod()
@@ -35,11 +35,11 @@ namespace LokalestyringUWP.ViewModel
             ((Frame)Window.Current.Content).Navigate(typeof(PageAccountSettings));
 
         }
-        public void GoToTecherControlPanelMethod()
+        public void GoToTeacherControlPanelMethod()
         {
             ((Frame)Window.Current.Content).Navigate(typeof(PageTeacherControlPanel));
         }
-        public Visibility HideGoToTecherControlPanelBtn =>
+        public Visibility HideGoToTeacherControlPanelBtn =>
             UserHandler.CurrentUserTeacher && LocationsVM.SelectedLocation != null
                 ? Visibility.Visible
                 : Visibility.Collapsed;
