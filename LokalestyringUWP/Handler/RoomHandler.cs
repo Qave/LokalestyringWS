@@ -294,14 +294,14 @@ namespace LokalestyringUWP.Handler
         /// </summary>
         public async void CreateBookingAsync()
         {
-            bool variable = true;
+            bool bookedAlready = true;
             foreach (var item in BookingCatalogSingleton.Instance.Bookings)
             {
                 if (item.User_Id == LoginHandler.SelectedUser.User_Id && item.Date ==
                     RoomReference.Date && item.Time_end >= RoomReference.TimeStart && item.Time_start <= RoomReference.TimeEnd && LoginHandler.SelectedUser.Teacher == false)
                 {
                     DialogHandler.Dialog("Du har allerede booket et lokale på denne dato i samme tidsinterval. Vælg venligst et nyt tidspunkt.", "Overlappende booking");
-                    variable = false;
+                    bookedAlready = false;
                     break;
                 }
             }
@@ -309,7 +309,7 @@ namespace LokalestyringUWP.Handler
             {
                 DialogHandler.Dialog("Du kan ikke have mere end tre bookinger af gangen, hvis du vil booke dette rum må du slette en anden booking", "Kun tre bookinger");
             }
-            else if (variable)
+            else if (bookedAlready)
             {
                 // I don't know why, but we need this reference to get the RoomName property in the RoomsView model.
                 RoomsView selectedRoomsViewRef = RoomReference.SelectedRoomsView;
