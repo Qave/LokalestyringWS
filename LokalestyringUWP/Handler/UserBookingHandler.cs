@@ -192,13 +192,11 @@ namespace LokalestyringUWP.Handler
         public static async Task BookTavleMethodAsync()
         {
             TavleBooking myNewTavleBooking = null;
-            if (Reference.SelectedTavleStartTime != TimeSpan.Zero)
+            TimeSpan tavleEndTime = Reference.SelectedTavleStartTime.Add(TimeSpan.Parse(Reference.SelectedDuration));
+            if (Reference.SelectedTavleStartTime >= Reference.SelectedBooking.BookingStart && tavleEndTime <= Reference.SelectedBooking.BookingEnd)
             {
-
-                TimeSpan tavleEndTime = Reference.SelectedTavleStartTime.Add(TimeSpan.Parse(Reference.SelectedDuration));
                 if (tavleEndTime > Reference.SelectedBooking.BookingEnd)
                 {
-
                     var endTimeExceedsBookingEnd = await DialogHandler.GenericYesNoDialog("Tiden kan ikke overstige sluttiden for denne booking.\nEr du sikker på du vil forsætte?\nDin tavletid vil blive begrænset!", "Begrænset Tavletid!", "Acceptér", "Fortryd");
                     if (endTimeExceedsBookingEnd)
                     {
@@ -221,12 +219,10 @@ namespace LokalestyringUWP.Handler
                     myNewTavleBooking = new TavleBooking() { Booking_Id = Reference.SelectedBooking.Booking_Id, Time_start = Reference.SelectedTavleStartTime, Time_end = tavleEndTime };
                     await BookTavle(tavleEndTime, myNewTavleBooking);
                 }
-
-
             }
             else
             {
-                DialogHandler.Dialog("Vælg venligt en anden starttid\nStarttiden kan ikke være kl 00:00", "Ugyldig tid");
+                DialogHandler.Dialog("Den valgte tavletid skal være inden for den bookede periode\nVælg venligst en anden tavletid", "Ugyldig tid");
             }
         }
 
