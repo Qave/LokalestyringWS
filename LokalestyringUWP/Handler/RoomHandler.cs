@@ -94,6 +94,7 @@ namespace LokalestyringUWP.Handler
                 CheckRoomtype();
                 CheckDateAndTimeForSingleRooms();
                 CheckUserDoubleBooking();
+                RoomReference.Refresh();
             }
         }
 
@@ -168,11 +169,11 @@ namespace LokalestyringUWP.Handler
             foreach (var item in RoomReference.RoomList.ToList())
             {
                 // Workaround to make the Booking_Limit value update.
-                if (item.Booking_Limit != 0)
-                {
-                    RoomReference.RoomList.Remove(item);
-                    RoomReference.RoomList.Add(item);
-                }
+                //if (item.Booking_Limit != 0)
+                //{
+                //    RoomReference.RoomList.Remove(item);
+                //    RoomReference.RoomList.Add(item);
+                //}
                 item.Booking_Limit = 0;
             }
 
@@ -207,8 +208,8 @@ namespace LokalestyringUWP.Handler
                                 {
                                     item.Booking_Limit = 1;
                                     // Workaround to make the Booking_Limit value update.
-                                    RoomReference.RoomList.Remove(item);
-                                    RoomReference.RoomList.Add(item);
+                                    //RoomReference.RoomList.Remove(item);
+                                    //RoomReference.RoomList.Add(item);
                                 }
                             }
                         }

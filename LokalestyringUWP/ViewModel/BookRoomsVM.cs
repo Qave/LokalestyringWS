@@ -145,6 +145,12 @@ namespace LokalestyringUWP.ViewModel
                 };
             }
         }
+
+        public void Refresh()
+        {
+            OnPropertyChanged(nameof(RoomList));
+        }
+
         #endregion
 
         #region INotifyPropertyChanged
