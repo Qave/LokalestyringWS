@@ -43,5 +43,10 @@ namespace LokalestyringUWP.ViewModel
             UserHandler.CurrentUserTeacher && LocationsVM.SelectedLocation != null
                 ? Visibility.Visible
                 : Visibility.Collapsed;
+
+        public Visibility HideGoToAccountSettingsMethodBtn =>
+            ((Frame)Window.Current.Content).CurrentSourcePageType != typeof(PageLocations)
+                ? Visibility.Visible
+                : Visibility.Collapsed;
     }
 }

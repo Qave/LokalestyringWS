@@ -56,7 +56,8 @@
                             Margin="0,5"
                             HorizontalAlignment="Center"
                             Command="{Binding GoToAccountSettingsCommand}"
-                            Content="Min Konto" />
+                            Content="Min Konto"
+                            Visibility="{Binding HideGoToAccountSettingsMethodBtn}" />
                         <Button
                             Width="200"
                             Margin="0,5"
