@@ -13,7 +13,7 @@ namespace LokalestyringUWP.Service
 {
     public class PersistancyService
     {
-        public const string serverUrl = "http://lokalestyringwebservice.qave.dk/";
+        public const string serverUrl = "http://localhost:51531/"; //"http://lokalestyringwebservice.qave.dk/";
 
         #region generic load table
         /// <summary>

@@ -305,11 +305,16 @@ namespace LokalestyringUWP.Handler
                     break;
                 }
             }
-            if (ThreeRoomsBookingLimit() == false)
+
+            if (LoginHandler.SelectedUser.Teacher)
             {
-                DialogHandler.Dialog("Du kan ikke have mere end tre bookinger af gangen, hvis du vil booke dette rum må du slette en anden booking", "Kun tre bookinger");
+                if (ThreeRoomsBookingLimit() == false)
+                {
+                    bookedAlready = false;
+                    DialogHandler.Dialog("Du kan ikke have mere end tre bookinger af gangen, hvis du vil booke dette rum må du slette en anden booking", "Kun tre bookinger");
+                }
             }
-            else if (bookedAlready)
+            if (bookedAlready)
             {
                 // I don't know why, but we need this reference to get the RoomName property in the RoomsView model.
                 RoomsView selectedRoomsViewRef = RoomReference.SelectedRoomsView;
