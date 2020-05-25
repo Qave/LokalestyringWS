@@ -168,12 +168,6 @@ namespace LokalestyringUWP.Handler
         {
             foreach (var item in RoomReference.RoomList.ToList())
             {
-                // Workaround to make the Booking_Limit value update.
-                //if (item.Booking_Limit != 0)
-                //{
-                //    RoomReference.RoomList.Remove(item);
-                //    RoomReference.RoomList.Add(item);
-                //}
                 item.Booking_Limit = 0;
             }
 
@@ -207,9 +201,6 @@ namespace LokalestyringUWP.Handler
                                 if (variable.Room_Id == item.Room_Id)
                                 {
                                     item.Booking_Limit = 1;
-                                    // Workaround to make the Booking_Limit value update.
-                                    //RoomReference.RoomList.Remove(item);
-                                    //RoomReference.RoomList.Add(item);
                                 }
                             }
                         }
