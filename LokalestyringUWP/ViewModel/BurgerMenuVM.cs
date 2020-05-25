@@ -16,14 +16,14 @@ namespace LokalestyringUWP.ViewModel
     {
         public ICommand LogOutCommand { get; set; }
         public ICommand GoToUserBookingsCommand { get; set; }
-        public ICommand GoToTeacherControlPanel { get; set; }
+        public ICommand GoToTeacherControlPanelCommand { get; set; }
         public ICommand GoToAccountSettingsCommand { get; set; }
 
         public BurgerMenuVM()
         {
             LogOutCommand = new RelayCommand(LoginHandler.Logout, null);
             GoToUserBookingsCommand = new RelayCommand(GoToUserBookingsMethod, null);
-            GoToTeacherControlPanel = new RelayCommand(GoToTeacherControlPanelMethod, null);
+            GoToTeacherControlPanelCommand = new RelayCommand(GoToTeacherControlPanelMethod, null);
             GoToAccountSettingsCommand = new RelayCommand(GoToAccountSettingsMethod, null);
         }
         public void GoToUserBookingsMethod()
