@@ -47,8 +47,7 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="17">
-                    <Run Text="Bookings for" />
-                    <Run Text="{Binding SelectedUser.User_Name}" />
+                    <Run Text="Dine Bookings" />
                 </TextBlock>
             </Grid>
             <Grid

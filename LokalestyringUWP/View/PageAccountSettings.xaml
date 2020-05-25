@@ -1,0 +1,139 @@
+﻿<Page
+    x:Class="LokalestyringUWP.View.PageAccountSettings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Include="using:LokalestyringUWP.Include"
+    xmlns:ViewModel="using:LokalestyringUWP.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:LokalestyringUWP.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <ViewModel:AccountSettingsVM />
+    </Page.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!--  HEADER START  -->
+        <Grid
+            Grid.Row="0"
+            Height="70"
+            VerticalAlignment="Center"
+            Background="#fff8b7"
+            BorderBrush="black"
+            BorderThickness="0,0,0,1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <AppBarButton
+                    Margin="20,15,0,0"
+                    VerticalAlignment="Stretch"
+                    Command="{Binding GoBackCommand}"
+                    Icon="Back" />
+            </Grid>
+            <Grid Grid.Column="1">
+                <TextBlock
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="17">
+                    <Run Text="Konto instillinger" />
+                    <Run Text="{Binding SelectedUser.User_Name}" />
+                </TextBlock>
+            </Grid>
+            <Grid
+                Grid.Column="3"
+                Margin="0,10,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center">
+                <Include:BurgerMenu Width="50" Height="40" />
+            </Grid>
+        </Grid>
+        <!--  HEADER END  -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.3*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <StackPanel Margin="35" HorizontalAlignment="Center">
+                    <TextBlock
+                        Margin="0,0,0,50"
+                        HorizontalAlignment="Center"
+                        FontSize="20"
+                        Text="Konto overblik for Kasper" />
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox
+                            Width="250"
+                            Header="Navn"
+                            IsEnabled="{Binding NameCanBeEditted}"
+                            Text="{Binding UserNameBinding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Margin="5,22,0,0"
+                            Background="#fff8b7"
+                            Command="{Binding EditNameCommand}"
+                            Content="Edit" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox
+                            Width="250"
+                            Header="Email"
+                            IsEnabled="{Binding EmailCanBeEditted}"
+                            Text="{Binding UserEmailBinding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button
+                            Margin="5,22,0,0"
+                            Background="#fff8b7"
+                            Command="{Binding EditEmailCommand}"
+                            Content="Edit" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Margin="0,10,0,0" FontSize="16">
+                            <Run Text="Lærer:" />
+                            <Run Text="{Binding TeacherBinding}" />
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button
+                            Margin="0,20,0,0"
+                            Background="#fff8b7"
+                            Command="{Binding EditPasswordCommand}"
+                            Content="Skift Password" />
+                    </StackPanel>
+                    <Button
+                        Margin="0,20,0,0"
+                        Background="#fff8b7"
+                        BorderBrush="Black"
+                        BorderThickness="1"
+                        Command="{Binding SaveChangesCommand}"
+                        Content="Gem Ændringer" />
+                </StackPanel>
+            </Grid>
+            <StackPanel>
+                <TextBlock Text="{Binding NotImplementetYet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="35"
+                    Visibility="Collapsed">
+                    <TextBox
+                        Width="250"
+                        Header="Nyt Password:"
+                        Text="{Binding PasswordBinding, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Button
+                        Margin="0,10,0,0"
+                        HorizontalAlignment="Center"
+                        Background="#fff8b7"
+                        Content="Gem Nyt Password" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Page>

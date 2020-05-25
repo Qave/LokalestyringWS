@@ -150,6 +150,7 @@
     <Compile Include="Service\MailService.cs" />
     <Compile Include="Service\PersistancyService.cs" />
     <Compile Include="Service\SingletonService.cs" />
+    <Compile Include="ViewModel\AccountSettingsVM.cs" />
     <Compile Include="ViewModel\BookRoomsVM.cs" />
     <Compile Include="ViewModel\BurgerMenuVM.cs" />
     <Compile Include="ViewModel\CreateAccountVM.cs" />
@@ -157,6 +158,9 @@
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\TeacherControlPanelVM.cs" />
     <Compile Include="ViewModel\UserBookingsVM.cs" />
+    <Compile Include="View\PageAccountSettings.xaml.cs">
+      <DependentUpon>PageAccountSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PageBookRooms.xaml.cs">
       <DependentUpon>PageBookRooms.xaml</DependentUpon>
     </Compile>
@@ -185,6 +189,7 @@
     <Content Include="Assets\Images\BMmenu.png" />
     <Content Include="Assets\Images\BookRoom_Bg.jpg" />
     <Content Include="Assets\Images\BurgermenuIcon.png" />
+    <Content Include="Assets\Images\EditButton.png" />
     <Content Include="Assets\Images\Login_Bg.jpg" />
     <Content Include="Assets\Images\Lokation_Bg.jpg" />
     <Content Include="Assets\Images\UserBookings_Bg.jpg" />
@@ -219,6 +224,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Include\BurgerMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PageAccountSettings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

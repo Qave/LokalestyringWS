@@ -55,6 +55,12 @@
                             Width="200"
                             Margin="0,5"
                             HorizontalAlignment="Center"
+                            Command="{Binding GoToAccountSettingsCommand}"
+                            Content="Min Konto" />
+                        <Button
+                            Width="200"
+                            Margin="0,5"
+                            HorizontalAlignment="Center"
                             Command="{Binding LogOutCommand}"
                             Content="Log ud" />
                     </StackPanel>

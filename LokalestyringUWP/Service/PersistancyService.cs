@@ -119,7 +119,7 @@ namespace LokalestyringUWP.Service
         /// <param name="obj">The object of type T that gets deleted from the database.</param>
         /// <param name="uriIdentifier">The string that represents the table (in plural) that gets called in the URL to call HTTP requests. For exampel: api/Bookings, where "Bookings" needs to be specified in the uriIdentifier.</param>
         /// <param name="id">The ID of the table row / selected object, that needs to be updated.</param>
-        public static void UpdateAsJsonAsync<T>(T obj, string uriIdentifier, int id)
+        public static async Task UpdateAsJsonAsync<T>(T obj, string uriIdentifier, int id)
         {
             HttpClientHandler handler = new HttpClientHandler();
             handler.UseDefaultCredentials = true;
@@ -130,7 +130,7 @@ namespace LokalestyringUWP.Service
                 client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                 try
                 {
-                    var response = client.PutAsJsonAsync("api/" + uriIdentifier + "/" + id, obj).Result;
+                    var response = await client.PutAsJsonAsync("api/" + uriIdentifier + "/" + id, obj);
                 }
                 catch (Exception)
                 {
