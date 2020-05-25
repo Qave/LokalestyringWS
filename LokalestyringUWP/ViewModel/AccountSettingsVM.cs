@@ -128,7 +128,7 @@ namespace LokalestyringUWP.ViewModel
 
         public void GoBackMethod()
         {
-            ((Frame)Window.Current.Content).Navigate(typeof(PageLocations));
+            ((Frame)Window.Current.Content).Navigate(typeof(PageBookRooms));
         }
 
         #region INotifyPropertyChanged interface implementation
