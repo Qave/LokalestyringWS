@@ -3,6 +3,7 @@ using LokalestyringUWP.Handler;
 using LokalestyringUWP.Models;
 using LokalestyringUWP.Models.Singletons;
 using LokalestyringUWP.Service;
+using LokalestyringUWP.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace LokalestyringUWP.ViewModel
 {
@@ -34,6 +36,7 @@ namespace LokalestyringUWP.ViewModel
             EditNameCommand = new RelayCommand(EditNameMethod, null);
             EditEmailCommand = new RelayCommand(EditEmailMethod, null);
             SaveChangesCommand = new RelayCommand(async () => await SaveChangesMethodAsync(), null);
+            GoBackCommand = new RelayCommand(GoBackMethod, null);
 
             _nameCanBeEditted = false;
             _emailCanBeEditted = false;
@@ -76,6 +79,7 @@ namespace LokalestyringUWP.ViewModel
         public ICommand EditEmailCommand { get; set; }
         public ICommand EditPasswordCommand { get; set; }
         public ICommand SaveChangesCommand { get; set; }
+        public ICommand GoBackCommand { get; set; }
 
         // Enabled properties
         public bool NameCanBeEditted { get { return _nameCanBeEditted; } set { _nameCanBeEditted = value; OnPropertyChanged(); } }
@@ -121,6 +125,12 @@ namespace LokalestyringUWP.ViewModel
             UserCatalogSingleton.Instance.Users.Clear();
             UserCatalogSingleton.Instance.LoadUsersAsync();
         }
+
+        public void GoBackMethod()
+        {
+            ((Frame)Window.Current.Content).Navigate(typeof(PageLocations));
+        }
+
         #region INotifyPropertyChanged interface implementation
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
