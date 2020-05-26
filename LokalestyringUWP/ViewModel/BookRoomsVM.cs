@@ -147,7 +147,7 @@ namespace LokalestyringUWP.ViewModel
         }
 
 
-        
+        // This method only works when using localhost for the webservice, using the webservice in Azure, breaks it.
         /// <summary>
         /// Refreshes the list, updating the values that have changed.
         /// </summary>
