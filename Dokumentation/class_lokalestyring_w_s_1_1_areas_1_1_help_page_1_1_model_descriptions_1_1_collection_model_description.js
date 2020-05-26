@@ -1,0 +1,4 @@
+var class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_model_descriptions_1_1_collection_model_description =
+[
+    [ "ElementDescription", "class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_model_descriptions_1_1_collection_model_description.html#aaded95d38cc74d75a097e114adda4c77", null ]
+];

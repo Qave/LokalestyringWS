@@ -1,0 +1,5 @@
+var class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_model_descriptions_1_1_complex_type_model_description =
+[
+    [ "ComplexTypeModelDescription", "class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_model_descriptions_1_1_complex_type_model_description.html#a92ed2d7a686071b57030a15bf02aa498", null ],
+    [ "Properties", "class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_model_descriptions_1_1_complex_type_model_description.html#a3de5e4a0a660474d9c51dfd43f29feeb", null ]
+];

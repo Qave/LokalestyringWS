@@ -1,0 +1,4 @@
+var namespace_lokalestyring_u_w_p_1_1_lokalestyring_u_w_p___xaml_type_info =
+[
+    [ "XamlMetaDataProvider", "class_lokalestyring_u_w_p_1_1_lokalestyring_u_w_p___xaml_type_info_1_1_xaml_meta_data_provider.html", "class_lokalestyring_u_w_p_1_1_lokalestyring_u_w_p___xaml_type_info_1_1_xaml_meta_data_provider" ]
+];

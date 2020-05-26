@@ -1,0 +1,16 @@
+var searchData=
+[
+  ['sampledirection_230',['SampleDirection',['../class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_help_page_sample_key.html#a2ade5a908a8c23a488607d9ff1c067da',1,'LokalestyringWS.Areas.HelpPage.HelpPageSampleKey.SampleDirection()'],['../namespace_lokalestyring_w_s_1_1_areas_1_1_help_page.html#af534303bb51c664b8aaa17f12271f293',1,'LokalestyringWS.Areas.HelpPage.SampleDirection()']]],
+  ['sampleobjectfactories_231',['SampleObjectFactories',['../class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_help_page_sample_generator.html#ad2cfbc903901c8d08798061cc47c46f8',1,'LokalestyringWS::Areas::HelpPage::HelpPageSampleGenerator']]],
+  ['sampleobjects_232',['SampleObjects',['../class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_help_page_sample_generator.html#a5607c490a49e64f36b9c5d69321491f6',1,'LokalestyringWS::Areas::HelpPage::HelpPageSampleGenerator']]],
+  ['samplerequests_233',['SampleRequests',['../class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_models_1_1_help_page_api_model.html#ad3377d17744822918f8c5d51e68e81d9',1,'LokalestyringWS::Areas::HelpPage::Models::HelpPageApiModel']]],
+  ['sampleresponses_234',['SampleResponses',['../class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_models_1_1_help_page_api_model.html#af76cc971b5d6bcb932da10032f3afd39',1,'LokalestyringWS::Areas::HelpPage::Models::HelpPageApiModel']]],
+  ['savechangesmethodasync_235',['SaveChangesMethodAsync',['../class_lokalestyring_u_w_p_1_1_view_model_1_1_account_settings_v_m.html#ad98baa73c28310bf299eddfc61e70bb6',1,'LokalestyringUWP::ViewModel::AccountSettingsVM']]],
+  ['saveinsertasjsonasync_3c_20t_20_3e_236',['SaveInsertAsJsonAsync&lt; T &gt;',['../class_lokalestyring_u_w_p_1_1_service_1_1_persistancy_service.html#a90503969dbfb263b551b882d0cff09ee',1,'LokalestyringUWP::Service::PersistancyService']]],
+  ['selectedbooking_237',['SelectedBooking',['../class_lokalestyring_u_w_p_1_1_view_model_1_1_user_bookings_v_m.html#ab4ad5dfa6e2254c674f7b5a163e55502',1,'LokalestyringUWP::ViewModel::UserBookingsVM']]],
+  ['selectedtavlebooking_238',['SelectedTavleBooking',['../class_lokalestyring_u_w_p_1_1_view_model_1_1_user_bookings_v_m.html#ad27d9f86a7f750b6d70d9c7f4783ec68',1,'LokalestyringUWP::ViewModel::UserBookingsVM']]],
+  ['selecteduser_239',['SelectedUser',['../class_lokalestyring_u_w_p_1_1_view_model_1_1_user_bookings_v_m.html#ad4b5c093adfba6be61219ffaca401451',1,'LokalestyringUWP::ViewModel::UserBookingsVM']]],
+  ['simpletypemodeldescription_240',['SimpleTypeModelDescription',['../class_lokalestyring_w_s_1_1_areas_1_1_help_page_1_1_model_descriptions_1_1_simple_type_model_description.html',1,'LokalestyringWS::Areas::HelpPage::ModelDescriptions']]],
+  ['sourcetemplateattribute_241',['SourceTemplateAttribute',['../class_lokalestyring_u_w_p_1_1_annotations_1_1_source_template_attribute.html',1,'LokalestyringUWP::Annotations']]],
+  ['stringformatmethodattribute_242',['StringFormatMethodAttribute',['../class_lokalestyring_u_w_p_1_1_annotations_1_1_string_format_method_attribute.html',1,'LokalestyringUWP.Annotations.StringFormatMethodAttribute'],['../class_lokalestyring_u_w_p_1_1_annotations_1_1_string_format_method_attribute.html#a243a2c5cc9ece32215288cd36433082b',1,'LokalestyringUWP.Annotations.StringFormatMethodAttribute.StringFormatMethodAttribute()']]]
+];

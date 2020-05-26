@@ -1,0 +1,9 @@
+var namespace_lokalestyring_u_w_p_1_1_models_1_1_singletons =
+[
+    [ "AllBookingsViewCatalogSingleton", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_all_bookings_view_catalog_singleton.html", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_all_bookings_view_catalog_singleton" ],
+    [ "BookingCatalogSingleton", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_booking_catalog_singleton.html", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_booking_catalog_singleton" ],
+    [ "LocationSingleton", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_location_singleton.html", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_location_singleton" ],
+    [ "RoomsViewCatalogSingleton", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_rooms_view_catalog_singleton.html", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_rooms_view_catalog_singleton" ],
+    [ "TavleBookingCatalogSingleton", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_tavle_booking_catalog_singleton.html", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_tavle_booking_catalog_singleton" ],
+    [ "UserCatalogSingleton", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_user_catalog_singleton.html", "class_lokalestyring_u_w_p_1_1_models_1_1_singletons_1_1_user_catalog_singleton" ]
+];

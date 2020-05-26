@@ -1,0 +1,5 @@
+var class_lokalestyring_u_w_p_1_1_annotations_1_1_asp_mvc_area_partial_view_location_format_attribute =
+[
+    [ "AspMvcAreaPartialViewLocationFormatAttribute", "class_lokalestyring_u_w_p_1_1_annotations_1_1_asp_mvc_area_partial_view_location_format_attribute.html#a78a87283a04092bbc3c08bd734cf90cd", null ],
+    [ "Format", "class_lokalestyring_u_w_p_1_1_annotations_1_1_asp_mvc_area_partial_view_location_format_attribute.html#a6825fc9d82d96279bc2003344a4330f9", null ]
+];
