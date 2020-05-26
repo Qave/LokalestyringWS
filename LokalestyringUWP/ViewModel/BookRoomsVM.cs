@@ -146,6 +146,8 @@ namespace LokalestyringUWP.ViewModel
             }
         }
 
+
+        
         /// <summary>
         /// Refreshes the list, updating the values that have changed.
         /// </summary>

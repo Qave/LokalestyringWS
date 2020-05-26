@@ -17,6 +17,7 @@ using LokalestyringUWP.Annotations;
 using LokalestyringUWP.View;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Data;
+using MoreLinq;
 
 namespace LokalestyringUWP.Handler
 {
@@ -168,6 +169,11 @@ namespace LokalestyringUWP.Handler
         {
             foreach (var item in RoomReference.RoomList.ToList())
             {
+                if (item.Booking_Limit != 0)
+                {
+                    RoomReference.RoomList.Remove(item);
+                    RoomReference.RoomList.Add(item);
+                }
                 item.Booking_Limit = 0;
             }
 
@@ -201,6 +207,8 @@ namespace LokalestyringUWP.Handler
                                 if (variable.Room_Id == item.Room_Id)
                                 {
                                     item.Booking_Limit = 1;
+                                    RoomReference.RoomList.Remove(item);
+                                    RoomReference.RoomList.Add(item);
                                 }
                             }
                         }

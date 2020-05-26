@@ -185,21 +185,21 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Assets\Images\BMmenu.png" />
-    <Content Include="bin\Assets\Images\BookRoom_Bg.jpg" />
-    <Content Include="bin\Assets\Images\BurgermenuIcon.png" />
-    <Content Include="bin\Assets\Images\EditButton.png" />
-    <Content Include="bin\Assets\Images\Login_Bg.jpg" />
-    <Content Include="bin\Assets\Images\Lokation_Bg.jpg" />
-    <Content Include="bin\Assets\Images\UserBookings_Bg.jpg" />
+    <Content Include="Assets\Images\BMmenu.png" />
+    <Content Include="Assets\Images\BookRoom_Bg.jpg" />
+    <Content Include="Assets\Images\BurgermenuIcon.png" />
+    <Content Include="Assets\Images\EditButton.png" />
+    <Content Include="Assets\Images\Login_Bg.jpg" />
+    <Content Include="Assets\Images\Lokation_Bg.jpg" />
+    <Content Include="Assets\Images\UserBookings_Bg.jpg" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="bin\Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="bin\Assets\SplashScreen.scale-200.png" />
-    <Content Include="bin\Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="bin\Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="bin\Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="bin\Assets\StoreLogo.png" />
-    <Content Include="bin\Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

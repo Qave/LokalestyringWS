@@ -168,6 +168,8 @@ namespace LokalestyringUWP.ViewModel
             await UserBookingHandler.CancelBookingMethodAsync();
             OnPropertyChanged(nameof(ElementIsChosenVisibility));
             OnPropertyChanged(nameof(NoElementsChosenVisibility));
+            OnPropertyChanged(nameof(SelectedBooking));
+            UserBookingHandler.RefreshLists();
         }
 
         /// <summary>
