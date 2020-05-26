@@ -15,8 +15,11 @@ namespace LokalestyringUWP.Service
 {
     public class PersistancyService
     {
-        public const string serverUrl = "http://localhost:51531/";
-        //public const string serverUrl = "http://lokalestyringwebservice.qave.dk/"; 
+        //// Use localhost Databaase (Portnumber will be unique to the host PC) PS: Will require a database called "LokalestyringDB", SQL script queries for this database can be found in the dokumentation for the project
+        //public const string serverUrl = "http://localhost:51531/";
+
+        //// Use the database located in the Azure Cloud, webservice hosted by qave.dk
+        public const string serverUrl = "http://lokalestyringwebservice.qave.dk/"; 
 
         #region generic load table
         /// <summary>
