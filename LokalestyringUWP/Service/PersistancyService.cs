@@ -8,12 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using LokalestyringUWP.Models.Singletons;
 using Newtonsoft.Json;
+using LokalestyringUWP.Handler;
+using Windows.UI.Xaml.Documents;
 
 namespace LokalestyringUWP.Service
 {
     public class PersistancyService
     {
-        public const string serverUrl = "http://localhost:51531/"; //"http://lokalestyringwebservice.qave.dk/";
+        public const string serverUrl = "http://localhost:51531/";
+        //public const string serverUrl = "http://lokalestyringwebservice.qave.dk/"; 
 
         #region generic load table
         /// <summary>
@@ -45,9 +48,17 @@ namespace LokalestyringUWP.Service
                         return tableContents;
                     }
                 }
+                catch (ArgumentNullException e)
+                {
+                    DialogHandler.Dialog(e.Message+"\nPrøv at genstart programmet og prøv derefter igen","Parameter blev ikke fundet");
+                }
+                catch (HttpRequestException e)
+                {
+                    DialogHandler.Dialog(e.Message + "\nPrøv igen senere\nTjek eventuelt din forbindelse til internettet", "Ingen kontakt med serveren");
+                }
                 catch (Exception)
                 {
-                    throw;
+                    DialogHandler.Dialog("Der gik noget galt ved sletning af dette object\nKontakt programmets administratorer for yderligere hjælp", "Noget gik galt");
                 }
             }
             return null;
@@ -78,6 +89,7 @@ namespace LokalestyringUWP.Service
                 }
                 catch (Exception)
                 {
+                    DialogHandler.Dialog("Der gik noget galt ved sletning af dette object\nKontakt programmets administratorer for yderligere hjælp", "Noget gik galt");
                     throw;
                 }
             }
@@ -103,9 +115,21 @@ namespace LokalestyringUWP.Service
                 {
                     var response = client.DeleteAsync("api/"+uriIdentifier+"/"+id).Result;
                 }
+                catch (ArgumentNullException e)
+                {
+                    DialogHandler.Dialog(e.Message+ "\nPrøv at genstart programmet og prøv derefter igen", "Parameter blev ikke fundet");                  
+                }
+                catch (InvalidOperationException e)
+                {
+                    DialogHandler.Dialog(e.Message+"\nKontant appens administratorer for yderligere hjælp","Ugyldig aktion");
+                }
+                catch (HttpRequestException e)
+                {
+                    DialogHandler.Dialog(e.Message+"\nPrøv igen senere\nTjek eventuelt din forbindelse til internettet","Ingen kontakt med serveren");
+                }
                 catch (Exception)
                 {
-                    throw;
+                    DialogHandler.Dialog("Der gik noget galt ved sletning af dette object\nKontakt programmets administratorer for yderligere hjælp", "Noget gik galt");
                 }
             }
         }
@@ -134,12 +158,10 @@ namespace LokalestyringUWP.Service
                 }
                 catch (Exception)
                 {
-                    throw;
+                    DialogHandler.Dialog("Der gik noget galt ved sletning af dette object\nKontakt programmets administratorer for yderligere hjælp", "Noget gik galt");
                 }
             }
         }
         #endregion
-
-
     }
 }
